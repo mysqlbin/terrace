@@ -11,7 +11,7 @@ from django.template import loader
 def parse_binlog(insname,binname,begintime,tbname,dbselected,username,countnum,flash_back):
     flag = True
     # pc = prpcrypt()
-    connectionSettings = {'host': '127.0.0.1', 'port': 3306, 'user': 'salt_user', 'passwd': '123456abc'}
+    connectionSettings = {'host': '192.168.0.54', 'port': 3306, 'user': 'root', 'passwd': '123456abc'}
     #connectionSettings = {'host': insname.ip, 'port': int(insname.port), 'user': tar_username, 'passwd': tar_passwd}
     binlogsql = binlog2sql.Binlog2sql(connectionSettings=connectionSettings, startFile=binname,
                                       startPos=4, endFile='', endPos=0,

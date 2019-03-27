@@ -46,9 +46,11 @@ Error: mysql55w-libs conflicts with mysql-libs
  You could try running: rpm -Va --nofiles --nodigest
 
 
+ImportError: No module named 'pymysqlreplication'
 pip3 install mysql-replication
 
-
+ImportError: No module named 'sqlparse'
+pip3 install sqlparse
 
 
 pip3 ******
