@@ -1,0 +1,54 @@
+{% extends "include/base.html" %}
+
+{% block title %}
+    <title>salt_shell</title>
+{% endblock %}
+
+{% block name %}
+    欢迎使用<span style="color:red">远程shell命令</span>管理主机功能
+{% endblock %}
+
+{%block content%}
+
+
+    <div class="col-xs-10 col-md-12 main">
+        <form class="form-inline" id="form-execute" style="margin-bottom:0;">
+            {% csrf_token %}
+            <input type="text" required="required" class="form-control" value='*' id="ide" name="tgt" placeholder="*" >
+
+{#                <input type="text" class="form-control"  value='cmd.run' class="form-control" placeholder="cmd.run" name="fun">#}
+            <input type="text" class="form-control"  value="free -m" placeholder="遠程shell命令" name='arg'>
+
+            <button type="button" class="btn" id="execute">确认</button>
+            <!--<br>是否按组名匹配<input type="checkbox" size="10" name="isgroup" value=1>-->
+        </form>
+    </div>
+
+    <hr/>
+
+    <div class='row-fluid' id='instances'>
+
+    </div>
+
+{% endblock %}
+{% block script %}
+
+    <script>
+
+        $(function(){
+            $("#execute").click(function(){
+
+                $.ajax({
+                    type: "POST",
+                    url: "/execute/",
+                    data : $("#form-execute").serialize(),
+                    success: function(ret){
+			            console.log(ret)
+			            $("#instances").html(ret);
+
+                    }
+                });
+            })
+        })
+    </script>
+{% endblock %}

@@ -1,0 +1,17 @@
+
+把未实现或者需要实现的功能记录下来，然后分优先级， By PM George.
+level
+1. 后台 OK
+2. ManyToManyField  OK
+3. 前台 继续新增功能，
+ 比如 基于 inception 的 DML和DDL语句 审核，故障清单， SQLADVISOR, zabbix report, 数据库评分系统，
+4. 实例状态查询加上 自定义命令 执行， 然后出结果。
+5. 登录
+
+
+
+6. 数据表的架构图 ****** 
+   比如 myapp_db_instance, myapp_db_account, myapp_db_name 等
+   
+7. Blacklist -》 Tb_blacklists 的拆分
+

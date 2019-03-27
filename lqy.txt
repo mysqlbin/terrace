@@ -1,0 +1,58 @@
+[root@localhost automatic]# python3
+Python 3.6.5 (default, May 22 2018, 15:29:50) 
+[GCC 4.4.7 20120313 (Red Hat 4.4.7-18)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import django
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ModuleNotFoundError: No module named 'django'
+
+
+
+
+ 
+pip install -t /usr/local/python3/lib/python3.6/site-packages/ Django
+
+
+pip3 install -t /usr/local/python3/lib/python3.6/site-packages/ mysqlclient    
+
+
+
+pip3 install --upgrade pip
+
+
+
+错误：
+django.core.exceptions.ImproperlyConfigured: Error loading MySQLdb module.
+Did you install mysqlclient?
+
+
+pip3 install -t /usr/local/python3/lib/python3.6/site-packages/  pyMySQL
+pip3 install -t /usr/local/python3/lib/python3.6/site-packages/  python-devel.x86_64
+pip3 install -t /usr/local/python3/lib/python3.6/site-packages/  mysql-devel --skip-broken
+
+pip3 install -t /usr/local/python3/lib/python3.6/site-packages/  mysqlclient
+
+
+
+yum install python-devel.x86_64
+
+
+
+
+yum remove mysql-libs
+
+yum install mysql-devel
+--> Processing Conflict: mysql55w-libs-5.5.56-1.w6.x86_64 conflicts mysql-libs < 5.5
+--> Finished Dependency Resolution
+Error: mysql55w-libs conflicts with mysql-libs
+ You could try using --skip-broken to work around the problem
+ You could try running: rpm -Va --nofiles --nodigest
+
+
+pip3 install mysql-replication
+
+
+
+
+pip3 ******

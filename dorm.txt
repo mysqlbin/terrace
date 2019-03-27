@@ -1,0 +1,42 @@
+
+192.168.1.26 salt-master
+192.168.1.26 salt-minion
+192.168.1.31 salt-minion
+
+Python3安装使用SaltStack以及salt-api详解:
+https://www.cnblogs.com/wang-yc/p/7904376.html
+CentOS7 + python3.6 + saltstack2018.3.0
+
+grant all privileges on *.* to 'salt_user'@'%' identified by '123456abc';
+
+
+[root@126env db_automation]# salt '*' test.ping
+Salt request timed out. The master is not responding. You may need to run your command with `--async` in order to bypass the congested event bus. With `--async`, the CLI tool will print the job id (jid) and exit immediately without listening for responses. 
+You can then use `salt-run jobs.lookup_jid` to look up the results of the job in the job cache later.
+
+SUSE安装SaltStack后的pam认证问题
+https://blog.csdn.net/mayp1/article/details/52824889
+
+pip install -t /usr/local/python3/lib/python3.6/site-packages salt-master
+
+
+
+
+
+https://docs.saltstack.com/en/latest/topics/releases/2017.7.0.html#python-3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
