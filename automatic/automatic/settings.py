@@ -89,10 +89,10 @@ WSGI_APPLICATION = 'automatic.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'django',
-        'USER': 'salt_user',
+        'NAME': 'terrace_db',
+        'USER': 'root',
         'PASSWORD': '123456abc',
-        'HOST': '192.168.23.161',
+        'HOST': '192.168.0.54',
         'PORT': '3306',
     }
 }

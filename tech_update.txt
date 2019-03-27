@@ -1,11 +1,7 @@
 [root@localhost automatic]# python3
-Python 3.6.5 (default, May 22 2018, 15:29:50) 
-[GCC 4.4.7 20120313 (Red Hat 4.4.7-18)] on linux
+Python 3.5.0 (default, Dec  4 2018, 20:10:20) 
+[GCC 4.8.5 20150623 (Red Hat 4.8.5-36)] on linux
 Type "help", "copyright", "credits" or "license" for more information.
->>> import django
-Traceback (most recent call last):
-  File "<stdin>", line 1, in <module>
-ModuleNotFoundError: No module named 'django'
 
 
 
@@ -27,11 +23,11 @@ django.core.exceptions.ImproperlyConfigured: Error loading MySQLdb module.
 Did you install mysqlclient?
 
 
-pip3 install -t /usr/local/python3/lib/python3.6/site-packages/  pyMySQL
-pip3 install -t /usr/local/python3/lib/python3.6/site-packages/  python-devel.x86_64
-pip3 install -t /usr/local/python3/lib/python3.6/site-packages/  mysql-devel --skip-broken
+pip3 install -t /usr/local/python3/lib/python3.5/site-packages/  pyMySQL
+pip3 install -t /usr/local/python3/lib/python3.5/site-packages/  python-devel.x86_64
+pip3 install -t /usr/local/python3/lib/python3.5/site-packages/  mysql-devel --skip-broken
 
-pip3 install -t /usr/local/python3/lib/python3.6/site-packages/  mysqlclient
+pip3 install -t /usr/local/python3/lib/python3.5/site-packages/  mysqlclient
 
 
 
