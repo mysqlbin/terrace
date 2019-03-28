@@ -31,8 +31,8 @@ class Db_instance(models.Model):
 class Db_name (models.Model):
     dbtag = models.CharField(max_length=30, unique=True)
     dbname = models.CharField(max_length=30)
-    instance = models.ManyToManyField(Db_instance)
-    account = models.ManyToManyField(User)
+    instance = models.ManyToManyField(Db_instance)   #用于联表查询中的 on
+    account = models.ManyToManyField(User)           #用于联表查询中的 on
     def __str__(self):
         return u'%s %s' % (self.dbtag, self.dbname)
 
@@ -46,6 +46,7 @@ class Db_account(models.Model):
     account = models.ManyToManyField(User)
     def __str__(self):
         return  u'%s %s' % ( self.tags, self.role)
+
 
 class Oper_log(models.Model):
     user = models.CharField(max_length=35)

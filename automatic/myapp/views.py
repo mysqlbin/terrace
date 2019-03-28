@@ -64,6 +64,7 @@ def metas(request):
     else:
         return render(request, 'meta.html', locals())
 
+'''
 def mysql_binlog_parse_test(request):
 
     insname = Db_instance.objects.get(id=int(1))
@@ -79,14 +80,19 @@ def mysql_binlog_parse_test(request):
     sqllist = parse_binlog_update(insname, binname, begintime, tbname, dbselected, countnum)
 
     return HttpResponse(sqllist)
+'''
 
 def mysql_binlog_parse(request):
     inslist = Db_instance.objects.filter(db_type='mysql').order_by("ip")
+                          #`myapp_db_instance`.`db_type` = 'mysql' ORDER BY `myapp_db_instance`.`ip` ASC
     if request.method == 'POST':
         try:
             binlist = []
             dblist = []
             insname = Db_instance.objects.get(id=int(request.POST['ins_set']))
+            #FROM `myapp_db_instance` WHERE `myapp_db_instance`.`id` = 1
+            #`myapp_db_instance`.`id`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port`, `myapp_db_instance`.`role`, `myapp_db_instance`.`db_type`
+
             # insname = ''
             datalist, col = meta.get_process_data(insname, 'show binary logs')
             dbresult, col = meta.get_process_data(insname, 'show databases')
@@ -101,6 +107,7 @@ def mysql_binlog_parse(request):
                 return render(request, 'binlog_parse.html', locals())
             if 'show_binary' in request.POST:
                 return render(request, 'binlog_parse.html', locals())
+
             elif 'parse' in request.POST:
                 binname = request.POST['binary_list']
                 countnum = int(request.POST['countnum'])
