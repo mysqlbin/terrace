@@ -125,7 +125,7 @@ def mysql_binlog_parse(request):
                 if dbselected == 'all':
                  dbselected = ''
                 sqllist = parse_binlog_update(insname, binname, begintime, tbname, dbselected, countnum)
-                #return sqlllist
+                #return sqllist
                 #return HttpResponse(sqllist)
                 #sqllist = parse_binlogfirst(insname, binname, 5)
 
