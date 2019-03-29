@@ -31,10 +31,24 @@ class Db_instance(models.Model):
 class Db_name (models.Model):
     dbtag = models.CharField(max_length=30, unique=True)
     dbname = models.CharField(max_length=30)
-    instance = models.ManyToManyField(Db_instance)
-    account = models.ManyToManyField(User)
+    instance = models.ManyToManyField(Db_instance)   #用于联表查询中的 on
+    account = models.ManyToManyField(User)           #用于联表查询中的 on
     def __str__(self):
         return u'%s %s' % (self.dbtag, self.dbname)
+
+'''
+SELECT
+	`myapp_db_name`.`id`,
+	`myapp_db_name`.`dbtag`,
+	`myapp_db_name`.`dbname`
+FROM
+	`myapp_db_name`
+INNER JOIN `myapp_db_name_instance` ON (
+	`myapp_db_name`.`id` = `myapp_db_name_instance`.`db_name_id`
+)
+WHERE
+	`myapp_db_name_instance`.`db_instance_id` = 1
+'''
 
 
 class Db_account(models.Model):
@@ -47,6 +61,21 @@ class Db_account(models.Model):
     def __str__(self):
         return  u'%s %s' % ( self.tags, self.role)
 
+'''
+SELECT
+	`myapp_db_account`.`id`,
+	`myapp_db_account`.`user`,
+	`myapp_db_account`.`passwd`,
+	`myapp_db_account`.`role`,
+	`myapp_db_account`.`tags`
+FROM
+	`myapp_db_account`
+INNER JOIN `myapp_db_account_dbname` ON (
+	`myapp_db_account`.`id` = `myapp_db_account_dbname`.`db_account_id`
+)
+WHERE
+	`myapp_db_account_dbname`.`db_name_id` = 1
+'''
 class Oper_log(models.Model):
     user = models.CharField(max_length=35)
     ipaddr = models.CharField(max_length=35)
