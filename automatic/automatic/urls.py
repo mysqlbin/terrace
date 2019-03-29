@@ -27,7 +27,7 @@ urlpatterns = [
 
     path('metas/', myapp_view.metas, name='metas'),
     path('binlog_parse/', myapp_view.mysql_binlog_parse, name='binlog_parse'),
-    path('binlog_parse_test/', myapp_view.mysql_binlog_parse_test, name='binlog_parse_test'),
+    #path('binlog_parse_test/', myapp_view.mysql_binlog_parse_test, name='binlog_parse_test'),
     #path('nav/', myapp_view.nav, name='nav'),
 
     #salt
