@@ -103,13 +103,21 @@ CREATE TABLE `myapp_db_name` (
   UNIQUE KEY `dbtag` (`dbtag`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
+insname.db_name_set.all:
+SELECT `myapp_db_name`.`id`, `myapp_db_name`.`dbtag`, `myapp_db_name`.`dbname` FROM `myapp_db_name` INNER JOIN `myapp_db_name_instance` ON (`myapp_db_name`.`id` = `myapp_db_name_instance`.`db_name_id`) WHERE `myapp_db_name_instance`.`db_instance_id` = 1
+
+a.db_account_set.all:
+SELECT `myapp_db_account`.`id`, `myapp_db_account`.`user`, `myapp_db_account`.`passwd`, `myapp_db_account`.`role`, `myapp_db_account`.`tags` FROM `myapp_db_account` INNER JOIN `myapp_db_account_dbname` ON (`myapp_db_account`.`id` = `myapp_db_account_dbname`.`db_account_id`) WHERE `myapp_db_account_dbname`.`db_name_id` = 1
+
+
+
 '''
 def get_process_data(insname,sql):
     flag = True
     # pc = prpcrypt()
     for a in insname.db_name_set.all():    #models.py：Db_name
         for i in a.db_account_set.all():   #models.py：Db_account
-            # if i.role == 'admin':
+            # if i.role == 'admin':         '''获取账号和密码，用来连接数据库'''
             tar_username = i.user
             tar_passwd = i.passwd
             flag = False
