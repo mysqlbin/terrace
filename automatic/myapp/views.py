@@ -132,13 +132,9 @@ def mysql_binlog_parse(request):
                 if dbselected == 'all':
                  dbselected = ''
                 sqllist = parse_binlog_update(insname, binname, begintime, tbname, dbselected, countnum)
-<<<<<<< HEAD
-                #return sqllist
-                #return HttpResponse(sqllist)
-=======
+
                 #return sqlllist
                 # return HttpResponse(sqllist)
->>>>>>> aa85a1ff6528963f989962da4b7931fb75592a20
                 #sqllist = parse_binlogfirst(insname, binname, 5)
 
             elif  'parse_undo' in request.POST:
