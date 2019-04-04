@@ -99,6 +99,8 @@ def mysql_binlog_parse(request):
 
             # insname = ''
             datalist, col = meta.get_process_data(insname, 'show binary logs')
+            return HttpResponse(datalist)
+
             dbresult, col = meta.get_process_data(insname, 'show databases')
             if col != ['error']:
                 dblist.append('all')

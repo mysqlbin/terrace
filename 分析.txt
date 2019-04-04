@@ -28,3 +28,7 @@
 2019-03-29T05:17:33.574843+08:00	  353 Quit	
 2019-03-29T05:17:33.583456+08:00	  351 Query	SELECT `myapp_db_instance`.`id`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port`, `myapp_db_instance`.`role`, `myapp_db_instance`.`db_type` FROM `myapp_db_instance` WHERE `myapp_db_instance`.`db_type` = 'mysql' ORDER BY `myapp_db_instance`.`ip` ASC
 2019-03-29T05:17:33.587897+08:00	  351 Quit	
+
+
+
+
