@@ -1,0 +1,60 @@
+
+
+1. binlog日志解析, 比如从库报错,不用手动去解析binlog.
+2019-04-01 06:13:37 23322 [Warning] Slave SQL: Could not execute Update_rows event on table yldb.table_club_gametable; Lock wait timeout exceeded; try restarting transaction, Error_code: 1205; handler error HA_ERR_LOCK_WAIT_TIMEOUT; the event's master log mysql-bin.000306, end_log_pos 470573985, Error_code: 1205
+2019-04-01 06:14:28 23322 [Warning] Slave SQL: Could not execute Update_rows event on table yldb.table_club_gametable; Lock wait timeout exceeded; try restarting transaction, Error_code: 1205; handler error HA_ERR_LOCK_WAIT_TIMEOUT; the event's master log mysql-bin.000306, end_log_pos 470573985, Error_code: 1205
+
+
+mysqlbinlog 解析的SQL并不友好, 如下图:
+#190401  6:12:46 server id 1  end_log_pos 470573456 CRC32 0x13e3e885    Xid = 2766743554
+COMMIT/*!*/;
+# at 470573456
+#190401  6:12:46 server id 1  end_log_pos 470573536 CRC32 0x3e88fff5    Query   thread_id=1891370       exec_time=0     error_code=0
+SET TIMESTAMP=1554070366/*!*/;
+/*!\C utf8 *//*!*/;
+SET @@session.character_set_client=33,@@session.collation_connection=33,@@session.collation_server=45/*!*/;
+BEGIN
+/*!*/;
+# at 470573536
+#190401  6:12:46 server id 1  end_log_pos 470573617 CRC32 0x21dad65b    Table_map: `yldb`.`table_club_gametable` mapped to number 642
+# at 470573617
+#190401  6:12:46 server id 1  end_log_pos 470573985 CRC32 0xff5b5850    Update_rows: table id 642 flags: STMT_END_F
+### UPDATE `yldb`.`table_club_gametable`
+### WHERE
+###   @1=721667
+###   @2=89742
+###   @3=66660332
+###   @4=660828
+###   @5=2003
+###   @6=40
+###   @7=4
+###   @8=10
+###   @9=0
+###   @10='十三张 人数【4】 底分【1】 局数【10】   马 【黑桃10】 先比花色 自由摆牌  南宁玩法'
+###   @11=2
+###   @12=1554069078
+###   @13=NULL
+###   @14=0
+### SET
+###   @1=721667
+###   @2=89742
+###   @3=66660332
+###   @4=660828
+###   @5=2003
+###   @6=40
+###   @7=4
+###   @8=10
+###   @9=10
+###   @10='十三张 人数【4】 底分【1】 局数【10】   马 【黑桃10】 先比花色 自由摆牌  南宁玩法'
+###   @11=2
+###   @12=1554069078
+###   @13=1554070366
+###   @14=0
+DELIMITER ;
+# End of log file
+ROLLBACK /* added by mysqlbinlog */;
+
+
+
+
+

@@ -38,6 +38,8 @@ git config --global user.name "mysqlbin"
 配置密钥实现无密码操作：
 https://blog.csdn.net/wanglei_storage/article/details/53258804
 
+ssh-keygen -t rsa -C "2955468423@qq.com"
+
 
 def index(request):
    
@@ -362,7 +364,7 @@ if (int(sqltext.split()[-1])<= int(num) ):
 
 在 Python3.6 中，unicode(i, 'utf-8') 不能这么写
 
-
+错误:
 'function' object has no attribute 'delay'
 
 
