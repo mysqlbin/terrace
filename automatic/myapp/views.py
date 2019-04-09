@@ -84,7 +84,8 @@ def mysql_binlog_parse_test(request):
 '''
 
 def mysql_binlog_rollback(request):
-
+    inslist = Db_instance.objects.filter(db_type='mysql').order_by("ip")
+    return HttpResponse(inslist)
     return render(request, 'binlog_rollback.html')
 
 '''
