@@ -18,7 +18,7 @@
                         <td>
                             <select id='ins' class="form-control col-md-3" name = "ins_set">
                                 {% for obj in inslist%}
-                                <option value = "{{ obj.id }}"> {{ obj.ip }} {{ obj.role }} {{ obj.db_type}} </option>
+                                <option value = "{{ obj.id }}">{{ obj.ip }} {{ obj.role }} {{ obj.db_type}}</option>
                                 {% endfor %}
                             </select>
                         </td>
@@ -28,11 +28,30 @@
                 </br>
 
                 <button name="show_binary" class="btn btn-primary" value="1">show binary logs and DB</button >
+
                 </br>
 
                 {% if binlist %}
-                    <table >
+                    <table>
                         <tr>
+                             <td>
+                                CHOOSE BINLOG:</br>
+                                <select  class="form-control col-md-3" name = "binary_list">
+                                    {% for obj in binlist %}
+                                      <option value ="{{ obj }}" >{{ obj }}</option>
+                                    {% endfor %}
+                                </select>
+                                </br>
+                            </td>
+
+                            <br>
+                                CHOOSE DB:</br>
+                                <select  class="form-control col-md-3" name = "binary_list">
+                                    {% for obj in dblist %}
+                                    <option value="{{ obj }}">{{ obj }}</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
 
                             <td>
                                 CHOOSE 解析条数:</br>
@@ -58,7 +77,7 @@
 
                                 </select>
                             </td>
-                        <tr>
+                        </tr>
                     </table>
                 {% endif %}
 
