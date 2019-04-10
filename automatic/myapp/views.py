@@ -103,8 +103,16 @@ ORDER BY
     #return HttpResponse(inslist)
     if request.method == 'POST':
         insname = Db_instance.objects.get(id=int(request.POST['ins_set']))
-        datalist, col = meta.get_process_data(insname, 'show binary logs')
-        return HttpResponse(col)
+        binresult, col = meta.get_process_data(insname, 'show binary logs')
+        #return HttpResponse(col)  #返回字段名称
+        #binresult: ('mysql-bin.000060', 62656542)('mysql-bin.000061', 13319)('mysql-bin.000062', 18837956)
+        dbresult, col = meta.get_process_data(insname, 'show databases')
+        binlist = []
+        dblist = []
+        for i in binresult:
+            #print(i[0])
+            return HttpResponse(i[0])
+
     return render(request, 'binlog_rollback.html', locals())   #返回字典类型的局部变量： {'z': 1, 'arg': 4}
 
 '''
@@ -177,6 +185,7 @@ def mysql_binlog_parse(request):
             # insname = ''
             datalist, col = meta.get_process_data(insname, 'show binary logs')
             return HttpResponse(datalist)
+            #('mysql-bin.000060', 62656542)('mysql-bin.000061', 13319)('mysql-bin.000062', 18837956)
 
             dbresult, col = meta.get_process_data(insname, 'show databases')
             if col != ['error']:
