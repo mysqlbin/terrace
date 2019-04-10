@@ -85,8 +85,24 @@ def mysql_binlog_parse_test(request):
 
 def mysql_binlog_rollback(request):
     inslist = Db_instance.objects.filter(db_type='mysql').order_by("ip")
-    return HttpResponse(inslist)
-    return render(request, 'binlog_rollback.html')
+    '''
+    SELECT
+	`myapp_db_instance`.`id`,
+	`myapp_db_instance`.`ip`,
+	`myapp_db_instance`.`port`,
+	`myapp_db_instance`.`role`,
+	`myapp_db_instance`.`db_type`
+FROM
+	`myapp_db_instance`
+WHERE
+	`myapp_db_instance`.`db_type` = 'mysql'
+ORDER BY
+	`myapp_db_instance`.`ip` ASC
+    '''
+    #局部变量：id,ip,port,role,db_type
+    #return HttpResponse(inslist)
+
+    return render(request, 'binlog_rollback.html', locals())   #返回字典类型的局部变量： {'z': 1, 'arg': 4}
 
 '''
 def mysql_binlog_rollback(request):
