@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from myapp.include import meta
 from myapp.include import function as func
 from myapp.include import sqlfilter
-from myapp.tasks import parse_binlog,parse_binlogfirst,parse_binlog_update
+from myapp.tasks import parse_binlog,parse_binlogfirst,parse_binlog_update,parse_binlog_self
 from myapp.form import AddForm
 from blacklist import blFunction as bc
 from myapp.models import Db_instance
@@ -126,9 +126,11 @@ ORDER BY
             countnum = int(request.POST['countnum'])
             if countnum not in [10, 50, 200]:
                 countnum = 10
+
+            sqllist = parse_binlog_update(insname, binname, begintime, tbname, dbselected, countnum)
+            return HttpResponse(sqllist)
             return render(request, 'binlog_rollback.html', locals())
-            
-    return render(request, 'binlog_rollback.html', locals())   #返回字典类型的局部变量： {'z': 1, 'arg': 4}
+    return render(request, 'binlog_rollback.html', locals())   #返回字典类型的局部变量： {'z': 1, 'arg': 4} ,用于传递多个变量给模板中不同的模块
 
 '''
 def mysql_binlog_rollback(request):

@@ -2,11 +2,41 @@
 import datetime
 from django.contrib.auth.models import User
 from myapp.include import binlog2sql
+from myapp.include import binlog2sqlback
 from django.core.mail import EmailMessage,send_mail,EmailMultiAlternatives
 from django.template import loader
 # from myapp.include.encrypt import prpcrypt
 # from mypro.settings import EMAIL_SENDER
 
+
+def parse_binlog_self(insname, binname, begintime, tbname, dbselected, flashback):
+    flag = True
+
+    for a in insname.db_name_set.all():
+        for i in a.db_account_set.all():
+            tar_username = i.user
+            tar_passwd = i.passwd
+            flag = False
+            break
+        if flag == False:
+            break
+
+    #connectionSettings = {'host': '127.0.0.1', 'port': 3306, 'user': 'salt_user', 'passwd': '123456abc'}
+    connection_settings = {'host': insname.ip, 'port': int(insname.port), 'user': tar_username, 'passwd': tar_passwd}
+    '''
+    def __init__(self, connection_settings, start_file=None, start_pos=None, end_file=None, end_pos=None,
+                 start_time=None, stop_time=None, only_schemas=None, only_tables=None, no_pk=False,
+                 flashback=False, stop_never=False, back_interval=1.0, only_dml=True, sql_type=None):
+    '''
+
+    binlogsql = binlog2sqlback.Binlog2sql(connection_settings=connection_settings, start_file=binname,
+                                          start_pos=4, end_file='', end_pos=0,
+                                          start_time=begintime, stop_time='', only_schemas=dbselected,
+                                      only_tables=tbname, no_pk=False, flashback=False, stop_never=False)
+    return binlogsql.process_binlog()
+
+    #sqllist = binlogsql.sqllist
+    #return sqllist
 
 def parse_binlog(insname,binname,begintime,tbname,dbselected,username,countnum,flash_back):
     flag = True

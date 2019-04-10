@@ -6,7 +6,7 @@ import datetime
 import pymysql
 from pymysqlreplication import BinLogStreamReader
 from pymysqlreplication.event import QueryEvent, RotateEvent, FormatDescriptionEvent
-from binlog2sql_util import command_line_args, concat_sql_from_binlog_event, create_unique_file, temp_open, \
+from binlog2sqlback_util import command_line_args, concat_sql_from_binlog_event, create_unique_file, temp_open, \
     reversed_lines, is_dml_event, event_type
 
 
@@ -140,7 +140,7 @@ class Binlog2sql(object):
 
 
 if __name__ == '__main__':
-    args = command_line_args(sys.argv[1:])
+    args = command_line_args(sys.argv[1:])   #接收参数
     conn_setting = {'host': args.host, 'port': args.port, 'user': args.user, 'passwd': args.password, 'charset': 'utf8'}
     binlog2sql = Binlog2sql(connection_settings=conn_setting, start_file=args.start_file, start_pos=args.start_pos,
                             end_file=args.end_file, end_pos=args.end_pos, start_time=args.start_time,
