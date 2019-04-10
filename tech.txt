@@ -83,7 +83,7 @@ pip install -t /usr/local/python3/lib/python3.6/site-packages/ pyMySQL
 python3 manage.py migrate
 
 四. 启动 django 服务
-python3 manage.py runserver 192.168.23.161:8006
+python3 manage.py runserver 192.168.0.55:8006
 
 
 
