@@ -101,7 +101,10 @@ ORDER BY
     '''
     #局部变量：id,ip,port,role,db_type
     #return HttpResponse(inslist)
-
+    if request.method == 'POST':
+        insname = Db_instance.objects.get(id=int(request.POST['ins_set']))
+        datalist, col = meta.get_process_data(insname, 'show binary logs')
+        return HttpResponse(col)
     return render(request, 'binlog_rollback.html', locals())   #返回字典类型的局部变量： {'z': 1, 'arg': 4}
 
 '''
