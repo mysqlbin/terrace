@@ -42,7 +42,7 @@
                                 </br>
                             </td>
 
-                            </td>
+                            <td>
                                 CHOOSE DB:</br>
                                 <select  class="form-control col-md-3" name = "binary_list">
                                     {% for obj in dblist %}
@@ -54,7 +54,24 @@
                             <td>
                                 CHOOSE 解析条数:</br>
                                 <select class="form-control col-md-3" name = "countnum">
+                                    {# 这里可以优化 #}
+                                    {% if countnum == 10 %}
+                                     <option value=10 selected="selected">10</option>
+                                    {% else %}
+                                     <option value=10>10</option>
+                                    {% endif %}
 
+                                    {% if countnum ==50 %}
+                                     <option value=50 selected="selected">50</option>
+                                    {% else %}
+                                     <option value=50>50</option>
+                                    {% endif %}
+
+                                    {% if countnum ==200 %}
+                                     <option value=200 selected="selected">200</option>
+                                    {% else %}
+                                     <option value=200>200</option>
+                                    {% endif %}
 
                                 </select>
                             </td>

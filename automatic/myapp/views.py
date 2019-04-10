@@ -118,6 +118,11 @@ ORDER BY
         for i in dbresult:
             dblist.append(i[0])
 
+        countnum = int(request.POST['countnum'])
+        if countnum not in [10, 50, 200]:
+            countnum = 10
+
+
 
     return render(request, 'binlog_rollback.html', locals())   #返回字典类型的局部变量： {'z': 1, 'arg': 4}
 
