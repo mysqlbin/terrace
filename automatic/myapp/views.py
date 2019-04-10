@@ -118,12 +118,16 @@ ORDER BY
         for i in dbresult:
             dblist.append(i[0])
 
-        countnum = int(request.POST['countnum'])
-        if countnum not in [10, 50, 200]:
-            countnum = 10
+        if 'show_binary' in request.POST:
+            return render(request, 'binlog_rollback.html', locals())
+            #return HttpResponse(locals())
 
-        return HttpResponse(locals())
-
+        elif 'parse_commit' in request.POST:
+            countnum = int(request.POST['countnum'])
+            if countnum not in [10, 50, 200]:
+                countnum = 10
+            return render(request, 'binlog_rollback.html', locals())
+            
     return render(request, 'binlog_rollback.html', locals())   #返回字典类型的局部变量： {'z': 1, 'arg': 4}
 
 '''
