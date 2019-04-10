@@ -66,7 +66,7 @@
                                     {% else %}
                                      <option value=50>50</option>
                                     {% endif %}
-                                                        
+
                                     {% if countnum == 200 %}
                                      <option value=200 selected="selected">200</option>
                                     {% else %}
@@ -80,7 +80,7 @@
                 {% endif %}
 
                 {% if binlist %}
-                    <button name="parse_first"  class="btn btn-default" value="1">提交</button >
+                    <button name="parse_commit"  class="btn btn-default" value="1">提交</button >
                     <button id="parse_binlog" name="parse"  class="btn btn-success" value="1">PARSE BINLOG FOR REDO</button >
                 {% endif %}
             </div>
