@@ -122,7 +122,7 @@ ORDER BY
         if countnum not in [10, 50, 200]:
             countnum = 10
 
-
+        return HttpResponse(locals())
 
     return render(request, 'binlog_rollback.html', locals())   #返回字典类型的局部变量： {'z': 1, 'arg': 4}
 
