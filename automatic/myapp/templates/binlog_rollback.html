@@ -16,7 +16,7 @@
                     CHOOSE :
                     <tr>
                         <td>
-                            <select id='ins' class="form-control col-md-3" name = "ins_set">
+                            <select id='ins' class="form-control col-md-3" name="ins_set">
                                 {% for obj in inslist%}
                                 <option value = "{{ obj.id }}">{{ obj.ip }} {{ obj.role }} {{ obj.db_type}}</option>
                                 {% endfor %}
@@ -26,9 +26,7 @@
 
                 </table>
                 </br>
-
                 <button name="show_binary" class="btn btn-primary" value="1">show binary logs and DB</button >
-
                 </br>
 
                 {% if binlist %}
@@ -44,7 +42,7 @@
                                 </br>
                             </td>
 
-                            <br>
+                            </td>
                                 CHOOSE DB:</br>
                                 <select  class="form-control col-md-3" name = "binary_list">
                                     {% for obj in dblist %}
@@ -56,24 +54,7 @@
                             <td>
                                 CHOOSE 解析条数:</br>
                                 <select class="form-control col-md-3" name = "countnum">
-                                    {% if countnum == 10 %}
-                                        <option selected="selected" value =10 >10</option>
 
-                                    {% else %}
-                                        <option value =10 >10</option>
-                                    {% endif %}
-
-                                    {% if countnum == 50 %}
-                                        <option selected="selected" value =50 >50</option>
-                                    {% else %}
-                                        <option value =50 >50</option>
-                                    {% endif %}
-
-                                    {% if countnum == 200 %}
-                                        <option selected="selected" value =200 >200</option>
-                                    {% else %}
-                                        <option value =200 >200</option>
-                                    {% endif %}
 
                                 </select>
                             </td>
