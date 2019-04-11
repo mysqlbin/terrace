@@ -243,6 +243,7 @@ def generate_sql_pattern(binlog_event, row=None, flashback=False, no_pk=False):
 
 def reversed_lines(fin):
     """Generate the lines of file in reverse order."""
+
     part = ''
     for block in reversed_blocks(fin):
         if PY3PLUS:

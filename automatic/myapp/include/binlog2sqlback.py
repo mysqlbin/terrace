@@ -42,6 +42,8 @@ class Binlog2sql(object):
         self.only_dml = only_dml
         self.sql_type = [t.upper() for t in sql_type] if sql_type else []
 
+        self.sqllist = []
+
         self.binlogList = []
         self.connection = pymysql.connect(**self.conn_setting)
         with self.connection as cursor:
@@ -100,7 +102,8 @@ class Binlog2sql(object):
                     sql = concat_sql_from_binlog_event(cursor=cursor, binlog_event=binlog_event,
                                                        flashback=self.flashback, no_pk=self.no_pk)
                     if sql:
-                        print(sql)
+                        #print(sql)
+                        self.sqllist.append(sql)
                 elif is_dml_event(binlog_event) and event_type(binlog_event) in self.sql_type:
                     for row in binlog_event.rows:
                         sql = concat_sql_from_binlog_event(cursor=cursor, binlog_event=binlog_event, no_pk=self.no_pk,
@@ -108,7 +111,8 @@ class Binlog2sql(object):
                         if self.flashback:
                             f_tmp.write(sql + '\n')
                         else:
-                            print(sql)
+                            #print(sql)
+                            self.sqllist.append(sql)
 
                 if not (isinstance(binlog_event, RotateEvent) or isinstance(binlog_event, FormatDescriptionEvent)):
                     last_pos = binlog_event.packet.log_pos
