@@ -26,9 +26,9 @@ urlpatterns = [
     path('mysql_querys/', myapp_view.mysql_querys, name='mysql_querys'),
 
     path('metas/', myapp_view.metas, name='metas'),
-    path('binlog_parse/', myapp_view.mysql_binlog_parse, name='binlog_parse'),
+    path('binlog_parse/', myapp_view.binlog_parse, name='binlog_parse'),
 
-    path('binlog_rollback/', myapp_view.mysql_binlog_rollback, name='binlog_rollback'),        #name:定义url名称
+    #path('binlog_rollback/', myapp_view.mysql_binlog_rollback, name='binlog_rollback'),        #name:定义url名称
 
     #path('binlog_parse_test/', myapp_view.mysql_binlog_parse_test, name='binlog_parse_test'),
     #path('nav/', myapp_view.nav, name='nav'),

@@ -122,7 +122,7 @@ def metas(request):
 #             return render(request, 'binlog_rollback.html', locals())
 #     return render(request, 'binlog_rollback.html', locals())   #返回字典类型的局部变量： {'z': 1, 'arg': 4} ,用于传递多个变量给模板中不同的模块
 
-def parse_binlog(request):
+def binlog_parse(request):
     inslist = Db_instance.objects.filter(db_type='mysql').order_by("ip")
                           #`myapp_db_instance`.`db_type` = 'mysql' ORDER BY `myapp_db_instance`.`ip` ASC
     if request.method == 'POST':
