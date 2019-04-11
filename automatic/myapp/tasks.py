@@ -8,7 +8,7 @@ from django.template import loader
 # from mypro.settings import EMAIL_SENDER
 
 
-def parse_binlogs(insname, binname, begintime, tbname, dbselected, countnum, flash_back):
+def parse_binlogs(insname, binname, begintime, tbname, dbselected, countnum, flash_back=true):
     flag = True
 
     for a in insname.db_name_set.all():
