@@ -123,6 +123,13 @@ ORDER BY
             #return HttpResponse(locals())
 
         elif 'parse_commit' in request.POST:
+
+            binname = request.POST['binary_list']
+            begintime = request.POST['begin_time']
+            tbname = request.POST['tbname']
+            dbselected = request.POST['dblist']
+            if dbselected == 'all':
+                dbselected = ''
             countnum = int(request.POST['countnum'])
             if countnum not in [10, 50, 200]:
                 countnum = 10
