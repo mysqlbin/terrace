@@ -60,7 +60,7 @@ def parse_binlog(insname,binname,begintime,tbname,dbselected,username,countnum,f
 
 
 
-def parse_binlog_update(insname, binname, begintime, tbname, dbselected, countnum, flash_back):
+def parse_binlog_update(insname, binname, begintime, tbname, dbselected, countnum):
     flag = True
 
     for a in insname.db_name_set.all():

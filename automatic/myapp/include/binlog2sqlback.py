@@ -122,9 +122,12 @@ class Binlog2sql(object):
             stream.close()
             f_tmp.close()
             if self.flashback:
-                self.print_rollback_sql(filename=tmp_file)
+                #self.print_rollback_sql(filename=tmp_file)
+                with open(tmpFile) as ftmp:
+                    for line in reversed_lines(ftmp):
+                        self.sqllist.append(line.rstrip())
         return True
-
+    '''
     def print_rollback_sql(self, filename):
         """print rollback sql from tmp_file"""
         with open(filename, "rb") as f_tmp:
@@ -138,7 +141,7 @@ class Binlog2sql(object):
                         print('SELECT SLEEP(%s);' % self.back_interval)
                 else:
                     i += 1
-
+     '''
     def __del__(self):
         pass
 
