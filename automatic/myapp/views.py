@@ -135,7 +135,7 @@ ORDER BY
                 countnum = 10
 
             sqllist = parse_binlog_self(insname, binname, begintime, tbname, dbselected)
-            sqllist=1
+            # sqllist=1
             return HttpResponse(sqllist)
 
             return render(request, 'binlog_rollback.html', locals())
