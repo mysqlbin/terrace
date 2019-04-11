@@ -42,8 +42,8 @@ def parse_binlog_self(insname, binname, begintime, tbname, dbselected):
                                       only_tables=tbname, no_pk=False, flashback=False, stop_never=False)
     binlogsql.process_binlog()
 
-    #sqllist = binlogsql.sqllist
-    #return sqllist
+    sqllist = binlogsql.sqllist
+    return sqllist
 
 def parse_binlog(insname,binname,begintime,tbname,dbselected,username,countnum,flash_back):
     flag = True
