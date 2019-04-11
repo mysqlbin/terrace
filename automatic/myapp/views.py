@@ -162,7 +162,8 @@ def binlog_parse(request):
                 dbselected = request.POST['dblist']
                 if dbselected == 'all':
                  dbselected = ''
-                sqllist = parse_binlogs(insname, binname, begintime, tbname, dbselected, countnum)
+                flash_back = True
+                sqllist = parse_binlogs(insname, binname, begintime, tbname, dbselected, countnum, flash_back)
 
 
         except Exception as e:
