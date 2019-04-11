@@ -43,6 +43,7 @@ def parse_binlog_self(insname, binname, begintime, tbname, dbselected):
     binlogsql.process_binlog()
 
     sqllist = binlogsql.sqllist
+
     return sqllist
 
 def parse_binlog(insname,binname,begintime,tbname,dbselected,username,countnum,flash_back):

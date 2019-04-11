@@ -70,8 +70,7 @@ class Binlog2sql(object):
 
         flag_last_event = False
         e_start_pos, last_pos = stream.log_pos, stream.log_pos
-        # to simplify code, we do not use flock for tmp_file.
-        tmp_file = create_unique_file('%s.%s' % (self.conn_setting['host'], self.conn_setting['port']))
+        tmp_file = create_unique_file('%s.%s' % (self.conn_setting['host'], self.conn_setting['port']))  # to simplify code, we do not use flock for tmp_file.
         with temp_open(tmp_file, "w") as f_tmp, self.connection as cursor:
             for binlog_event in stream:
                 if not self.stop_never:
@@ -104,7 +103,7 @@ class Binlog2sql(object):
                     if sql:
                         #print(sql)
                         self.sqllist.append(sql)
-                elif is_dml_event(binlog_event) and event_type(binlog_event) in self.sql_type:
+                elif is_dml_event(binlog_event) and event_type(binlog_event) in self.sql_type:   #to here
                     for row in binlog_event.rows:
                         sql = concat_sql_from_binlog_event(cursor=cursor, binlog_event=binlog_event, no_pk=self.no_pk,
                                                            row=row, flashback=self.flashback, e_start_pos=e_start_pos)
@@ -112,7 +111,8 @@ class Binlog2sql(object):
                             f_tmp.write(sql + '\n')
                         else:
                             #print(sql)
-                            self.sqllist.append(sql)
+                            sql = '111111';
+                            self.sqllist.append(sql)           #to here
 
                 if not (isinstance(binlog_event, RotateEvent) or isinstance(binlog_event, FormatDescriptionEvent)):
                     last_pos = binlog_event.packet.log_pos
@@ -123,7 +123,7 @@ class Binlog2sql(object):
             f_tmp.close()
             if self.flashback:
                 #self.print_rollback_sql(filename=tmp_file)
-                with open(tmpFile) as ftmp:
+                with open(tmp_file) as ftmp:
                     for line in reversed_lines(ftmp):
                         self.sqllist.append(line.rstrip())
         return True

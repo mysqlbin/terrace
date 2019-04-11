@@ -136,6 +136,7 @@ ORDER BY
 
             sqllist = parse_binlog_self(insname, binname, begintime, tbname, dbselected)
             return HttpResponse(sqllist)
+
             return render(request, 'binlog_rollback.html', locals())
     return render(request, 'binlog_rollback.html', locals())   #返回字典类型的局部变量： {'z': 1, 'arg': 4} ,用于传递多个变量给模板中不同的模块
 
