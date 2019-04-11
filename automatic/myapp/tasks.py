@@ -24,7 +24,7 @@ def parse_binlogs(insname, binname, begintime, tbname, dbselected, countnum, fla
     binlogsql = binlog2sql.Binlog2sql(connectionSettings=connectionSettings, startFile=binname,
                                       startPos=4, endFile='', endPos=0,
                                       startTime=begintime, stopTime='', only_schemas=dbselected,
-                                      only_tables=tbname, nopk=False, flashback=True, stopnever=False,countnum=countnum)
+                                      only_tables=tbname, nopk=False, flashback=false, stopnever=False,countnum=countnum)
     binlogsql.process_binlog()
     sqllist = binlogsql.sqllist
     return sqllist
