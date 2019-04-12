@@ -1,13 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
+#创建模型来添加数据库服务
 
 read_write = (
     ('read', 'read'),
     ('write', 'write'),
     ('all','all'),
     ('idle','idle'),
-    #('admin','admin'),
+    ('admin','admin'),
 )
 
 read_write_account = (
@@ -23,16 +24,16 @@ class Db_instance(models.Model):
     role = models.CharField(max_length=30, choices=read_write, )
     db_type = models.CharField(max_length=30, default='mysql')
     def __str__(self):
-        return u'%s %s %s' % (self.ip, self.role, self.db_type)
-    class Meta:
+        return u'%s %s %s' % (self.ip, self.role, self.db_type)     #查询之后的返回值
+    class Meta:          #创建唯一的联合索引
         unique_together = ("ip", "port")
 
 
 class Db_name (models.Model):
-    dbtag = models.CharField(max_length=30, unique=True)
+    dbtag = models.CharField(max_length=30, unique=True)       #unique=True 表示创建唯一索引
     dbname = models.CharField(max_length=30)
-    instance = models.ManyToManyField(Db_instance)   #用于联表查询中的 on
-    account = models.ManyToManyField(User)           #用于联表查询中的 on
+    instance = models.ManyToManyField(Db_instance)   #查询时用于联表查询中的 on
+    account = models.ManyToManyField(User)           #查询时用于联表查询中的 on
     def __str__(self):
         return u'%s %s' % (self.dbtag, self.dbname)
 
@@ -88,7 +89,7 @@ class Oper_log(models.Model):
     def __str__(self):
         return self.dbtag
     class Meta:
-        index_together = [["dbtag","sqltype", "create_time"],]
+        index_together = [["dbtag","sqltype", "create_time"],]        #三个字段的联合索引
 
 class User_profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

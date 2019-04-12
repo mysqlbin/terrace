@@ -83,30 +83,6 @@ def parse_binlog_update(insname, binname, begintime, tbname, dbselected, countnu
     return sqllist
 
 
-def parse_binlogfirst(insname,binname,countnum):
-    flag = True
-    # pc = prpcrypt()
-    #for a in insname.db_name_set.all():
-        #for i in a.db_account_set.all():
-            #if i.role == 'admin':
-                #tar_username = i.user
-                #tar_passwd = pc.decrypt(i.passwd)
-                #flag = False
-                #break
-        #if flag == False:
-            #break
-    connectionSettings = {'host': '127.0.0.1', 'port': 3306, 'user': 'salt_user', 'passwd': '123456abc'}
-    binlogsql = binlog2sql.Binlog2sql(connectionSettings=connectionSettings, startFile=binname,
-                                      startPos=4, endFile='', endPos=0,
-                                      startTime='', stopTime='', only_schemas='',
-                                      only_tables='', nopk=False, flashback=False, stopnever=False,countnum=countnum)
-    binlogsql.process_binlog()
-    sqllist = binlogsql.sqllist
-    return sqllist
-
-
-
-
 # def task_run(idnum,request):
 #     while 1:
 #         try:

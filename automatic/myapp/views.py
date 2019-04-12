@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from myapp.include import meta
 from myapp.include import function as func
 from myapp.include import sqlfilter
-from myapp.tasks import parse_binlog,parse_binlogfirst,parse_binlog_update,parse_binlog_self
+from myapp.tasks import parse_binlog,parse_binlog_update,parse_binlog_self
 from myapp.form import AddForm
 from blacklist import blFunction as bc
 from myapp.models import Db_instance
@@ -63,25 +63,6 @@ def metas(request):
 
     else:
         return render(request, 'meta.html', locals())
-
-
-'''
-def mysql_binlog_parse_test(request):
-
-    insname = Db_instance.objects.get(id=int(1))
-
-    countnum = 10
-    binname = 'mysql-bin.000026'
-    if countnum not in [10, 50, 200]:
-        countnum = 10
-    begintime = '2018-05-17 09:51:09'
-    tbname = ''
-
-    dbselected = ''
-    sqllist = parse_binlog_update(insname, binname, begintime, tbname, dbselected, countnum)
-
-    return HttpResponse(sqllist)
-'''
 
 def mysql_binlog_rollback(request):
     inslist = Db_instance.objects.filter(db_type='mysql').order_by("ip")
@@ -240,13 +221,11 @@ def mysql_binlog_parse(request):
                  dbselected = ''
                 sqllist = parse_binlog_update(insname, binname, begintime, tbname, dbselected, countnum)
 
-                #return sqlllist
                 # return HttpResponse(sqllist)
-                #sqllist = parse_binlogfirst(insname, binname, 5)
 
         except Exception as e:
             print(e)
-        return render(request, 'binlog_parse.html', locals())
+            return render(request, 'binlog_parse.html', locals())
     else:
         return render(request, 'binlog_parse.html', locals())
 
