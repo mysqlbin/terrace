@@ -36,10 +36,15 @@ def parse_binlog_self(insname, binname, begintime, tbname, dbselected):
                             no_pk=args.no_pk, flashback=args.flashback, stop_never=args.stop_never,
                             back_interval=args.back_interval, only_dml=args.only_dml, sql_type=args.sql_type)
     '''
+
+    sqltype = ['INSERT', 'UPDATE', 'DELETE']
+
     binlogsql = binlog2sqlback.Binlog2sql(connection_settings=connection_settings, start_file=binname,
                                           start_pos=4, end_file='', end_pos=0,
                                           start_time=begintime, stop_time='', only_schemas=dbselected,
-                                      only_tables=tbname, no_pk=False, flashback=False, stop_never=False)
+                                          only_tables=tbname, no_pk=False, flashback=False, stop_never=False,
+                                          back_interval=1.0, only_dml=False, sql_type=sqltype
+                                          )
     binlogsql.process_binlog()
     sqllist = binlogsql.sqllist
     return sqllist

@@ -104,7 +104,7 @@ class Binlog2sql(object):
                         #print(sql)
                         sql = '1111111'
                         self.sqllist.append(sql)
-                elif is_dml_event(binlog_event) and event_type(binlog_event) in self.sql_type:
+                elif is_dml_event(binlog_event) and event_type(binlog_event) in self.sql_type:    #default=['INSERT', 'UPDATE', 'DELETE']
                     for row in binlog_event.rows:
                         sql = concat_sql_from_binlog_event(cursor=cursor, binlog_event=binlog_event, no_pk=self.no_pk,
                                                            row=row, flashback=self.flashback, e_start_pos=e_start_pos)
