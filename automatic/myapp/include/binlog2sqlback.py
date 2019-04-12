@@ -102,7 +102,6 @@ class Binlog2sql(object):
                                                        flashback=self.flashback, no_pk=self.no_pk)
                     if sql:
                         #print(sql)
-                        sql = '1111111'
                         self.sqllist.append(sql)
                 elif is_dml_event(binlog_event) and event_type(binlog_event) in self.sql_type:    #default=['INSERT', 'UPDATE', 'DELETE']
                     for row in binlog_event.rows:
@@ -112,7 +111,6 @@ class Binlog2sql(object):
                             f_tmp.write(sql + '\n')
                         else:
                             #print(sql)
-                            sql = '22222222'
                             self.sqllist.append(sql)
 
                 if not (isinstance(binlog_event, RotateEvent) or isinstance(binlog_event, FormatDescriptionEvent)):
@@ -129,10 +127,6 @@ class Binlog2sql(object):
                     for line in reversed_lines(ftmp):
                         self.sqllist.append(line.rstrip())
             '''
-
-            sql = '444444'
-            self.sqllist.append(sql)
-
         return True
     '''
     def print_rollback_sql(self, filename):
