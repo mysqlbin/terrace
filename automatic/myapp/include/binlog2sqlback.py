@@ -120,13 +120,13 @@ class Binlog2sql(object):
 
             stream.close()
             f_tmp.close()
-            '''
+
             if self.flashback:
                 #self.print_rollback_sql(filename=tmp_file)
                 with open(tmp_file) as ftmp:
                     for line in reversed_lines(ftmp):
                         self.sqllist.append(line.rstrip())
-            '''
+           
         return True
     '''
     def print_rollback_sql(self, filename):
