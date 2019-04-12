@@ -126,7 +126,7 @@ class Binlog2sql(object):
                 with open(tmp_file) as ftmp:
                     for line in reversed_lines(ftmp):
                         self.sqllist.append(line.rstrip())
-           
+
         return True
     '''
     def print_rollback_sql(self, filename):
