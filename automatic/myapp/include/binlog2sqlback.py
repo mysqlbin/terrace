@@ -104,7 +104,7 @@ class Binlog2sql(object):
                         #print(sql)
                         sql = '1111111'
                         self.sqllist.append(sql)
-                elif is_dml_event(binlog_event) and event_type(binlog_event) in self.sql_type:   #to here
+                elif is_dml_event(binlog_event) and event_type(binlog_event) in self.sql_type:
                     for row in binlog_event.rows:
                         sql = concat_sql_from_binlog_event(cursor=cursor, binlog_event=binlog_event, no_pk=self.no_pk,
                                                            row=row, flashback=self.flashback, e_start_pos=e_start_pos)
@@ -113,7 +113,7 @@ class Binlog2sql(object):
                         else:
                             #print(sql)
                             sql = '22222222'
-                            self.sqllist.append(sql)           #to here
+                            self.sqllist.append(sql)
 
                 if not (isinstance(binlog_event, RotateEvent) or isinstance(binlog_event, FormatDescriptionEvent)):
                     last_pos = binlog_event.packet.log_pos
@@ -129,8 +129,10 @@ class Binlog2sql(object):
                     for line in reversed_lines(ftmp):
                         self.sqllist.append(line.rstrip())
             '''
+
             sql = '444444'
             self.sqllist.append(sql)
+
         return True
     '''
     def print_rollback_sql(self, filename):
