@@ -36,30 +36,14 @@ def parse_binlog_self(insname, binname, begintime, tbname, dbselected):
                             no_pk=args.no_pk, flashback=args.flashback, stop_never=args.stop_never,
                             back_interval=args.back_interval, only_dml=args.only_dml, sql_type=args.sql_type)
     '''
-    binlogsql = binlog2sqlback.Binlog2sql(connection_settings=connection_settings, start_file=binname,
-                                          start_pos=4, end_file='', end_pos=0,
-                                          start_time=begintime, stop_time='', only_schemas=dbselected,
-                                      only_tables=tbname, no_pk=False, flashback=False, stop_never=False)
+    binlogsql = binlog2sqlback.Binlog2sql(connection_settings=connection_settings, start_file=binname, start_pos=4,
+                                          end_file='', end_pos=0, start_time=begintime,
+                                          stop_time='', only_schemas=dbselected, only_tables=tbname,
+                                          no_pk=False, flashback=False, stop_never=False)
+
     binlogsql.process_binlog()
-
     sqllist = binlogsql.sqllist
-
     return sqllist
-
-def parse_binlog(insname,binname,begintime,tbname,dbselected,username,countnum,flash_back):
-    flag = True
-    # pc = prpcrypt()
-    connectionSettings = {'host': '192.168.0.54', 'port': 3306, 'user': 'root', 'passwd': '123456abc'}
-    #connectionSettings = {'host': insname.ip, 'port': int(insname.port), 'user': tar_username, 'passwd': tar_passwd}
-    binlogsql = binlog2sql.Binlog2sql(connectionSettings=connectionSettings, startFile=binname,
-                                      startPos=4, endFile='', endPos=0,
-                                      startTime=begintime, stopTime='', only_schemas=dbselected,
-                                      only_tables=tbname, nopk=False, flashback=flash_back, stopnever=False,countnum=countnum)
-    binlogsql.process_binlog()
-    sqllist = binlogsql.sqllist
-    #sendmail_sqlparse.delay(username, dbselected, tbname, sqllist,flash_back)
-
-
 
 def parse_binlog_update(insname, binname, begintime, tbname, dbselected, countnum):
     flag = True
