@@ -110,6 +110,18 @@
             {% endif %}
         </div>
 
+         <table  class="table table-condensed" border="1">
+            {% for i in sqllist %}
+                <tr>
+                    <td>
+                        {{ forloop.counter }}
+                    </td>
+                    <td>
+                        <pre>{{ i }}</pre>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
 
     </div>
 
