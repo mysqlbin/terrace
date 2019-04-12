@@ -64,7 +64,7 @@ def parse_binlog(insname,binname,begintime,tbname,dbselected,username,countnum,f
 
 
 
-def parse_binlog_update(insname, binname, begintime, tbname, dbselected, countnum):
+def parse_binlog_update(insname, binname, begintime, tbname, dbname, countnum):
     flag = True
 
     for a in insname.db_name_set.all():
@@ -79,7 +79,7 @@ def parse_binlog_update(insname, binname, begintime, tbname, dbselected, countnu
     connectionSettings = {'host': insname.ip, 'port': int(insname.port), 'user': tar_username, 'passwd': tar_passwd}
     binlogsql = binlog2sql.Binlog2sql(connectionSettings=connectionSettings, startFile=binname,
                                       startPos=4, endFile='', endPos=0,
-                                      startTime=begintime, stopTime='', only_schemas=dbselected,
+                                      startTime=begintime, stopTime='', only_schemas=dbname,
                                       only_tables=tbname, nopk=False, flashback=False, stopnever=True,countnum=countnum)
     binlogsql.process_binlog()
     sqllist = binlogsql.sqllist

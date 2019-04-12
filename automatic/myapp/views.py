@@ -229,10 +229,10 @@ def mysql_binlog_parse(request):
                     countnum = 10
                 begintime = request.POST['begin_time']
                 tbname = request.POST['tbname']
-                dbselected = request.POST['dblist']
-                if dbselected == 'all':
-                 dbselected = ''
-                sqllist = parse_binlog_update(insname, binname, begintime, tbname, dbselected, countnum)
+                dbname = request.POST['dblist']
+                if dbname == 'all':
+                    dbname = ''
+                sqllist = parse_binlog_update(insname, binname, begintime, tbname, dbname, countnum)
 
                 return HttpResponse(sqllist)
 
