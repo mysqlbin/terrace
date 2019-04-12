@@ -205,13 +205,21 @@ def command_line_args(args):
         raise ValueError('Incorrect datetime argument')
     return args
 
-
-def compare_items(k, v):
-    #caution: if v is NULL, may need to process
+def compare_items(items):
+    # caution: if v is NULL, may need to process
+    (k, v) = items
     if v is None:
         return '`%s` IS %%s' % k
     else:
         return '`%s`=%%s' % k
+
+#
+# def compare_items(k, v):
+#     #caution: if v is NULL, may need to process
+#     if v is None:
+#         return '`%s` IS %%s' % k
+#     else:
+#         return '`%s`=%%s' % k
 
 # def compare_items(*args):
 #     (k, v) = args
