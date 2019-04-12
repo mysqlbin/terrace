@@ -221,8 +221,8 @@ def mysql_binlog_parse(request):
                  dbselected = ''
                 sqllist = parse_binlog_update(insname, binname, begintime, tbname, dbselected, countnum)
 
-                # return HttpResponse(sqllist)
-
+                return HttpResponse(sqllist)
+                
         except Exception as e:
             print(e)
             return render(request, 'binlog_parse.html', locals())
