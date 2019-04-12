@@ -205,15 +205,7 @@ def command_line_args(args):
         raise ValueError('Incorrect datetime argument')
     return args
 
-def compare_items(items):
-    # caution: if v is NULL, may need to process
-    (k, v) = items
-    if v is None:
-        return '`%s` IS %%s' % k
-    else:
-        return '`%s`=%%s' % k
 
-#
 # def compare_items(k, v):
 #     #caution: if v is NULL, may need to process
 #     if v is None:
@@ -228,35 +220,25 @@ def compare_items(items):
 #     else:
 #         return '`%s`=%%s' % k
 
-# def compare_items(*args):
-#
-#     #if args['v'] is None:
-#         #return '`%s` IS %%s' % args['k']
-#     #else:
-#         #return '`%s`=%%s' % args['k']
-#
-#     if args[0][1] is None:
-#         return '`%s` IS %%s' % args[0][0]
-#     else:
-#         return '`%s`=%%s' % args[0][0]
+def compare_items(*args):
 
-# def fix_object(value):
-#     """Fixes python objects so that they can be properly inserted into SQL queries"""
-#     if isinstance(value, str):
-#         return value.encode('utf-8')
-#     else:
-#         return value
+    #if args['v'] is None:
+        #return '`%s` IS %%s' % args['k']
+    #else:
+        #return '`%s`=%%s' % args['k']
+
+    if args[0][1] is None:
+        return '`%s` IS %%s' % args[0][0]
+    else:
+        return '`%s`=%%s' % args[0][0]
 
 def fix_object(value):
     """Fixes python objects so that they can be properly inserted into SQL queries"""
-    if isinstance(value, set):
-        value = ','.join(value)
-    if PY3PLUS and isinstance(value, bytes):
-        return value.decode('utf-8')
-    elif not PY3PLUS and isinstance(value, unicode):
+    if isinstance(value, str):
         return value.encode('utf-8')
     else:
         return value
+
 
 def concat_sql_from_binlogevent(cursor, binlogevent, row=None, eStartPos=None, flashback=False, nopk=False):
     if flashback and nopk:
@@ -331,19 +313,16 @@ def generate_sql_pattern(binlogevent, row=None, flashback=False, nopk=False):
 
     return {'template': template, 'values': values}
 
-def reversed_lines(fin):
-    """Generate the lines of file in reverse order."""
+def reversed_lines(file):
+    "Generate the lines of file in reverse order."
     part = ''
-    for block in reversed_blocks(fin):
-        if PY3PLUS:
-            block = block.decode("utf-8")
+    for block in reversed_blocks(file):
         for c in reversed(block):
             if c == '\n' and part:
                 yield part[::-1]
                 part = ''
             part += c
-    if part:
-        yield part[::-1]
+    if part: yield part[::-1]
 
 def reversed_blocks(file, blocksize=4096):
     "Generate blocks of file's contents in reverse order."

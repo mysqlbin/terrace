@@ -77,7 +77,7 @@ def parse_binlog_update(insname, binname, begintime, tbname, dbselected, countnu
     binlogsql = binlog2sql.Binlog2sql(connectionSettings=connectionSettings, startFile=binname,
                                       startPos=4, endFile='', endPos=0,
                                       startTime=begintime, stopTime='', only_schemas=dbselected,
-                                      only_tables=tbname, nopk=False, flashback=True, stopnever=True,countnum=countnum)
+                                      only_tables=tbname, nopk=False, flashback=False, stopnever=True,countnum=countnum)
     binlogsql.process_binlog()
     sqllist = binlogsql.sqllist
     return sqllist
