@@ -331,16 +331,19 @@ def generate_sql_pattern(binlogevent, row=None, flashback=False, nopk=False):
 
     return {'template': template, 'values': values}
 
-def reversed_lines(file):
-    "Generate the lines of file in reverse order."
+def reversed_lines(fin):
+    """Generate the lines of file in reverse order."""
     part = ''
-    for block in reversed_blocks(file):
+    for block in reversed_blocks(fin):
+        if PY3PLUS:
+            block = block.decode("utf-8")
         for c in reversed(block):
             if c == '\n' and part:
                 yield part[::-1]
                 part = ''
             part += c
-    if part: yield part[::-1]
+    if part:
+        yield part[::-1]
 
 def reversed_blocks(file, blocksize=4096):
     "Generate blocks of file's contents in reverse order."
