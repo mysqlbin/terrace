@@ -136,6 +136,8 @@ def compare_items(items):
 
 def fix_object(value):
     """Fixes python objects so that they can be properly inserted into SQL queries"""
+    #isinstance() 函数来判断一个对象是否是一个已知的类型，类似 type()
+    #
     if isinstance(value, set):
         value = ','.join(value)
     if PY3PLUS and isinstance(value, bytes):
@@ -144,6 +146,7 @@ def fix_object(value):
         return value.encode('utf-8')
     else:
         return value
+
 
 
 def is_dml_event(event):
@@ -246,8 +249,9 @@ def reversed_lines(fin):
 
     part = ''
     for block in reversed_blocks(fin):
-        if PY3PLUS:
-            block = block.decode("utf-8")
+        # if PY3PLUS:
+        #     block = block.decode("utf-8")
+
         for c in reversed(block):
             if c == '\n' and part:
                 yield part[::-1]

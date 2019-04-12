@@ -3,7 +3,7 @@
     <title>BINLOG ROLLBACK</title>
 {% endblock %}
 {% block name %}
-    欢迎使用<span style="color:red">BINLOG回滚SQL</span>功能
+    欢迎使用<span style="color:red">BINLOG解析/回滚SQL</span>功能
 {% endblock %}
 {%block content%}
     <div class="col-xs-10 col-md-12 main ">
@@ -93,13 +93,21 @@
                                 </select>
                             </td>
 
+                             <td>
+                               解析SQL类型:</br>
+                                <select  class="form-control col-md-3" name = "sql_type">
+                                      <option value ="0" >标准SQL</option>
+                                      <option value ="1" >回滚SQL</option>
+                                </select>
+                                </br>
+                             </td>
+
                         </tr>
                     </table>
                 {% endif %}
 
                 {% if binlist %}
                     <button name="parse_commit"  class="btn btn-default" value="1">提交</button >
-                    <button id="parse_binlog" name="parse"  class="btn btn-success" value="1">PARSE BINLOG FOR REDO</button >
                 {% endif %}
             </div>
 

@@ -115,12 +115,18 @@ ORDER BY
             if countnum not in [10, 50, 200]:
                 countnum = 10
 
-            sqllist = parse_binlog_self(insname, binname, begintime, tbname, dbselected)
+            sql_type = int(request.POST['sql_type'])
+            if sql_type == 1:
+                flashback = True
+            else:
+                flashback = False
+
+            sqllist = parse_binlog_self(insname, binname, begintime, tbname, dbselected, flashback)
             # sqllist=1
-            # return HttpResponse(sqllist)
+            #return HttpResponse(sqllist)    #列表
             return render(request, 'binlog_rollback.html', locals())
 
-    return render(request, 'binlog_rollback.html', locals())   #返回字典类型的局部变量： {'z': 1, 'arg': 4} ,用于传递多个变量给模板中不同的模块
+    return render(request, 'binlog_rollback.html', locals())   #返回字典类型的局部变量： {'z': 1, 'arg': 4} ,用于赋值多个数据变量给模板中不同的模块
 
 '''
 def mysql_binlog_rollback(request):

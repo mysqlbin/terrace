@@ -9,7 +9,7 @@ from django.template import loader
 # from mypro.settings import EMAIL_SENDER
 
 
-def parse_binlog_self(insname, binname, begintime, tbname, dbselected):
+def parse_binlog_self(insname, binname, begintime, tbname, dbselected, flashback):
 
     flag = True
 
@@ -42,7 +42,7 @@ def parse_binlog_self(insname, binname, begintime, tbname, dbselected):
     binlogsql = binlog2sqlback.Binlog2sql(connection_settings=connection_settings, start_file=binname,
                                           start_pos=4, end_file='', end_pos=0,
                                           start_time=begintime, stop_time='', only_schemas=dbselected,
-                                          only_tables=tbname, no_pk=False, flashback=False, stop_never=False,
+                                          only_tables=tbname, no_pk=False, flashback=flashback, stop_never=False,
                                           back_interval=1.0, only_dml=False, sql_type=sqltype
                                           )
     binlogsql.process_binlog()
