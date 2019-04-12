@@ -18,7 +18,7 @@
                         <td>
                             <select id='ins' class="form-control col-md-3" name="ins_set">
                                 {% for obj in inslist%}
-                                <option value = "{{ obj.id }}" {% if obj == binname %} selected {% endif %} >{{ obj.ip }} {{ obj.role }} {{ obj.db_type}}</option>
+                                <option value = "{{ obj.id }}" >{{ obj.ip }} {{ obj.role }} {{ obj.db_type}}</option>
                                 {% endfor %}
                             </select>
                         </td>
@@ -36,7 +36,7 @@
                                 CHOOSE BINLOG:</br>
                                 <select  class="form-control col-md-3" name = "binary_list">
                                     {% for obj in binlist %}
-                                      <option value ="{{ obj }}" >{{ obj }}</option>
+                                      <option value ="{{ obj }}" {% if obj == binname %} selected {% endif %} >{{ obj }}</option>
                                     {% endfor %}
                                 </select>
                                 </br>
@@ -46,7 +46,7 @@
                                 CHOOSE DB:</br>
                                 <select  class="form-control col-md-3" name = "dblist">
                                     {% for obj in dblist %}
-                                    <option value="{{ obj }}">{{ obj }}</option>
+                                    <option value="{{ obj }}" {% if obj == dbnname %} selected {% endif %} >{{ obj }}</option>
                                     {% endfor %}
                                 </select>
                             </td>
@@ -72,6 +72,7 @@
                             <td>
                                 CHOOSE 解析条数:</br>
                                 <select class="form-control col-md-3" name = "countnum">
+
                                     {# 这里可以优化 #}
                                     {% if countnum == 10 %}
                                      <option value=10 selected="selected">10</option>
@@ -96,8 +97,10 @@
                              <td>
                                解析SQL类型:</br>
                                 <select  class="form-control col-md-3" name = "sql_type">
-                                      <option value ="0" >标准SQL</option>
-                                      <option value ="1" >回滚SQL</option>
+
+                                      <option value ="0" {% if sql_type == 0 %} selected {% endif %} >标准SQL</option>
+                                      <option value ="1" {% if sql_type == 0 %} selected {% endif %} >回滚SQL</option>
+
                                 </select>
                                 </br>
                              </td>

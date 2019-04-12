@@ -83,6 +83,10 @@ ORDER BY
     #局部变量：id,ip,port,role,db_type
     #return HttpResponse(inslist)
     if request.method == 'POST':
+
+        parse_sql_number = [10,50,200]
+
+
         insname = Db_instance.objects.get(id=int(request.POST['ins_set']))
         binresult, col = meta.get_process_data(insname, 'show binary logs')
         #return HttpResponse(col)  #返回字段名称
@@ -92,6 +96,9 @@ ORDER BY
         #dbresult: ('information_schema',)('dezhou_db',)('mysql',)('niu201812_db',)('niuniu_db',)('performance_schema',)('sql_db',)('sys',)('terrace_db',)('test_db',)('undolog',)
         binlist = []
         dblist = []
+
+        dblist.append('all')
+
         for i in binresult:
             #print(i[0])
             #return HttpResponse(i[0])
