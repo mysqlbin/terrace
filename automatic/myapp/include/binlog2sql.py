@@ -206,12 +206,12 @@ def command_line_args(args):
     return args
 
 
-# def compare_items(k, v):
-#     #caution: if v is NULL, may need to process
-#     if v is None:
-#         return '`%s` IS %%s' % k
-#     else:
-#         return '`%s`=%%s' % k
+def compare_items(k, v):
+    #caution: if v is NULL, may need to process
+    if v is None:
+        return '`%s` IS %%s' % k
+    else:
+        return '`%s`=%%s' % k
 
 # def compare_items(*args):
 #     (k, v) = args
@@ -220,25 +220,35 @@ def command_line_args(args):
 #     else:
 #         return '`%s`=%%s' % k
 
-def compare_items(*args):
+# def compare_items(*args):
+#
+#     #if args['v'] is None:
+#         #return '`%s` IS %%s' % args['k']
+#     #else:
+#         #return '`%s`=%%s' % args['k']
+#
+#     if args[0][1] is None:
+#         return '`%s` IS %%s' % args[0][0]
+#     else:
+#         return '`%s`=%%s' % args[0][0]
 
-    #if args['v'] is None:
-        #return '`%s` IS %%s' % args['k']
-    #else:
-        #return '`%s`=%%s' % args['k']
-
-    if args[0][1] is None:
-        return '`%s` IS %%s' % args[0][0]
-    else:
-        return '`%s`=%%s' % args[0][0]
+# def fix_object(value):
+#     """Fixes python objects so that they can be properly inserted into SQL queries"""
+#     if isinstance(value, str):
+#         return value.encode('utf-8')
+#     else:
+#         return value
 
 def fix_object(value):
     """Fixes python objects so that they can be properly inserted into SQL queries"""
-    if isinstance(value, str):
+    if isinstance(value, set):
+        value = ','.join(value)
+    if PY3PLUS and isinstance(value, bytes):
+        return value.decode('utf-8')
+    elif not PY3PLUS and isinstance(value, unicode):
         return value.encode('utf-8')
     else:
         return value
-
 
 def concat_sql_from_binlogevent(cursor, binlogevent, row=None, eStartPos=None, flashback=False, nopk=False):
     if flashback and nopk:
