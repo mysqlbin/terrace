@@ -69,18 +69,18 @@
                         <tr>
                             <td>
                                 CHOOSE BEGIN_TIME:</br>
-                                {% if begintime %}
-                                    <input type=="text" id="id_begin_time"  value="{{ begintime }}" class="form-control" maxlength="30" name="begin_time">
+                                {% if begin_time %}
+                                    <input type=="text" id="id_begin_time"  value="{{ begin_time }}" class="form-control" maxlength="30" name="begin_time">
                                 {% else %}
                                     <input type=="text" id="id_begin_time"  class="form-control" maxlength="30" name="begin_time">
                                 {% endif %}
                             </td>
                             <td>
                                 CHOOSE STOP_TIME:</br>
-                                {% if begintime %}
-                                    <input type=="text" id="id_begin_time"  value="{{ begintime }}" class="form-control" maxlength="30" name="begin_time">
+                                {% if stop_time %}
+                                    <input type=="text" id="id_stop_time"  value="{{ stop_time }}" class="form-control" maxlength="30" name="stop_time">
                                 {% else %}
-                                    <input type=="text" id="id_begin_time"  class="form-control" maxlength="30" name="begin_time">
+                                    <input type=="text" id="id_stop_time"  class="form-control" maxlength="30" name="stop_time">
 
                                 {% endif %}
                             </td>
@@ -163,6 +163,16 @@
             isTime:true, //isClear:false,
             minDate:"2014-09-19 00:00:00",
             okfun:function(val){alert(val)}
+        });
+
+        jeDate({
+            dateCell:"#id_stop_time",
+            format:"YYYY-MM-DD hh:mm:ss",
+            isinitVal:true,
+            isTime:true, //isClear:false,
+            minDate:"2014-09-19 00:00:00",
+            okfun:function(val){alert(val)}
         })
+
     </script>
 {% endblock %}
