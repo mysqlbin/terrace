@@ -52,12 +52,8 @@
                             </td>
 
                             <td>
-                                INPUT TABLE_NAME:</br>
-                                {% if tbname %}
-                                    <input type=="text" placeholder="tablename" class="form-control" maxlength="30" value="{{ tbname }}" name="tbname">
-                                {% else %}
-                                    <input type=="text" placeholder="tablename" class="form-control" maxlength="30"  name="tbname">
-                                {% endif %}
+                                解析的表名:</br>
+                                <input type=="text" placeholder="tablename" class="form-control" maxlength="30" value="{% if tbname %} {{ tbname }} {% endif %}" name="tbname">
                             </td>
                             <td>
                                 CHOOSE BEGIN_TIME:</br>
