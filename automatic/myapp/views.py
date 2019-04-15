@@ -120,7 +120,7 @@ ORDER BY
             else:
                 start_pos = start_pos
             stop_pos   = request.POST['stop_pos']
-            
+
             if stop_pos == '':
                 stop_pos = 0
             else:
