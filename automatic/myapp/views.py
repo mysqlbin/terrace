@@ -113,21 +113,19 @@ ORDER BY
         elif 'parse_commit' in request.POST:
 
             binname    = request.POST['binary_list']
-
-            start_pos  = request.POST['start_pos'].strip()
-            if start_pos == '':
+            
+            start_pos  = int(request.POST['start_pos'])
+            if start_pos <= 4:
                 start_pos = 4
             else:
-                start_pos = int(start_pos)
+                start_pos = start_pos
 
-            stop_pos   = request.POST['stop_pos'].strip()
-            if stop_pos == '':
+            stop_pos   = int(request.POST['stop_pos'])
+            if stop_pos <= 0:
                 stop_pos = 0
             else:
-                stop_pos = int(stop_pos)
+                stop_pos = stop_pos
 
-            return HttpResponse(start_pos)
-            return HttpResponse(stop_pos)
 
             begintime  = request.POST['begin_time']
             tbname     = request.POST['tbname']
