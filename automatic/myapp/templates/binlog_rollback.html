@@ -46,7 +46,7 @@
                                 CHOOSE DB:</br>
                                 <select  class="form-control col-md-3" name = "dblist">
                                     {% for obj in dblist %}
-                                    <option value="{{ obj }}" {% if obj == dbname %} selected {% endif %} >{{ obj }}</option>
+                                    <option value="{{ obj }}" {% if obj == dbselected %} selected {% endif %} >{{ obj }}</option>
                                     {% endfor %}
                                 </select>
                             </td>
