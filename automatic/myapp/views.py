@@ -114,7 +114,7 @@ ORDER BY
 
             binname    = request.POST['binary_list']
 
-            start_pos = 4
+            # start_pos = 4
             start_pos  = str(request.POST['start_pos'])
             if start_pos <= '4':
                 start_pos = 4
