@@ -118,13 +118,14 @@ ORDER BY
             if start_pos == '':
                 start_pos = 4
             else:
-                start_pos = start_pos
-           
+                start_pos = int(start_pos)
+
             stop_pos   = request.POST['stop_pos'].strip()
             if stop_pos == '':
                 stop_pos = 0
             else:
-                stop_pos = stop_pos
+                stop_pos = int(stop_pos)
+
 
             begintime  = request.POST['begin_time']
             tbname     = request.POST['tbname']
