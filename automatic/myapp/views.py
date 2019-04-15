@@ -112,9 +112,22 @@ ORDER BY
 
         elif 'parse_commit' in request.POST:
 
-            binname = request.POST['binary_list']
-            begintime = request.POST['begin_time']
-            tbname = request.POST['tbname']
+            binname    = request.POST['binary_list']
+
+            start_pos  = request.POST['start_pos']
+            if start_pos == '':
+                start_pos = 4
+            else:
+                start_pos = start_pos
+            stop_pos   = request.POST['stop_pos']
+            
+            if stop_pos == '':
+                stop_pos = 0
+            else:
+                stop_pos = stop_pos
+
+            begintime  = request.POST['begin_time']
+            tbname     = request.POST['tbname']
             dbselected = request.POST['dblist']
             if dbselected == 'all':
                 dbselected = ''
@@ -128,8 +141,8 @@ ORDER BY
             else:
                 flashback = False
 
-            sqllist = parse_binlog_self(insname, binname, begintime, tbname, dbselected, flashback)
-            # sqllist=1
+            sqllist = parse_binlog_self(insname, binname, start_pos, stop_pos, begintime, tbname, dbselected, flashback)
+
             #return HttpResponse(sqllist)    #列表
             return render(request, 'binlog_rollback.html', locals())
 
