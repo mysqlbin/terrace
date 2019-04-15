@@ -135,61 +135,6 @@ ORDER BY
 
     return render(request, 'binlog_rollback.html', locals())   #返回字典类型的局部变量： {'z': 1, 'arg': 4} ,用于赋值多个数据变量给模板中不同的模块
 
-'''
-def mysql_binlog_rollback(request):
-    inslist = Db_instance.objects.filter(db_type='mysql').order_by("ip")
-    # `myapp_db_instance`.`db_type` = 'mysql' ORDER BY `myapp_db_instance`.`ip` ASC
-
-    if request.method == 'POST':
-        try:
-            binlist = []
-            dblist = []
-            insname = Db_instance.objects.get(id=int(request.POST['ins_set']))
-            # FROM `myapp_db_instance` WHERE `myapp_db_instance`.`id` = 1
-            # `myapp_db_instance`.`id`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port`, `myapp_db_instance`.`role`, `myapp_db_instance`.`db_type`
-
-            # insname = ''
-            datalist, col = meta.get_process_data(insname, 'show binary logs')
-            return HttpResponse(datalist)
-
-            dbresult, col = meta.get_process_data(insname, 'show databases')
-            if col != ['error']:
-                dblist.append('all')
-                for i in datalist:
-                    binlist.append(i[0])
-                for i in dbresult:
-                    dblist.append(i[0])
-            else:
-                del binlist
-                return render(request, 'binlog_parse.html', locals())
-            if 'show_binary' in request.POST:
-                return render(request, 'binlog_parse.html', locals())
-
-            elif 'parse_first' in request.POST:
-                # return '333'
-                # print '444'
-                countnum = int(request.POST['countnum'])
-                binname = request.POST['binary_list']
-                if countnum not in [10, 50, 200]:
-                    countnum = 10
-                begintime = request.POST['begin_time']
-                tbname = request.POST['tbname']
-                dbselected = request.POST['dblist']
-                if dbselected == 'all':
-                    dbselected = ''
-                sqllist = parse_binlog_update(insname, binname, begintime, tbname, dbselected, countnum)
-
-                # return sqlllist
-                # return HttpResponse(sqllist)
-                # sqllist = parse_binlogfirst(insname, binname, 5)
-
-        except Exception as e:
-            print(e)
-        return render(request, 'binlog_rollback.html', locals())
-    else:
-
-        return render(request, 'binlog_rollback.html', locals())
-'''
 
 def mysql_binlog_parse(request):
     inslist = Db_instance.objects.filter(db_type='mysql').order_by("ip")
