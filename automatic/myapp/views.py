@@ -126,6 +126,8 @@ ORDER BY
             else:
                 stop_pos = int(stop_pos)
 
+            return HttpResponse(start_pos)
+            return HttpResponse(stop_pos)
 
             begintime  = request.POST['begin_time']
             tbname     = request.POST['tbname']
