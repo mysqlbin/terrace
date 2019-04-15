@@ -58,12 +58,12 @@
 
                             <td>
                                 起始解析位置:</br>
-                                <input type="number" placeholder="start-position" class="form-control" size="30" value="{% if start_pos %} {{ start_pos }} {% endif %}" name="start_pos">
+                                <input type="number" placeholder="start-position" class="form-control" size="30" value="{{ start_pos }}" name="start_pos">
                             </td>
 
                             <td>
                                 终止解析位置:</br>
-                                <input type="number" placeholder="stop-position" class="form-control" size="30" value="{% if stop_pos %} {{ stop_pos }} {% endif %}" name="stop_pos">
+                                <input type="number" placeholder="stop-position" class="form-control" size="30" {% if stop_pos and stop_pos !="None" %}  value="{{ stop_pos }}" {% endif %} name="stop_pos">
                             </td>
                         </tr>
                         <tr>
