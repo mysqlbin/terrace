@@ -115,20 +115,20 @@ ORDER BY
 
             binname    = request.POST['binary_list']
 
-
             start_pos  = str(request.POST['start_pos'])
-            if start_pos <= '4':
+            if start_pos == '4':
                 start_pos = 4
             else:
                 start_pos = start_pos
-
+            
             stop_pos   = str(request.POST['stop_pos'])
-            if stop_pos <= '0':
+            if stop_pos == '0':
                 stop_pos = ''
             else:
                 stop_pos = int(stop_pos)
 
             begin_time = request.POST['begin_time']
+            stop_time = request.POST['stop_time']
             tbname     = request.POST['tbname']
             dbselected = request.POST['dblist']
             if dbselected == 'all':

@@ -32,7 +32,7 @@
                 {% if binlist %}
                     <table>
                         <tr>
-                             <td>
+                            <td>
                                 CHOOSE BINLOG:</br>
                                 <select  class="form-control col-md-3" name = "binary_list">
                                     {% for obj in binlist %}
@@ -63,7 +63,7 @@
 
                             <td>
                                 终止解析位置:</br>
-                                <input type="number" placeholder="stop-position" min="0" class="form-control" size="30" {% if stop_pos and stop_pos != None %}  value="{{ stop_pos }}" {% endif %} name="stop_pos">
+                                <input type="number" placeholder="stop-position" min="0" class="form-control" size="30" {% if stop_pos %}  value="{{ stop_pos }}" {% endif %} name="stop_pos">
                             </td>
                         </tr>
                         <tr>

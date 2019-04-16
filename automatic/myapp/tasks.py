@@ -22,20 +22,8 @@ def parse_binlog_self(insname, binname, start_pos, stop_pos, begin_time, tbname,
         if flag == False:
             break
 
-    #connectionSettings = {'host': '127.0.0.1', 'port': 3306, 'user': 'salt_user', 'passwd': '123456abc'}
+
     connection_settings = {'host': insname.ip, 'port': int(insname.port), 'user': tar_username, 'passwd': tar_passwd}
-    '''
-    def __init__(self, connection_settings, start_file=None, start_pos=None, end_file=None, end_pos=None,
-                 start_time=None, stop_time=None, only_schemas=None, only_tables=None, no_pk=False,
-                 flashback=False, stop_never=False, back_interval=1.0, only_dml=True, sql_type=None):
-    '''
-    '''
-    binlog2sql = Binlog2sql(connection_settings=conn_setting, start_file=args.start_file, start_pos=args.start_pos,
-                            end_file=args.end_file, end_pos=args.end_pos, start_time=args.start_time,
-                            stop_time=args.stop_time, only_schemas=args.databases, only_tables=args.tables,
-                            no_pk=args.no_pk, flashback=args.flashback, stop_never=args.stop_never,
-                            back_interval=args.back_interval, only_dml=args.only_dml, sql_type=args.sql_type)
-    '''
 
     sqltype = ['INSERT', 'UPDATE', 'DELETE']
 
