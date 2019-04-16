@@ -116,8 +116,11 @@ ORDER BY
 
 
             start_pos  = str(request.POST['start_pos'])
-            start_pos  = int(start_pos, base=10)
-            
+            if start_pos <= '4':
+                start_pos = 4
+            else:
+                start_pos = start_pos
+
             stop_pos   = str(request.POST['stop_pos'])
             if stop_pos <= '0':
                 stop_pos = None
