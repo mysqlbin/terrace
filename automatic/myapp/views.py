@@ -107,6 +107,7 @@ ORDER BY
             dblist.append(i[0])
 
         if 'show_binary' in request.POST:
+            start_pos = 4
             return render(request, 'binlog_rollback.html', locals())
             #return HttpResponse(locals())
 
