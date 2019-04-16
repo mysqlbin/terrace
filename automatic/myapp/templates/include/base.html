@@ -21,7 +21,7 @@
         <script src="{% static 'bootstrap/js/jquery-3.1.1.min.js' %}"></script>
         <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
         <script src="{% static 'bootstrap/js/jquery.dataTables.min.js' %}"></script>
-        <script type="text/javascript" src="{% static 'jedate/src/jedate.js' %}"></script>
+        <script src="{% static 'jedate/src/jedate.js' %}"></script>
 
 
     {% endblock %}
@@ -52,9 +52,10 @@
          </div>
     </div>
 </div>
-{% block script %}
-{% endblock %}
 
 </body>
 </html>
+
+{% block script %}
+{% endblock %}
 
