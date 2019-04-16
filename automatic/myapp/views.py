@@ -124,7 +124,7 @@ ORDER BY
 
             stop_pos   = str(request.POST['stop_pos'])
             if stop_pos <= '0':
-                stop_pos = None
+                stop_pos = ''
             else:
                 stop_pos = int(stop_pos)
 
@@ -133,6 +133,9 @@ ORDER BY
             dbselected = request.POST['dblist']
             if dbselected == 'all':
                 dbselected = ''
+
+            return HttpResponse(dbselected)
+
             countnum = int(request.POST['countnum'])
             if countnum not in [10, 50, 200]:
                 countnum = 10
