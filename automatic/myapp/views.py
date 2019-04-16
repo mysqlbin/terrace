@@ -115,9 +115,9 @@ ORDER BY
             binname    = request.POST['binary_list']
 
 
-            start_pos  = request.POST['start_pos']
+            start_pos  = str(request.POST['start_pos'])
             start_pos  = int(start_pos, base=10)
-
+            
             stop_pos   = str(request.POST['stop_pos'])
             if stop_pos <= '0':
                 stop_pos = None
