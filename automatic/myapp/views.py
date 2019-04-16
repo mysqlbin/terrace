@@ -109,7 +109,6 @@ ORDER BY
         if 'show_binary' in request.POST:
             start_pos = 4
             return render(request, 'binlog_rollback.html', locals())
-            #return HttpResponse(locals())
 
         elif 'parse_commit' in request.POST:
 
@@ -146,7 +145,6 @@ ORDER BY
 
             sqllist = parse_binlog_self(insname, binname, start_pos, stop_pos, begin_time, tbname, dbselected, flashback)
 
-            #return HttpResponse(sqllist)    #列表
             return render(request, 'binlog_rollback.html', locals())
 
     return render(request, 'binlog_rollback.html', locals())   #返回字典类型的局部变量： {'z': 1, 'arg': 4} ,用于赋值多个数据变量给模板中不同的模块

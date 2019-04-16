@@ -364,8 +364,8 @@ if (int(sqltext.split()[-1])<= int(num) ):
 
 在 Python3.6 中，unicode(i, 'utf-8') 不能这么写
 
-错误:
-'function' object has no attribute 'delay'
+2019-04-16:
 
-
+日期控件参考:
+http://www.jemui.com/jedate/#6
 
