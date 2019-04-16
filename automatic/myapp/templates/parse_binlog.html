@@ -90,6 +90,13 @@
                                 <select class="form-control col-md-3" name = "countnum">
 
                                     {# 这里可以优化 #}
+
+                                    % if countnum == 1 %}
+                                     <option value=1 selected="selected">1</option>
+                                    {% else %}
+                                     <option value=1>1</option>
+                                    {% endif %}
+
                                     {% if countnum == 10 %}
                                      <option value=10 selected="selected">10</option>
                                     {% else %}
@@ -113,10 +120,8 @@
                              <td>
                                解析SQL类型:</br>
                                 <select  class="form-control col-md-3" name = "sql_type">
-
                                       <option value ="0" {% if sql_type == 0 %} selected {% endif %} >标准SQL</option>
                                       <option value ="1" {% if sql_type == 1 %} selected {% endif %} >回滚SQL</option>
-
                                 </select>
                                 </br>
                              </td>
@@ -144,7 +149,7 @@
                         {{ forloop.counter }}
                     </td>
                     <td>
-                        <pre>{{ i }}</pre>
+                        <pre>#{{ i }}</pre>
                     </td>
                 </tr>
             {% endfor %}

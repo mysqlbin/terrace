@@ -14,7 +14,7 @@ class Binlog2sql(object):
 
     def __init__(self, connection_settings, start_file=None, start_pos=None, end_file=None, end_pos=None,
                  start_time=None, stop_time=None, only_schemas=None, only_tables=None, no_pk=False,
-                 flashback=False, stop_never=False, back_interval=1.0, only_dml=True, sql_type=None):
+                 flashback=False, stop_never=False, back_interval=1.0, only_dml=True, sql_type=None, countnum=2):
         """
         conn_setting: {'host': 127.0.0.1, 'port': 3306, 'user': user, 'passwd': passwd, 'charset': 'utf8'}
         """
@@ -22,6 +22,7 @@ class Binlog2sql(object):
         if not start_file:
             raise ValueError('Lack of parameter: start_file')
 
+        self.countnum = countnum
         self.conn_setting = connection_settings
         self.start_file = start_file
         self.start_pos = start_pos if start_pos else 4    # use binlog v4
@@ -71,8 +72,12 @@ class Binlog2sql(object):
         flag_last_event = False
         e_start_pos, last_pos = stream.log_pos, stream.log_pos
         tmp_file = create_unique_file('%s.%s' % (self.conn_setting['host'], self.conn_setting['port']))  # to simplify code, we do not use flock for tmp_file.
+        count = 0
         with temp_open(tmp_file, "w") as f_tmp, self.connection as cursor:
+
             for binlog_event in stream:
+                if count >= self.countnum:
+                    break
                 if not self.stop_never:
                     try:
                         event_time = datetime.datetime.fromtimestamp(binlog_event.timestamp)
@@ -102,6 +107,7 @@ class Binlog2sql(object):
                                                        flashback=self.flashback, no_pk=self.no_pk)
                     if sql:
                         #print(sql)
+                        count = count + 1
                         self.sqllist.append(sql)
                 elif is_dml_event(binlog_event) and event_type(binlog_event) in self.sql_type:    #default=['INSERT', 'UPDATE', 'DELETE']
                     for row in binlog_event.rows:
@@ -112,7 +118,7 @@ class Binlog2sql(object):
                         else:
                             #print(sql)
                             self.sqllist.append(sql)
-
+                        count = count + 1
                 if not (isinstance(binlog_event, RotateEvent) or isinstance(binlog_event, FormatDescriptionEvent)):
                     last_pos = binlog_event.packet.log_pos
                 if flag_last_event:

@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from myapp.include import meta
 from myapp.include import function as func
 from myapp.include import sqlfilter
-from myapp.tasks import parse_binlog,parse_binlog_update,parse_binlog_self
+from myapp.tasks import parse_binlog_update,parse_to_binlog2sql
 from myapp.form import AddForm
 from blacklist import blFunction as bc
 from myapp.models import Db_instance
@@ -64,75 +64,72 @@ def metas(request):
     else:
         return render(request, 'meta.html', locals())
 
-def mysql_binlog_rollback(request):
+def parse_binlog(request):
 
     inslist = Db_instance.objects.filter(db_type='mysql').order_by("ip")
-
     if request.method == 'POST':
+        try:
+            parse_sql_number = [10,50,200]
 
-        parse_sql_number = [10,50,200]
+            insname = Db_instance.objects.get(id=int(request.POST['ins_set']))
+            binresult, col = meta.get_process_data(insname, 'show binary logs')
+            dbresult, col = meta.get_process_data(insname, 'show databases')
 
-        insname = Db_instance.objects.get(id=int(request.POST['ins_set']))
-        binresult, col = meta.get_process_data(insname, 'show binary logs')
-        #return HttpResponse(col)  #返回字段名称
-        #binresult: ('mysql-bin.000060', 62656542)('mysql-bin.000061', 13319)('mysql-bin.000062', 18837956)
-        dbresult, col = meta.get_process_data(insname, 'show databases')
-        #return HttpResponse(dbresult)
-        #dbresult: ('information_schema',)('dezhou_db',)('mysql',)('niu201812_db',)('niuniu_db',)('performance_schema',)('sql_db',)('sys',)('terrace_db',)('test_db',)('undolog',)
-        binlist = []
-        dblist = []
+            binlist = []
+            dblist = []
 
-        dblist.append('all')
+            dblist.append('all')
 
-        for i in binresult:
-            #print(i[0])
-            #return HttpResponse(i[0])
-            binlist.append(i[0])
-        for i in dbresult:
-            dblist.append(i[0])
+            for i in binresult:
+                binlist.append(i[0])
 
-        if 'show_binary' in request.POST:
-            start_pos = 4
-            return render(request, 'binlog_rollback.html', locals())
+            for i in dbresult:
+                dblist.append(i[0])
 
-        elif 'parse_commit' in request.POST:
-
-            binname    = request.POST['binary_list']
-
-            start_pos  = str(request.POST['start_pos'])
-            if start_pos == '4':
+            if 'show_binary' in request.POST:
                 start_pos = 4
-            else:
-                start_pos = int(start_pos)
+                return render(request, 'binlog_rollback.html', locals())
 
-            stop_pos   = str(request.POST['stop_pos'])
-            if stop_pos == '0' or stop_pos == '':
-                stop_pos = ''
-            else:
-                stop_pos = int(stop_pos)
+            elif 'parse_commit' in request.POST:
 
-            begin_time = request.POST['begin_time']
-            stop_time = request.POST['stop_time']
-            tbname     = request.POST['tbname']
-            dbselected = request.POST['dblist']
-            if dbselected == 'all':
-                dbselected = ''
+                binname    = request.POST['binary_list']
 
-            countnum = int(request.POST['countnum'])
-            if countnum not in [10, 50, 200]:
-                countnum = 10
+                start_pos  = str(request.POST['start_pos'])
+                if start_pos == '4':
+                    start_pos = 4
+                else:
+                    start_pos = int(start_pos)
 
-            sql_type = int(request.POST['sql_type'])
-            if sql_type == 1:
-                flashback = True
-            else:
-                flashback = False
+                stop_pos   = str(request.POST['stop_pos'])
+                if stop_pos == '0' or stop_pos == '':
+                    stop_pos = ''
+                else:
+                    stop_pos = int(stop_pos)
 
-            sqllist = parse_binlog_self(insname, binname, start_pos, stop_pos, begin_time, tbname, dbselected, flashback)
+                begin_time = request.POST['begin_time']
+                stop_time = request.POST['stop_time']
+                tbname     = request.POST['tbname']
+                dbselected = request.POST['dblist']
+                if dbselected == 'all':
+                    dbselected = ''
 
+                countnum = int(request.POST['countnum'])
+                if countnum not in [1, 10, 50, 200]:
+                    countnum = 1
+
+                sql_type = int(request.POST['sql_type'])
+                if sql_type == 1:
+                    flashback = True
+                else:
+                    flashback = False
+
+                sqllist = parse_to_binlog2sql(insname, binname, start_pos, stop_pos, begin_time, tbname, dbselected, flashback, countnum)
+
+        except Exception as e:
+            print(e)
             return render(request, 'binlog_rollback.html', locals())
-
-    return render(request, 'binlog_rollback.html', locals())   #返回字典类型的局部变量： {'z': 1, 'arg': 4} ,用于赋值多个数据变量给模板中不同的模块
+    else:
+        return render(request, 'binlog_rollback.html', locals())
 
 
 def mysql_binlog_parse(request):

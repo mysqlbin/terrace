@@ -19,7 +19,7 @@ from pymysqlreplication.event import QueryEvent, RotateEvent, FormatDescriptionE
 class Binlog2sql(object):
 
     def __init__(self, connectionSettings, startFile=None, startPos=None, endFile=None, endPos=None, startTime=None,
-                 stopTime=None, only_schemas=None, only_tables=None, nopk=False, flashback=False, stopnever=False,countnum=10):
+                 stopTime=None, only_schemas=None, only_tables=None, nopk=False, flashback=False, stopnever=False, countnum=10):
         '''
         connectionSettings: {'host': 127.0.0.1, 'port': 3306, 'user': slave, 'passwd': slave}
         '''
