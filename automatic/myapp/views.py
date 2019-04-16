@@ -134,8 +134,6 @@ ORDER BY
             if dbselected == 'all':
                 dbselected = ''
 
-            return HttpResponse(dbselected)
-
             countnum = int(request.POST['countnum'])
             if countnum not in [10, 50, 200]:
                 countnum = 10
