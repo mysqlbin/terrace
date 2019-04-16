@@ -63,7 +63,7 @@
 
                             <td>
                                 终止解析位置:</br>
-                                <input type="number" placeholder="stop-position" class="form-control" size="30" {% if stop_pos and stop_pos != None %}  value="{{ stop_pos }}" {% endif %} name="stop_pos">
+                                <input type="number" placeholder="stop-position" min="0" class="form-control" size="30" {% if stop_pos and stop_pos != None %}  value="{{ stop_pos }}" {% endif %} name="stop_pos">
                             </td>
                         </tr>
                         <tr>

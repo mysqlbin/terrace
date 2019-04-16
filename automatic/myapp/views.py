@@ -113,18 +113,12 @@ ORDER BY
         elif 'parse_commit' in request.POST:
 
             binname    = request.POST['binary_list']
-
-
-            start_pos  = str(request.POST['start_pos'])
-            start_pos = int(start_pos)
-
-            # stop_pos = None
-            stop_pos   = str(request.POST['stop_pos'])
-            if stop_pos <= '0':
+            start_pos  = int(request.POST['start_pos'])
+            stop_pos   = request.POST['stop_pos']
+            if stop_pos == '0':
                 stop_pos = None
             else:
                 stop_pos = int(stop_pos)
-
             begin_time  = request.POST['begin_time']
             tbname     = request.POST['tbname']
             dbselected = request.POST['dblist']
