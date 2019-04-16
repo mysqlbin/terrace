@@ -88,7 +88,7 @@ def parse_binlog(request):
 
             if 'show_binary' in request.POST:
                 start_pos = 4
-                return render(request, 'binlog_rollback.html', locals())
+                return render(request, 'parse_binlog.html', locals())
 
             elif 'parse_commit' in request.POST:
 
@@ -127,9 +127,9 @@ def parse_binlog(request):
 
         except Exception as e:
             print(e)
-            return render(request, 'binlog_rollback.html', locals())
+            return render(request, 'parse_binlog.html', locals())
     else:
-        return render(request, 'binlog_rollback.html', locals())
+        return render(request, 'parse_binlog.html', locals())
 
 
 def mysql_binlog_parse(request):
