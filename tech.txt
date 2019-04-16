@@ -367,5 +367,8 @@ if (int(sqltext.split()[-1])<= int(num) ):
 2019-04-16:
 
 日期控件参考:
-http://www.jemui.com/jedate/#6
+http://www.jemui.com/uidoc/jedate.html#demo
+
+下载 demo 出来在本地调试
+
 
