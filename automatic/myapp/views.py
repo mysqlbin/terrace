@@ -65,27 +65,12 @@ def metas(request):
         return render(request, 'meta.html', locals())
 
 def mysql_binlog_rollback(request):
+
     inslist = Db_instance.objects.filter(db_type='mysql').order_by("ip")
-    '''
-    SELECT
-	`myapp_db_instance`.`id`,
-	`myapp_db_instance`.`ip`,
-	`myapp_db_instance`.`port`,
-	`myapp_db_instance`.`role`,
-	`myapp_db_instance`.`db_type`
-FROM
-	`myapp_db_instance`
-WHERE
-	`myapp_db_instance`.`db_type` = 'mysql'
-ORDER BY
-	`myapp_db_instance`.`ip` ASC
-    '''
-    #局部变量：id,ip,port,role,db_type
-    #return HttpResponse(inslist)
+
     if request.method == 'POST':
 
         parse_sql_number = [10,50,200]
-
 
         insname = Db_instance.objects.get(id=int(request.POST['ins_set']))
         binresult, col = meta.get_process_data(insname, 'show binary logs')
