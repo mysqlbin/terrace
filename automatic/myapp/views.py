@@ -119,13 +119,13 @@ ORDER BY
             if start_pos == '4':
                 start_pos = 4
             else:
-                start_pos = start_pos
+                start_pos = int(start_pos)
 
             stop_pos   = str(request.POST['stop_pos'])
-            if stop_pos == '0':
+            if stop_pos == '0' or stop_pos == '':
                 stop_pos = ''
             else:
-                stop_pos = stop_pos
+                stop_pos = int(stop_pos)
 
             begin_time = request.POST['begin_time']
             stop_time = request.POST['stop_time']
