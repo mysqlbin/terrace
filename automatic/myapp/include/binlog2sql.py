@@ -6,7 +6,7 @@ import datetime
 import pymysql
 from pymysqlreplication import BinLogStreamReader
 from pymysqlreplication.event import QueryEvent, RotateEvent, FormatDescriptionEvent
-from myapp.include.binlog2sqlback_util import command_line_args, concat_sql_from_binlog_event, create_unique_file, temp_open, \
+from myapp.include.binlog2sql_util import command_line_args, concat_sql_from_binlog_event, create_unique_file, temp_open, \
     reversed_lines, is_dml_event, event_type
 
 
