@@ -31,17 +31,6 @@ urlpatterns = [
 
     path('binlog_parse/', myapp_view.binlog_parse, name='binlog_parse'),        #name:定义url名称
 
-    #salt
-    path('execute/', salt_views.execute, name='execute'),
-    path('salt_exec/', salt_views.salt_exec, name='salt_exec'),
-    path('api/getjobinfo/', salt_views.getjobinfo, name='getjobinfo'),
-    path('hardware_info/', salt_views.hardware_info, name='hardware_info'),
-    path('key_con/', salt_views.key_con, name='key_con'),
-    path('salt_record/', salt_views.salt_record, name='salt_record'),
-    path('record_detail/', salt_views.record_detail, name='record_detail'),
-
-    #test, 用于调试
-    path('test/', salt_views.test, name='test'),
-
     path('admin/', admin.site.urls),
+
 ]
