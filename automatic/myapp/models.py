@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
 #创建模型来添加数据库服务
-
+#每个模型被表示为 django.db.models.Model 类的子类
 read_write = (
     ('read', 'read'),
     ('write', 'write'),

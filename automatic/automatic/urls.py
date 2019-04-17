@@ -18,6 +18,8 @@ from django.urls import path
 from myapp import views as myapp_view
 from salt import views as salt_views
 
+app_name = ''
+
 urlpatterns = [
 
     path('index/', myapp_view.index, name='index'),
