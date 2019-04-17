@@ -18,7 +18,7 @@
                         <td>
                             <select id='ins' class="form-control col-md-3" name="ins_set">
                                 {% for obj in inslist%}
-                                <option value = "{{ obj.id }}" {% if obj == insname %} selected {% endif %}  >{{ obj.ip }} {{ obj.role }} {{ obj.db_type}}</option>
+                                <option value = "{{ obj.id }}" {% if obj == insname %} selected {% endif %}  >{{ obj.ip }} {{ obj.port }} {{ obj.db_type}}</option>
                                 {% endfor %}
                             </select>
                         </td>

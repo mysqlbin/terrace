@@ -24,7 +24,7 @@ class Db_instance(models.Model):
     role = models.CharField(max_length=30, choices=read_write, )
     db_type = models.CharField(max_length=30, default='mysql')
     def __str__(self):
-        return u'%s %s %s' % (self.ip, self.role, self.db_type)     #查询之后的返回值
+        return u'%s %s %s %s' % (self.ip, self.port, self.role, self.db_type)     #查询之后的返回值
     class Meta:          #创建唯一的联合索引
         unique_together = ("ip", "port")
 
