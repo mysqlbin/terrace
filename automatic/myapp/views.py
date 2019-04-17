@@ -64,7 +64,7 @@ def metas(request):
     else:
         return render(request, 'meta.html', locals())
 
-def parse_binlog(request):
+def binlog_parse(request):
 
     inslist = Db_instance.objects.filter(db_type='mysql').order_by("ip")
     if request.method == 'POST':
@@ -88,7 +88,7 @@ def parse_binlog(request):
 
             if 'show_binary' in request.POST:
                 start_pos = 4
-                return render(request, 'parse_binlog.html', locals())
+                return render(request, 'binlog_parse.html', locals())
 
             elif 'parse_commit' in request.POST:
 
@@ -125,12 +125,13 @@ def parse_binlog(request):
 
                 sqllist = parse_to_binlog2sql(insname, binname, start_pos, stop_pos, begin_time, tbname, dbselected, flashback, countnum)
 
-                return render(request, 'parse_binlog.html', locals())
+                return render(request, 'binlog_parse.html', locals())
+
         except Exception as e:
             print(e)
-            return render(request, 'parse_binlog.html', locals())
+            return render(request, 'binlog_parse.html', locals())
     else:
-        return render(request, 'parse_binlog.html', locals())
+        return render(request, 'binlog_parse.html', locals())
 
 def mysql_querys(request):
 

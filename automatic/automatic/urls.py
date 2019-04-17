@@ -27,10 +27,7 @@ urlpatterns = [
 
     path('metas/', myapp_view.metas, name='metas'),
 
-    path('parse_binlog/', myapp_view.parse_binlog, name='parse_binlog'),        #name:定义url名称
-
-    #path('binlog_parse_test/', myapp_view.mysql_binlog_parse_test, name='binlog_parse_test'),
-    #path('nav/', myapp_view.nav, name='nav'),
+    path('binlog_parse/', myapp_view.binlog_parse, name='binlog_parse'),        #name:定义url名称
 
     #salt
     path('execute/', salt_views.execute, name='execute'),
