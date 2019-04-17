@@ -1,0 +1,28 @@
+{% load staticfiles %}
+<div>
+    <div >
+        <div class='row-fluid' >
+            <div class="row-fluid" id="log_div" style="">
+                <button type="button" onclick="refresh_auto()">刷新</button>
+{#                <button type="button" onclick="result_check_auto()">返回结果检查</button>#}
+{#                <div id="result_salt" onchange="$('#progress_stop').hide()" style="height:400px;background-color:black;color:white;overflow-y:auto;" class="well">#}
+                <div id="result_salt" onchange="$('#progress_stop').hide()" style="background:black;color:white;overflow-y:auto" class="well">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="result_check"></div>
+
+    <script>
+        ajaxCommand('/api/getjobinfo?jid_auto={{jid_auto}}','','result_salt');
+
+        function refresh_auto()
+        {
+            document.getElementById('result_salt').innerHTML="";
+            ajaxCommand('/api/getjobinfo?jid_auto={{jid_auto}}','','result_salt');
+        }
+
+    </script>
+
+    </div>

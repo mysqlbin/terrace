@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from myapp.include import meta
 from myapp.include import function as func
 from myapp.include import sqlfilter
-from myapp.tasks import parse_binlog_update,parse_to_binlog2sql
+from myapp.tasks import parse_to_binlog2sql
 from myapp.form import AddForm
 from blacklist import blFunction as bc
 from myapp.models import Db_instance
@@ -125,63 +125,12 @@ def parse_binlog(request):
 
                 sqllist = parse_to_binlog2sql(insname, binname, start_pos, stop_pos, begin_time, tbname, dbselected, flashback, countnum)
 
+                return render(request, 'parse_binlog.html', locals())
         except Exception as e:
             print(e)
             return render(request, 'parse_binlog.html', locals())
     else:
         return render(request, 'parse_binlog.html', locals())
-
-
-def mysql_binlog_parse(request):
-    inslist = Db_instance.objects.filter(db_type='mysql').order_by("ip")
-                          #`myapp_db_instance`.`db_type` = 'mysql' ORDER BY `myapp_db_instance`.`ip` ASC
-    if request.method == 'POST':
-        try:
-            binlist = []
-            dblist = []
-            insname = Db_instance.objects.get(id=int(request.POST['ins_set']))
-            #FROM `myapp_db_instance` WHERE `myapp_db_instance`.`id` = 1
-            #`myapp_db_instance`.`id`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port`, `myapp_db_instance`.`role`, `myapp_db_instance`.`db_type`
-
-            # insname = ''
-            datalist, col = meta.get_process_data(insname, 'show binary logs')
-            #return HttpResponse(datalist)
-            #('mysql-bin.000060', 62656542)('mysql-bin.000061', 13319)('mysql-bin.000062', 18837956)
-
-            dbresult, col = meta.get_process_data(insname, 'show databases')
-            if col != ['error']:
-                dblist.append('all')
-                for i in datalist:
-                    binlist.append(i[0])
-                for i in dbresult:
-                    dblist.append(i[0])
-            else:
-                del binlist
-                return render(request, 'binlog_parse.html', locals())
-
-            if 'show_binary' in request.POST:
-                return render(request, 'binlog_parse.html', locals())
-
-            elif 'parse_commit' in request.POST:
-
-                countnum = int(request.POST['countnum'])
-                binname = request.POST['binary_list']
-                if countnum not in [10, 50, 200]:
-                    countnum = 10
-                begintime = request.POST['begin_time']
-                tbname = request.POST['tbname']
-                dbname = request.POST['dblist']
-                if dbname == 'all':
-                    dbname = ''
-                sqllist = parse_binlog_update(insname, binname, begintime, tbname, dbname, countnum)
-
-                return HttpResponse(sqllist)
-
-        except Exception as e:
-            print(e)
-            return render(request, 'binlog_parse.html', locals())
-    else:
-        return render(request, 'binlog_parse.html', locals())
 
 def mysql_querys(request):
 

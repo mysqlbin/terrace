@@ -2,7 +2,6 @@
 import datetime
 from django.contrib.auth.models import User
 from myapp.include import binlog2sql
-from myapp.include import binlog2sqlback
 from django.core.mail import EmailMessage,send_mail,EmailMultiAlternatives
 from django.template import loader
 # from myapp.include.encrypt import prpcrypt
@@ -36,31 +35,6 @@ def parse_to_binlog2sql(insname, binname, start_pos, stop_pos, begin_time, tbnam
     binlogsql.process_binlog()
     sqllist = binlogsql.sqllist
     return sqllist
-
-
-
-
-def parse_binlog_update(insname, binname, begintime, tbname, dbname, countnum):
-    flag = True
-
-    for a in insname.db_name_set.all():
-        for i in a.db_account_set.all():
-            tar_username = i.user
-            tar_passwd = i.passwd
-            flag = False
-            break
-        if flag == False:
-            break
-    #connectionSettings = {'host': '127.0.0.1', 'port': 3306, 'user': 'salt_user', 'passwd': '123456abc'}
-    connectionSettings = {'host': insname.ip, 'port': int(insname.port), 'user': tar_username, 'passwd': tar_passwd}
-    binlogsql = binlog2sql.Binlog2sql(connectionSettings=connectionSettings, startFile=binname,
-                                      startPos=4, endFile='', endPos=0,
-                                      startTime=begintime, stopTime='', only_schemas=dbname,
-                                      only_tables=tbname, nopk=False, flashback=False, stopnever=True,countnum=countnum)
-    binlogsql.process_binlog()
-    sqllist = binlogsql.sqllist
-    return sqllist
-
 
 # def task_run(idnum,request):
 #     while 1:
