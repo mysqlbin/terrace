@@ -372,3 +372,54 @@ http://www.jemui.com/uidoc/jedate.html#demo
 下载 demo 出来在本地调试
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2019-04-17:
+	数据库账号需要的权限:
+	grant select  on *.* to 'admin'@'%' identified by '123456abc';
+	grant replication slave  on *.* to 'admin'@'%' identified by '123456abc';
+	grant replication slave  on *.* to 'admin'@'%' identified by '123456abc';
+	
+REPLICATION CLIENT  允许执行SHOW MASTER STATUS,SHOW SLAVE STATUS和SHOW BINARY LOGS命令
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
