@@ -26,7 +26,7 @@ def parse_to_binlog2sql(insname, binname, start_pos, stop_pos, begin_time, tbnam
 
     sqltype = ['INSERT', 'UPDATE', 'DELETE']
 
-    binlogsql = binlog2sqlback.Binlog2sql(connection_settings=connection_settings, start_file=binname,
+    binlogsql = binlog2sql.Binlog2sql(connection_settings=connection_settings, start_file=binname,
                                           start_pos=start_pos, end_file='', end_pos=stop_pos,
                                           start_time=begin_time, stop_time='', only_schemas=dbselected,
                                           only_tables=tbname, no_pk=False, flashback=flashback, stop_never=False,
