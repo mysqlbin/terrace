@@ -4,18 +4,18 @@ from django.contrib.auth.models import User
 #创建模型来添加数据库服务
 #每个模型被表示为 django.db.models.Model 类的子类
 read_write = (
-    ('read1', 'read'),
-    ('write1', 'write'),
-    ('all1','all'),
-    ('idle1','idle'),
-    ('admin1','admin'),
+    ('read1', 'read2'),
+    ('write1', 'write2'),
+    ('all1','all2'),
+    ('idle1','idle2'),
+    ('admin1','admin2'),
 )
 
 read_write_account = (
-    ('read2', 'read'),
-    ('write2', 'write'),
-    ('all2','all'),
-    ('admin2','admin'),
+    ('read1', 'read2'),
+    ('write1', 'write2'),
+    ('all1','all2'),
+    ('admin1','admin2'),
 )
 
 class Db_instance(models.Model):
