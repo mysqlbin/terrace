@@ -42,7 +42,7 @@ class Db_name (models.Model):
 class Db_account(models.Model):
     user = models.CharField(max_length=30)
     passwd = models.CharField(max_length=255)
-    role =  models.CharField(max_length=30, choices=read_write_account,default='all')
+    role =  models.CharField(max_length=30, choices=read_write_account,default='all2')
     tags = models.CharField(max_length=30, db_index=True)
     dbname = models.ManyToManyField(Db_name)
     account = models.ManyToManyField(User)
