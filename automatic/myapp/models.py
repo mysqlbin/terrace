@@ -4,18 +4,18 @@ from django.contrib.auth.models import User
 #创建模型来添加数据库服务
 #每个模型被表示为 django.db.models.Model 类的子类
 read_write = (
-    ('read', 'read'),
-    ('write', 'write'),
-    ('all','all'),
-    ('idle','idle'),
-    ('admin','admin'),
+    ('read1', 'read'),
+    ('write1', 'write'),
+    ('all1','all'),
+    ('idle1','idle'),
+    ('admin1','admin'),
 )
 
 read_write_account = (
-    ('read', 'read'),
-    ('write', 'write'),
-    ('all','all'),
-    ('admin','admin'),
+    ('read2', 'read'),
+    ('write2', 'write'),
+    ('all2','all'),
+    ('admin2','admin'),
 )
 
 class Db_instance(models.Model):
@@ -37,19 +37,6 @@ class Db_name (models.Model):
     def __str__(self):
         return u'%s %s' % (self.dbtag, self.dbname)
 
-'''
-SELECT
-	`myapp_db_name`.`id`,
-	`myapp_db_name`.`dbtag`,
-	`myapp_db_name`.`dbname`
-FROM
-	`myapp_db_name`
-INNER JOIN `myapp_db_name_instance` ON (
-	`myapp_db_name`.`id` = `myapp_db_name_instance`.`db_name_id`
-)
-WHERE
-	`myapp_db_name_instance`.`db_instance_id` = 1
-'''
 
 
 class Db_account(models.Model):
@@ -62,21 +49,6 @@ class Db_account(models.Model):
     def __str__(self):
         return  u'%s %s' % ( self.tags, self.role)
 
-'''
-SELECT
-	`myapp_db_account`.`id`,
-	`myapp_db_account`.`user`,
-	`myapp_db_account`.`passwd`,
-	`myapp_db_account`.`role`,
-	`myapp_db_account`.`tags`
-FROM
-	`myapp_db_account`
-INNER JOIN `myapp_db_account_dbname` ON (
-	`myapp_db_account`.`id` = `myapp_db_account_dbname`.`db_account_id`
-)
-WHERE
-	`myapp_db_account_dbname`.`db_name_id` = 1
-'''
 class Oper_log(models.Model):
     user = models.CharField(max_length=35)
     ipaddr = models.CharField(max_length=35)
