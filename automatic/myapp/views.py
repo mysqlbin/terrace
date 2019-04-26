@@ -9,8 +9,54 @@ from myapp.form import AddForm
 from blacklist import blFunction as bc
 from myapp.models import Db_instance
 
+from form import AddForm,LoginForm,Captcha
+from django.contrib import auth
+
 def index(request):
     return render(request, 'index.html')
+
+def login(request):
+
+    if request.user.is_authenticated():
+        return render(request, 'include/base.html')
+    else:
+        if request.GET.get('newsn') == '1':
+            csn = CaptchaStore.generate_key()
+            cimageurl = captcha_image_url(csn)
+            return HttpResponse(cimageurl)
+        elif request.method == "POST":
+            form = LoginForm(request.POST)
+            myform = Captcha(request.POST)
+            if myform.is_valid():  # 先验证验证码
+                if form.is_valid():  # 再验证用户名和密码
+                    username = form.cleaned_data['username']
+                    password = form.cleaned_data['password']
+                    user = auth.authenticate(username=username, password=password)
+                    if user is not None and user.is_active:
+                        auth.login(request, user)
+                        #func.log_userlogin(request)  # 写用户登录成功的日志
+                        return HttpResponseRedirect("/")
+                    else:
+                        # login failed
+                        #func.log_loginfailed(request, username)  # 写用户登录失败的日志
+                        # request.session["wrong_login"] =  request.session["wrong_login"]+1
+                        return render_to_response('login.html', RequestContext(request, {'form': form, 'myform': myform,
+                                                                                         'password_is_wrong': True}))
+                else:
+                    return render_to_response('login.html', RequestContext(request, {'form': form, 'myform': myform}))
+            else:
+                # cha_error
+                form = LoginForm(request.POST)
+                myform = Captcha(request.POST)
+                chaerror = 1
+                return render_to_response('login.html', RequestContext(request, {'form': form, 'myform': myform,
+                                                                                 'chaerror': chaerror}))
+        else:
+            form = LoginForm()
+            myform = Captcha()
+            return render_to_response('login.html', RequestContext(request, {'form': form, 'myform': myform}))
+
+    return render(request, 'login.html')
 
 def metas(request):
     inslist = Db_instance.objects.filter(db_type='mysql').order_by("ip")
@@ -69,6 +115,7 @@ def binlog_parse(request):
     inslist = Db_instance.objects.filter(db_type='mysql').order_by("ip")
     if request.method == 'POST':
         try:
+
             parse_sql_number = [10,50,200]
 
             insname = Db_instance.objects.get(id=int(request.POST['ins_set']))
