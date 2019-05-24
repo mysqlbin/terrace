@@ -63,6 +63,10 @@ class Oper_log(models.Model):
     class Meta:
         index_together = [["dbtag","sqltype", "create_time"],]        #三个字段的联合索引
 
+		
+		
+		
+		
 class User_profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     select_limit = models.IntegerField(default=200)
