@@ -119,14 +119,22 @@ def metas(request):
 
 def binlog_parse(request):
 
+    # insname.db_name_set.all()
+
     inslist = Db_instance.objects.filter(db_type='mysql').order_by("ip")
     if request.method == 'POST':
         try:
 
-            parse_sql_number = [10,50,200]
-
+            parse_sql_number = [10,50,200]   #这里可以加入配置文件中
+            #获取对象
             insname = Db_instance.objects.get(id=int(request.POST['ins_set']))
+            # return HttpResponse(insname)   #192.168.0.252 3306 admin mysql
+
+            #return HttpResponse(insname.db_name_set.all())   #252_test kpi
+
             binresult, col = meta.get_process_data(insname, 'show binary logs')
+            #return HttpResponse(binresult)
+
             dbresult, col = meta.get_process_data(insname, 'show databases')
 
             binlist = []
