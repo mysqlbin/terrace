@@ -40,7 +40,7 @@ class AddForm (forms.Form):
     a = forms.CharField(widget=forms.Textarea(attrs={'cols': 100, 'rows': 15}))
 
 
-class Captcha(forms.Form):
-    mycaptcha = CaptchaField(label="验证码:",)
+# class Captcha(forms.Form):
+#     mycaptcha = CaptchaField(label="验证码:",)
 
 
