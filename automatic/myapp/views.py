@@ -12,110 +12,29 @@ from myapp.models import Db_instance
 # from form import AddForm,LoginForm,Captcha
 from django.contrib import auth
 
+from django.contrib.auth.decorators import login_required,permission_required
+
+
+
+
+@login_required(login_url='/admin/login/')
 def index(request):
     return render(request, 'index.html')
 
-# def login(request):
-#
-#     if request.user.is_authenticated():
-#         return render(request, 'include/base.html')
-#     else:
-#         if request.GET.get('newsn') == '1':
-#             csn = CaptchaStore.generate_key()
-#             cimageurl = captcha_image_url(csn)
-#             return HttpResponse(cimageurl)
-#         elif request.method == "POST":
-#             form = LoginForm(request.POST)
-#             myform = Captcha(request.POST)
-#             if myform.is_valid():  # 先验证验证码
-#                 if form.is_valid():  # 再验证用户名和密码
-#                     username = form.cleaned_data['username']
-#                     password = form.cleaned_data['password']
-#                     user = auth.authenticate(username=username, password=password)
-#                     if user is not None and user.is_active:
-#                         auth.login(request, user)
-#                         #func.log_userlogin(request)  # 写用户登录成功的日志
-#                         return HttpResponseRedirect("/")
-#                     else:
-#                         # login failed
-#                         #func.log_loginfailed(request, username)  # 写用户登录失败的日志
-#                         # request.session["wrong_login"] =  request.session["wrong_login"]+1
-#                         #return render_to_response('login.html', RequestContext(request, {'form': form, 'myform': myform,
-#                                                                                          #'password_is_wrong': True}))
-#                         return render(request, 'login.html', locals())
-#                 else:
-#
-#                     #return render_to_response('login.html', RequestContext(request, {'form': form, 'myform': myform}))
-#                     return render(request, 'login.html', {'form': form, 'myform': myform})
-#
-#             else:
-#                 # cha_error
-#                 form = LoginForm(request.POST)
-#                 myform = Captcha(request.POST)
-#                 chaerror = 1
-#                 #return render_to_response('login.html', RequestContext(request, {'form': form, 'myform': myform,
-#                                                                                  #'chaerror': chaerror}))
-#                 return render(request, 'login.html', {'form': form, 'myform': myform, 'chaerror': chaerror})
-#         else:
-#             form = LoginForm()
-#             myform = Captcha()
-#             #return render_to_response('login.html', RequestContext(request, {'form': form, 'myform': myform}))
-#
-#             return render(request, 'login.html', {'form': form, 'myform': myform})
-#
-#     return render(request, 'login.html')
-
-def metas(request):
+def slow_query(request):
     inslist = Db_instance.objects.filter(db_type='mysql').order_by("ip")
-    if request.method == 'POST':
-        insname = Db_instance.objects.get(id=int(request.POST['ins_set']))
-        if 'fullpro' in request.POST:
-            data_list, collist = meta.process(insname)
-            return render(request, 'meta.html', locals())
+    # print(inslist)
 
-        elif 'kill_list' in request.POST:
-            idlist = request.POST.getlist('choosedlist')
-            tmpstr = ''
-            for i in idlist:
-                tmpstr = tmpstr + 'kill ' + i + ';'
-            datalist, col = meta.process(insname, 4, tmpstr)
-            return render(request, 'meta.html', locals())
+    insname = Db_instance.objects.get(id=3)
 
-        elif 'showactive' in request.POST:
-            data_list, collist = meta.process(insname, 2)
-            return render(request, 'meta.html', locals())
+    dbresult, col = meta.get_process_data(insname, 'show databases')
 
-        elif 'showengine' in request.POST:
-            datalist, col = meta.process(insname, 3)
-            return render(request, 'meta.html', locals())
+    hostname_max = '{}:{}'.format(insname.ip,insname.port)
 
-        elif 'showbigtb' in request.POST:
-            datalist, col = meta.process(insname, 6)
-            return render(request, 'meta.html', locals())
-
-        elif 'slavestatus' in request.POST:
-            sql = "show slave status"
-            datalist, col = meta.process(insname, 7, sql)
-
-        elif 'showstatus' in request.POST:
-            vir = request.POST['variables'].strip()
-            sql = "show global status like '%" + vir + "%'"
-            datalist, col = meta.process(insname, 7, sql)
-            return render(request, 'meta.html', locals())
-
-        elif 'showvari' in request.POST:
-            vir = request.POST['variables'].strip()
-            sql = "show global variables like '%" + vir + "%'"
-            datalist, col = meta.process(insname, 7, sql)
-            return render(request, 'meta.html', locals())
-
-        elif 'showinc' in request.POST:
-            datalist, col = meta.process(insname, 8)
-            return render(request, 'meta.html', locals())
+    return HttpResponse(hostname_max)
 
 
-    else:
-        return render(request, 'meta.html', locals())
+@login_required(login_url='/admin/login/')
 
 def binlog_parse(request):
 

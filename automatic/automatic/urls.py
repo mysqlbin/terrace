@@ -24,13 +24,14 @@ urlpatterns = [
     path('index/', myapp_view.index, name='index'),
 
     path('binlog_parse/', myapp_view.binlog_parse, name='binlog_parse'),  # name:定义url名称
+    path('slow_query/', myapp_view.slow_query, name='slow_query'),  # name:定义url名称
 
     # path('login/', myapp_view.login, name='login'),
 
     path('mysql_query/', myapp_view.mysql_query, name='mysql_query'),
     path('mysql_querys/', myapp_view.mysql_querys, name='mysql_querys'),
 
-    path('metas/', myapp_view.metas, name='metas'),
+    # path('metas/', myapp_view.metas, name='metas'),
 
 
     path('admin/', admin.site.urls),

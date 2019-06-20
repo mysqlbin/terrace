@@ -138,7 +138,7 @@ pip install -t /usr/lib64/python3.4/site-packages/  pyMySQL
 pip install -t /usr/lib64/python3.4/site-packages/  mysql-devel
 pip install -t /usr/lib64/python3.4/site-packages/  mysqlclient
 pip install -t /usr/local/python3/lib/python3.6/site-packages/  pyMySQL
-pip install -t /usr/local/python3/lib/python3.6/site-packages/  mysql-devel
+pip3 install -t /usr/local/python3/lib/python3.6/site-packages/  mysql-devel
 pip install -t /usr/local/python3/lib/python3.6/site-packages/  mysqlclient
 
 

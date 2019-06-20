@@ -36,26 +36,3 @@ def parse_to_binlog2sql(insname, binname, start_pos, stop_pos, begin_time, tbnam
     sqllist = binlogsql.sqllist
     return sqllist
 
-# def task_run(idnum,request):
-#     while 1:
-#         try:
-#             task = Task.objects.get(id=idnum)
-#         except:
-#             continue
-#         break
-#     if task.status!='executed' and task.status!='running' and task.status!='NULL':
-#         hosttag = task.dbtag
-#         sql = task.sqltext
-#         mycreatetime = task.create_time
-#         incept.log_incep_op(sql,hosttag,request,mycreatetime)
-#         status='running'
-#         task.status = status
-#         task.operator  = request.user.username
-#         task.update_time = datetime.datetime.now()
-#         task.save()
-#         process_runtask.delay(hosttag,sql,task)
-#         return ''
-#     elif task.status=='NULL':
-#         return 'PLEASE CHECK THE SQL FIRST'
-#     else:
-#         return 'Already executed or in running'
