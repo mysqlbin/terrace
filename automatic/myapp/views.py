@@ -7,7 +7,7 @@ from myapp.include import sqlfilter
 from myapp.tasks import parse_to_binlog2sql
 from myapp.form import AddForm
 from blacklist import blFunction as bc
-from myapp.models import Db_instance
+from myapp.models import Db_instance,SlowQuery
 
 # from form import AddForm,LoginForm,Captcha
 from django.contrib import auth
@@ -29,7 +29,35 @@ def slow_query(request):
 
     dbresult, col = meta.get_process_data(insname, 'show databases')
 
-    hostname_max = '{}:{}'.format(insname.ip,insname.port)
+    if db_name:
+        # 获取慢查数据
+        slowsql_obj = SlowQuery.objects.filter(
+            slowqueryhistory__hostname_max=('{}:{}'.format(insname.ip, insname.port)),
+            slowqueryhistory__db_max=db_name,
+            slowqueryhistory__ts_min__range=(start_time, end_time)
+        ).annotate(SQLText=F('fingerprint'), SQLId=F('checksum')).values('SQLText', 'SQLId').annotate(
+            CreateTime=Max('slowqueryhistory__ts_max'),
+            DBName=Max('slowqueryhistory__db_max'),  # 数据库
+            QueryTimeAvg=Sum('slowqueryhistory__query_time_sum') / Sum('slowqueryhistory__ts_cnt'),  # 平均执行时长
+            MySQLTotalExecutionCounts=Sum('slowqueryhistory__ts_cnt'),  # 执行总次数
+            MySQLTotalExecutionTimes=Sum('slowqueryhistory__query_time_sum'),  # 执行总时长
+            ParseTotalRowCounts=Sum('slowqueryhistory__rows_examined_sum'),  # 扫描总行数
+            ReturnTotalRowCounts=Sum('slowqueryhistory__rows_sent_sum'),  # 返回总行数
+        )
+    else:
+        # 获取慢查数据
+        slowsql_obj = SlowQuery.objects.filter(
+            slowqueryhistory__hostname_max=( '{}:{}'.format(insname.ip,insname.port)),
+            slowqueryhistory__ts_min__range=(start_time, end_time),
+        ).annotate(SQLText=F('fingerprint'), SQLId=F('checksum')).values('SQLText', 'SQLId').annotate(
+            CreateTime=Max('slowqueryhistory__ts_max'),
+            DBName=Max('slowqueryhistory__db_max'),  # 数据库
+            QueryTimeAvg=Sum('slowqueryhistory__query_time_sum') / Sum('slowqueryhistory__ts_cnt'),  # 平均执行时长
+            MySQLTotalExecutionCounts=Sum('slowqueryhistory__ts_cnt'),  # 执行总次数
+            MySQLTotalExecutionTimes=Sum('slowqueryhistory__query_time_sum'),  # 执行总时长
+            ParseTotalRowCounts=Sum('slowqueryhistory__rows_examined_sum'),  # 扫描总行数
+            ReturnTotalRowCounts=Sum('slowqueryhistory__rows_sent_sum'),  # 返回总行数
+        )
 
     return HttpResponse(hostname_max)
 
