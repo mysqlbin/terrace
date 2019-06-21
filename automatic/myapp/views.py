@@ -14,7 +14,7 @@ from django.contrib import auth
 
 from django.contrib.auth.decorators import login_required,permission_required
 
-
+from django.db.models import F,Max,Sum
 
 
 @login_required(login_url='/admin/login/')
@@ -22,12 +22,26 @@ def index(request):
     return render(request, 'index.html')
 
 def slow_query(request):
-    inslist = Db_instance.objects.filter(db_type='mysql').order_by("ip")
-    # print(inslist)
+
+
+    # inslist = Db_instance.objects.filter(db_type='mysql').order_by("ip")
+
 
     insname = Db_instance.objects.get(id=3)
 
-    dbresult, col = meta.get_process_data(insname, 'show databases')
+    # dbresult, col = meta.get_process_data(insname, 'show databases')
+    db_name = 'niuniu_db'
+    start_time = '2019-06-19'
+    end_time = '2019-06-21'
+    offset = 0
+    limit = 1
+
+    """
+
+    offset = 1
+    limit = 2
+    LIMIT 1 OFFSET 1
+    """
 
     if db_name:
         # 获取慢查数据
@@ -58,8 +72,14 @@ def slow_query(request):
             ParseTotalRowCounts=Sum('slowqueryhistory__rows_examined_sum'),  # 扫描总行数
             ReturnTotalRowCounts=Sum('slowqueryhistory__rows_sent_sum'),  # 返回总行数
         )
+    slow_sql_result = slowsql_obj.order_by('-MySQLTotalExecutionCounts')[offset:limit]  # 执行总次数倒序排列
 
-    return HttpResponse(hostname_max)
+    sql_slow_log = [SlowLog for SlowLog in slow_sql_result]
+
+    return HttpResponse(sql_slow_log)
+
+    return HttpResponse(slowsql_obj)   # 数据类型为字典
+    return HttpResponse(slowsql_obj.count())
 
 
 @login_required(login_url='/admin/login/')
@@ -77,7 +97,7 @@ def binlog_parse(request):
             insname = Db_instance.objects.get(id=int(request.POST['ins_set']))
             # return HttpResponse(insname)   #192.168.0.252 3306 admin mysql
 
-            #return HttpResponse(insname.db_name_set.all())   #252_test kpi
+            return HttpResponse(insname.db_name_set.all())   #252_test kpi
 
             binresult, col = meta.get_process_data(insname, 'show binary logs')
             #return HttpResponse(binresult)

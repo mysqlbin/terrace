@@ -115,6 +115,8 @@ SELECT `myapp_db_account`.`id`, `myapp_db_account`.`user`, `myapp_db_account`.`p
 def get_process_data(insname,sql):
     flag = True
     # pc = prpcrypt()
+
+    #多对多的查询
     #SELECT `myapp_db_name`.`id`, `myapp_db_name`.`dbtag`, `myapp_db_name`.`dbname` FROM `myapp_db_name` INNER JOIN `myapp_db_name_instance` ON (`myapp_db_name`.`id` = `myapp_db_name_instance`.`db_name_id`) WHERE `myapp_db_name_instance`.`db_instance_id` = 7; args=(7,)
     for a in insname.db_name_set.all():    #models.py：Db_name
         #SELECT `myapp_db_account`.`id`, `myapp_db_account`.`user`, `myapp_db_account`.`passwd`, `myapp_db_account`.`role`, `myapp_db_account`.`tags` FROM `myapp_db_account` INNER JOIN `myapp_db_account_dbname` ON (`myapp_db_account`.`id` = `myapp_db_account_dbname`.`db_account_id`) WHERE `myapp_db_account_dbname`.`db_name_id` = 2; args=(2,)
@@ -137,6 +139,5 @@ def get_process_data(insname,sql):
     else:
         return (['PLEASE set the admin role account FIRST'], ''), ['error']
 
-'''
-sql = "select * from mon_tbsize where DBTAG='" + dbtag + "' order by `TOTAL(M)` desc "
-'''
+
+

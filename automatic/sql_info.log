@@ -1,262 +1,144 @@
-DEBUG 2019-06-20 18:10:23,334 utils (0.001) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:10:23,335 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:10:23,335 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:10:23,337 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:10:23,338 utils (0.001) SELECT `myapp_db_instance`.`id`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port`, `myapp_db_instance`.`role`, `myapp_db_instance`.`db_type` FROM `myapp_db_instance` WHERE `myapp_db_instance`.`id` = 3; args=(3,)
-DEBUG 2019-06-20 18:11:03,680 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:11:03,681 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:11:03,681 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:11:03,704 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:11:03,707 utils (0.001) SHOW FULL TABLES; args=None
-DEBUG 2019-06-20 18:11:03,709 utils (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
-DEBUG 2019-06-20 18:11:26,040 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:11:26,041 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:11:26,042 utils (0.001) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:11:26,068 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:11:26,069 utils (0.001) SHOW FULL TABLES; args=None
-DEBUG 2019-06-20 18:11:26,072 utils (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
-DEBUG 2019-06-20 18:11:29,184 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:11:29,184 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:11:29,185 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:11:29,210 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:11:29,212 utils (0.001) SHOW FULL TABLES; args=None
-DEBUG 2019-06-20 18:11:29,215 utils (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
-DEBUG 2019-06-20 18:11:29,417 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:11:29,418 utils (0.001) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:11:29,419 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:11:29,421 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:11:29,422 utils (0.000) SELECT `myapp_db_instance`.`id`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port`, `myapp_db_instance`.`role`, `myapp_db_instance`.`db_type` FROM `myapp_db_instance` WHERE `myapp_db_instance`.`id` = 3; args=(3,)
-DEBUG 2019-06-20 18:11:29,424 utils (0.000) SELECT `myapp_db_name`.`id`, `myapp_db_name`.`dbtag`, `myapp_db_name`.`dbname` FROM `myapp_db_name` INNER JOIN `myapp_db_name_instance` ON (`myapp_db_name`.`id` = `myapp_db_name_instance`.`db_name_id`) WHERE `myapp_db_name_instance`.`db_instance_id` = 3; args=(3,)
-DEBUG 2019-06-20 18:11:29,426 utils (0.001) SELECT `myapp_db_account`.`id`, `myapp_db_account`.`user`, `myapp_db_account`.`passwd`, `myapp_db_account`.`role`, `myapp_db_account`.`tags` FROM `myapp_db_account` INNER JOIN `myapp_db_account_dbname` ON (`myapp_db_account`.`id` = `myapp_db_account_dbname`.`db_account_id`) WHERE `myapp_db_account_dbname`.`db_name_id` = 3; args=(3,)
-DEBUG 2019-06-20 18:12:39,238 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:12:39,239 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:12:39,240 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:12:39,265 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:12:39,266 utils (0.001) SHOW FULL TABLES; args=None
-DEBUG 2019-06-20 18:12:39,269 utils (0.001) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
-DEBUG 2019-06-20 18:12:44,635 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:12:44,636 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:12:44,636 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:12:44,660 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:12:44,660 utils (0.000) SHOW FULL TABLES; args=None
-DEBUG 2019-06-20 18:12:44,663 utils (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
-DEBUG 2019-06-20 18:13:02,417 utils (0.001) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:13:02,417 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:13:02,418 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:13:02,444 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:13:02,446 utils (0.001) SHOW FULL TABLES; args=None
-DEBUG 2019-06-20 18:13:02,448 utils (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
-DEBUG 2019-06-20 18:13:02,753 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:13:02,754 utils (0.001) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:13:02,755 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:13:02,759 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:13:02,760 utils (0.001) SELECT `myapp_db_instance`.`id`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port`, `myapp_db_instance`.`role`, `myapp_db_instance`.`db_type` FROM `myapp_db_instance` WHERE `myapp_db_instance`.`id` = 3; args=(3,)
-DEBUG 2019-06-20 18:13:02,763 utils (0.000) SELECT `myapp_db_name`.`id`, `myapp_db_name`.`dbtag`, `myapp_db_name`.`dbname` FROM `myapp_db_name` INNER JOIN `myapp_db_name_instance` ON (`myapp_db_name`.`id` = `myapp_db_name_instance`.`db_name_id`) WHERE `myapp_db_name_instance`.`db_instance_id` = 3; args=(3,)
-DEBUG 2019-06-20 18:13:02,766 utils (0.001) SELECT `myapp_db_account`.`id`, `myapp_db_account`.`user`, `myapp_db_account`.`passwd`, `myapp_db_account`.`role`, `myapp_db_account`.`tags` FROM `myapp_db_account` INNER JOIN `myapp_db_account_dbname` ON (`myapp_db_account`.`id` = `myapp_db_account_dbname`.`db_account_id`) WHERE `myapp_db_account_dbname`.`db_name_id` = 3; args=(3,)
-DEBUG 2019-06-20 18:13:18,012 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:13:18,012 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:13:18,013 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:13:18,038 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:13:18,039 utils (0.001) SHOW FULL TABLES; args=None
-DEBUG 2019-06-20 18:13:18,042 utils (0.001) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
-DEBUG 2019-06-20 18:13:19,991 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:13:19,992 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:13:19,993 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:13:19,995 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:13:19,996 utils (0.000) SELECT `myapp_db_instance`.`id`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port`, `myapp_db_instance`.`role`, `myapp_db_instance`.`db_type` FROM `myapp_db_instance` WHERE `myapp_db_instance`.`id` = 3; args=(3,)
-DEBUG 2019-06-20 18:13:19,998 utils (0.000) SELECT `myapp_db_name`.`id`, `myapp_db_name`.`dbtag`, `myapp_db_name`.`dbname` FROM `myapp_db_name` INNER JOIN `myapp_db_name_instance` ON (`myapp_db_name`.`id` = `myapp_db_name_instance`.`db_name_id`) WHERE `myapp_db_name_instance`.`db_instance_id` = 3; args=(3,)
-DEBUG 2019-06-20 18:13:20,000 utils (0.000) SELECT `myapp_db_account`.`id`, `myapp_db_account`.`user`, `myapp_db_account`.`passwd`, `myapp_db_account`.`role`, `myapp_db_account`.`tags` FROM `myapp_db_account` INNER JOIN `myapp_db_account_dbname` ON (`myapp_db_account`.`id` = `myapp_db_account_dbname`.`db_account_id`) WHERE `myapp_db_account_dbname`.`db_name_id` = 3; args=(3,)
-DEBUG 2019-06-20 18:13:20,057 utils (0.000) SELECT `myapp_db_instance`.`id`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port`, `myapp_db_instance`.`role`, `myapp_db_instance`.`db_type` FROM `myapp_db_instance` WHERE `myapp_db_instance`.`db_type` = 'mysql' ORDER BY `myapp_db_instance`.`ip` ASC LIMIT 21; args=('mysql',)
-DEBUG 2019-06-20 18:13:20,060 utils (0.001) SELECT `django_session`.`session_key`, `django_session`.`session_data`, `django_session`.`expire_date` FROM `django_session` WHERE (`django_session`.`expire_date` > '2019-06-20 18:13:20.059500' AND `django_session`.`session_key` = 'jeo9ehx58hq08gbsvd1cjr0uhuxevlds'); args=('2019-06-20 18:13:20.059500', 'jeo9ehx58hq08gbsvd1cjr0uhuxevlds')
-DEBUG 2019-06-20 18:13:20,063 utils (0.000) SELECT `auth_user`.`id`, `auth_user`.`password`, `auth_user`.`last_login`, `auth_user`.`is_superuser`, `auth_user`.`username`, `auth_user`.`first_name`, `auth_user`.`last_name`, `auth_user`.`email`, `auth_user`.`is_staff`, `auth_user`.`is_active`, `auth_user`.`date_joined` FROM `auth_user` WHERE `auth_user`.`id` = 3; args=(3,)
-DEBUG 2019-06-20 18:13:34,686 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:13:34,687 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:13:34,687 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:13:34,710 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:13:34,712 utils (0.001) SHOW FULL TABLES; args=None
-DEBUG 2019-06-20 18:13:34,715 utils (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
-DEBUG 2019-06-20 18:13:36,750 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:13:36,751 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:13:36,752 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:13:36,756 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:13:36,757 utils (0.001) SELECT `myapp_db_instance`.`id`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port`, `myapp_db_instance`.`role`, `myapp_db_instance`.`db_type` FROM `myapp_db_instance` WHERE `myapp_db_instance`.`id` = 3; args=(3,)
-DEBUG 2019-06-20 18:13:36,760 utils (0.001) SELECT `myapp_db_name`.`id`, `myapp_db_name`.`dbtag`, `myapp_db_name`.`dbname` FROM `myapp_db_name` INNER JOIN `myapp_db_name_instance` ON (`myapp_db_name`.`id` = `myapp_db_name_instance`.`db_name_id`) WHERE `myapp_db_name_instance`.`db_instance_id` = 3; args=(3,)
-DEBUG 2019-06-20 18:13:36,763 utils (0.001) SELECT `myapp_db_account`.`id`, `myapp_db_account`.`user`, `myapp_db_account`.`passwd`, `myapp_db_account`.`role`, `myapp_db_account`.`tags` FROM `myapp_db_account` INNER JOIN `myapp_db_account_dbname` ON (`myapp_db_account`.`id` = `myapp_db_account_dbname`.`db_account_id`) WHERE `myapp_db_account_dbname`.`db_name_id` = 3; args=(3,)
-DEBUG 2019-06-20 18:13:55,984 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:13:55,985 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:13:55,986 utils (0.001) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:13:56,010 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:13:56,012 utils (0.001) SHOW FULL TABLES; args=None
-DEBUG 2019-06-20 18:13:56,015 utils (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
-DEBUG 2019-06-20 18:13:56,076 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:13:56,077 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:13:56,078 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:13:56,080 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:13:56,081 utils (0.000) SELECT `myapp_db_instance`.`id`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port`, `myapp_db_instance`.`role`, `myapp_db_instance`.`db_type` FROM `myapp_db_instance` WHERE `myapp_db_instance`.`id` = 3; args=(3,)
-DEBUG 2019-06-20 18:13:56,083 utils (0.001) SELECT `myapp_db_name`.`id`, `myapp_db_name`.`dbtag`, `myapp_db_name`.`dbname` FROM `myapp_db_name` INNER JOIN `myapp_db_name_instance` ON (`myapp_db_name`.`id` = `myapp_db_name_instance`.`db_name_id`) WHERE `myapp_db_name_instance`.`db_instance_id` = 3; args=(3,)
-DEBUG 2019-06-20 18:13:56,085 utils (0.000) SELECT `myapp_db_account`.`id`, `myapp_db_account`.`user`, `myapp_db_account`.`passwd`, `myapp_db_account`.`role`, `myapp_db_account`.`tags` FROM `myapp_db_account` INNER JOIN `myapp_db_account_dbname` ON (`myapp_db_account`.`id` = `myapp_db_account_dbname`.`db_account_id`) WHERE `myapp_db_account_dbname`.`db_name_id` = 3; args=(3,)
-DEBUG 2019-06-20 18:13:57,269 utils (0.001) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:13:57,270 utils (0.001) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:13:57,271 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:13:57,275 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:13:57,276 utils (0.000) SELECT `myapp_db_instance`.`id`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port`, `myapp_db_instance`.`role`, `myapp_db_instance`.`db_type` FROM `myapp_db_instance` WHERE `myapp_db_instance`.`id` = 3; args=(3,)
-DEBUG 2019-06-20 18:13:57,279 utils (0.001) SELECT `myapp_db_name`.`id`, `myapp_db_name`.`dbtag`, `myapp_db_name`.`dbname` FROM `myapp_db_name` INNER JOIN `myapp_db_name_instance` ON (`myapp_db_name`.`id` = `myapp_db_name_instance`.`db_name_id`) WHERE `myapp_db_name_instance`.`db_instance_id` = 3; args=(3,)
-DEBUG 2019-06-20 18:13:57,281 utils (0.000) SELECT `myapp_db_account`.`id`, `myapp_db_account`.`user`, `myapp_db_account`.`passwd`, `myapp_db_account`.`role`, `myapp_db_account`.`tags` FROM `myapp_db_account` INNER JOIN `myapp_db_account_dbname` ON (`myapp_db_account`.`id` = `myapp_db_account_dbname`.`db_account_id`) WHERE `myapp_db_account_dbname`.`db_name_id` = 3; args=(3,)
-DEBUG 2019-06-20 18:13:57,652 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:13:57,654 utils (0.001) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:13:57,654 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:13:57,656 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:13:57,657 utils (0.000) SELECT `myapp_db_instance`.`id`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port`, `myapp_db_instance`.`role`, `myapp_db_instance`.`db_type` FROM `myapp_db_instance` WHERE `myapp_db_instance`.`id` = 3; args=(3,)
-DEBUG 2019-06-20 18:13:57,660 utils (0.000) SELECT `myapp_db_name`.`id`, `myapp_db_name`.`dbtag`, `myapp_db_name`.`dbname` FROM `myapp_db_name` INNER JOIN `myapp_db_name_instance` ON (`myapp_db_name`.`id` = `myapp_db_name_instance`.`db_name_id`) WHERE `myapp_db_name_instance`.`db_instance_id` = 3; args=(3,)
-DEBUG 2019-06-20 18:13:57,662 utils (0.001) SELECT `myapp_db_account`.`id`, `myapp_db_account`.`user`, `myapp_db_account`.`passwd`, `myapp_db_account`.`role`, `myapp_db_account`.`tags` FROM `myapp_db_account` INNER JOIN `myapp_db_account_dbname` ON (`myapp_db_account`.`id` = `myapp_db_account_dbname`.`db_account_id`) WHERE `myapp_db_account_dbname`.`db_name_id` = 3; args=(3,)
-DEBUG 2019-06-20 18:14:26,225 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:14:26,226 utils (0.001) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:14:26,226 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:14:26,252 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:14:26,253 utils (0.001) SHOW FULL TABLES; args=None
-DEBUG 2019-06-20 18:14:26,256 utils (0.001) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
-DEBUG 2019-06-20 18:16:33,436 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:16:33,437 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:16:33,437 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:16:33,464 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:16:33,466 utils (0.001) SHOW FULL TABLES; args=None
-DEBUG 2019-06-20 18:16:33,469 utils (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
-DEBUG 2019-06-20 18:16:33,633 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:16:33,634 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:16:33,635 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:16:33,637 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:16:33,638 utils (0.000) SELECT `myapp_db_instance`.`id`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port`, `myapp_db_instance`.`role`, `myapp_db_instance`.`db_type` FROM `myapp_db_instance` WHERE `myapp_db_instance`.`id` = 3; args=(3,)
-DEBUG 2019-06-20 18:16:33,640 utils (0.000) SELECT `myapp_db_name`.`id`, `myapp_db_name`.`dbtag`, `myapp_db_name`.`dbname` FROM `myapp_db_name` INNER JOIN `myapp_db_name_instance` ON (`myapp_db_name`.`id` = `myapp_db_name_instance`.`db_name_id`) WHERE `myapp_db_name_instance`.`db_instance_id` = 3; args=(3,)
-DEBUG 2019-06-20 18:16:33,643 utils (0.000) SELECT `myapp_db_account`.`id`, `myapp_db_account`.`user`, `myapp_db_account`.`passwd`, `myapp_db_account`.`role`, `myapp_db_account`.`tags` FROM `myapp_db_account` INNER JOIN `myapp_db_account_dbname` ON (`myapp_db_account`.`id` = `myapp_db_account_dbname`.`db_account_id`) WHERE `myapp_db_account_dbname`.`db_name_id` = 3; args=(3,)
-DEBUG 2019-06-20 18:16:39,968 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:16:39,969 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:16:39,970 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:16:39,993 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:16:39,993 utils (0.000) SHOW FULL TABLES; args=None
-DEBUG 2019-06-20 18:16:39,996 utils (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
-DEBUG 2019-06-20 18:17:44,900 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:17:44,901 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:17:44,901 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:17:44,924 utils (0.001) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:17:44,926 utils (0.001) SHOW FULL TABLES; args=None
-DEBUG 2019-06-20 18:17:44,929 utils (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
-DEBUG 2019-06-20 18:17:47,988 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:17:47,989 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:17:47,990 utils (0.001) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:17:48,015 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:17:48,016 utils (0.001) SHOW FULL TABLES; args=None
-DEBUG 2019-06-20 18:17:48,019 utils (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
-DEBUG 2019-06-20 18:17:48,519 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:17:48,519 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:17:48,519 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:17:48,521 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:17:48,522 utils (0.001) SELECT `myapp_db_instance`.`id`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port`, `myapp_db_instance`.`role`, `myapp_db_instance`.`db_type` FROM `myapp_db_instance` WHERE `myapp_db_instance`.`id` = 3; args=(3,)
-DEBUG 2019-06-20 18:17:48,524 utils (0.000) SELECT `myapp_db_name`.`id`, `myapp_db_name`.`dbtag`, `myapp_db_name`.`dbname` FROM `myapp_db_name` INNER JOIN `myapp_db_name_instance` ON (`myapp_db_name`.`id` = `myapp_db_name_instance`.`db_name_id`) WHERE `myapp_db_name_instance`.`db_instance_id` = 3; args=(3,)
-DEBUG 2019-06-20 18:17:48,527 utils (0.000) SELECT `myapp_db_account`.`id`, `myapp_db_account`.`user`, `myapp_db_account`.`passwd`, `myapp_db_account`.`role`, `myapp_db_account`.`tags` FROM `myapp_db_account` INNER JOIN `myapp_db_account_dbname` ON (`myapp_db_account`.`id` = `myapp_db_account_dbname`.`db_account_id`) WHERE `myapp_db_account_dbname`.`db_name_id` = 3; args=(3,)
-DEBUG 2019-06-20 18:17:49,145 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:17:49,146 utils (0.001) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:17:49,147 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:17:49,151 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:17:49,153 utils (0.000) SELECT `myapp_db_instance`.`id`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port`, `myapp_db_instance`.`role`, `myapp_db_instance`.`db_type` FROM `myapp_db_instance` WHERE `myapp_db_instance`.`id` = 3; args=(3,)
-DEBUG 2019-06-20 18:17:49,156 utils (0.000) SELECT `myapp_db_name`.`id`, `myapp_db_name`.`dbtag`, `myapp_db_name`.`dbname` FROM `myapp_db_name` INNER JOIN `myapp_db_name_instance` ON (`myapp_db_name`.`id` = `myapp_db_name_instance`.`db_name_id`) WHERE `myapp_db_name_instance`.`db_instance_id` = 3; args=(3,)
-DEBUG 2019-06-20 18:17:49,160 utils (0.001) SELECT `myapp_db_account`.`id`, `myapp_db_account`.`user`, `myapp_db_account`.`passwd`, `myapp_db_account`.`role`, `myapp_db_account`.`tags` FROM `myapp_db_account` INNER JOIN `myapp_db_account_dbname` ON (`myapp_db_account`.`id` = `myapp_db_account_dbname`.`db_account_id`) WHERE `myapp_db_account_dbname`.`db_name_id` = 3; args=(3,)
-DEBUG 2019-06-20 18:17:49,779 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:17:49,779 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:17:49,780 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:17:49,784 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:17:49,785 utils (0.000) SELECT `myapp_db_instance`.`id`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port`, `myapp_db_instance`.`role`, `myapp_db_instance`.`db_type` FROM `myapp_db_instance` WHERE `myapp_db_instance`.`id` = 3; args=(3,)
-DEBUG 2019-06-20 18:17:49,789 utils (0.001) SELECT `myapp_db_name`.`id`, `myapp_db_name`.`dbtag`, `myapp_db_name`.`dbname` FROM `myapp_db_name` INNER JOIN `myapp_db_name_instance` ON (`myapp_db_name`.`id` = `myapp_db_name_instance`.`db_name_id`) WHERE `myapp_db_name_instance`.`db_instance_id` = 3; args=(3,)
-DEBUG 2019-06-20 18:17:49,792 utils (0.000) SELECT `myapp_db_account`.`id`, `myapp_db_account`.`user`, `myapp_db_account`.`passwd`, `myapp_db_account`.`role`, `myapp_db_account`.`tags` FROM `myapp_db_account` INNER JOIN `myapp_db_account_dbname` ON (`myapp_db_account`.`id` = `myapp_db_account_dbname`.`db_account_id`) WHERE `myapp_db_account_dbname`.`db_name_id` = 3; args=(3,)
-DEBUG 2019-06-20 18:17:49,950 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:17:49,951 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:17:49,951 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:17:49,953 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:17:49,955 utils (0.000) SELECT `myapp_db_instance`.`id`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port`, `myapp_db_instance`.`role`, `myapp_db_instance`.`db_type` FROM `myapp_db_instance` WHERE `myapp_db_instance`.`id` = 3; args=(3,)
-DEBUG 2019-06-20 18:17:49,957 utils (0.001) SELECT `myapp_db_name`.`id`, `myapp_db_name`.`dbtag`, `myapp_db_name`.`dbname` FROM `myapp_db_name` INNER JOIN `myapp_db_name_instance` ON (`myapp_db_name`.`id` = `myapp_db_name_instance`.`db_name_id`) WHERE `myapp_db_name_instance`.`db_instance_id` = 3; args=(3,)
-DEBUG 2019-06-20 18:17:49,959 utils (0.001) SELECT `myapp_db_account`.`id`, `myapp_db_account`.`user`, `myapp_db_account`.`passwd`, `myapp_db_account`.`role`, `myapp_db_account`.`tags` FROM `myapp_db_account` INNER JOIN `myapp_db_account_dbname` ON (`myapp_db_account`.`id` = `myapp_db_account_dbname`.`db_account_id`) WHERE `myapp_db_account_dbname`.`db_name_id` = 3; args=(3,)
-DEBUG 2019-06-20 18:17:50,098 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:17:50,099 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:17:50,099 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:17:50,101 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:17:50,102 utils (0.001) SELECT `myapp_db_instance`.`id`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port`, `myapp_db_instance`.`role`, `myapp_db_instance`.`db_type` FROM `myapp_db_instance` WHERE `myapp_db_instance`.`id` = 3; args=(3,)
-DEBUG 2019-06-20 18:17:50,103 utils (0.000) SELECT `myapp_db_name`.`id`, `myapp_db_name`.`dbtag`, `myapp_db_name`.`dbname` FROM `myapp_db_name` INNER JOIN `myapp_db_name_instance` ON (`myapp_db_name`.`id` = `myapp_db_name_instance`.`db_name_id`) WHERE `myapp_db_name_instance`.`db_instance_id` = 3; args=(3,)
-DEBUG 2019-06-20 18:17:50,105 utils (0.000) SELECT `myapp_db_account`.`id`, `myapp_db_account`.`user`, `myapp_db_account`.`passwd`, `myapp_db_account`.`role`, `myapp_db_account`.`tags` FROM `myapp_db_account` INNER JOIN `myapp_db_account_dbname` ON (`myapp_db_account`.`id` = `myapp_db_account_dbname`.`db_account_id`) WHERE `myapp_db_account_dbname`.`db_name_id` = 3; args=(3,)
-DEBUG 2019-06-20 18:17:50,214 utils (0.001) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:17:50,215 utils (0.001) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:17:50,217 utils (0.001) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:17:50,220 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:17:50,220 utils (0.000) SELECT `myapp_db_instance`.`id`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port`, `myapp_db_instance`.`role`, `myapp_db_instance`.`db_type` FROM `myapp_db_instance` WHERE `myapp_db_instance`.`id` = 3; args=(3,)
-DEBUG 2019-06-20 18:17:50,223 utils (0.001) SELECT `myapp_db_name`.`id`, `myapp_db_name`.`dbtag`, `myapp_db_name`.`dbname` FROM `myapp_db_name` INNER JOIN `myapp_db_name_instance` ON (`myapp_db_name`.`id` = `myapp_db_name_instance`.`db_name_id`) WHERE `myapp_db_name_instance`.`db_instance_id` = 3; args=(3,)
-DEBUG 2019-06-20 18:17:50,225 utils (0.001) SELECT `myapp_db_account`.`id`, `myapp_db_account`.`user`, `myapp_db_account`.`passwd`, `myapp_db_account`.`role`, `myapp_db_account`.`tags` FROM `myapp_db_account` INNER JOIN `myapp_db_account_dbname` ON (`myapp_db_account`.`id` = `myapp_db_account_dbname`.`db_account_id`) WHERE `myapp_db_account_dbname`.`db_name_id` = 3; args=(3,)
-DEBUG 2019-06-20 18:17:54,481 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:17:54,483 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:17:54,483 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:17:54,509 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:17:54,511 utils (0.001) SHOW FULL TABLES; args=None
-DEBUG 2019-06-20 18:17:54,513 utils (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
-DEBUG 2019-06-20 18:18:17,883 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:18:17,884 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:18:17,884 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:18:17,910 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:18:17,911 utils (0.000) SHOW FULL TABLES; args=None
-DEBUG 2019-06-20 18:18:17,914 utils (0.001) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
-DEBUG 2019-06-20 18:19:32,392 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:19:32,394 utils (0.001) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:19:32,394 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:19:32,419 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:19:32,420 utils (0.000) SHOW FULL TABLES; args=None
-DEBUG 2019-06-20 18:19:32,422 utils (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
-DEBUG 2019-06-20 18:30:44,248 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:30:44,249 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:30:44,250 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:30:44,273 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:30:44,273 utils (0.000) SHOW FULL TABLES; args=None
-DEBUG 2019-06-20 18:30:44,277 utils (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
-DEBUG 2019-06-20 18:31:50,671 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:31:50,671 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:31:50,672 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:31:50,697 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:31:50,698 utils (0.001) SHOW FULL TABLES; args=None
-DEBUG 2019-06-20 18:31:50,700 utils (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
-DEBUG 2019-06-20 18:32:06,196 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:32:06,197 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:32:06,197 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:32:06,220 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:32:06,222 utils (0.001) SHOW FULL TABLES; args=None
-DEBUG 2019-06-20 18:32:06,224 utils (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
-DEBUG 2019-06-20 18:33:26,680 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:33:26,680 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:33:26,681 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:33:26,705 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:33:26,707 utils (0.000) SHOW FULL TABLES; args=None
-DEBUG 2019-06-20 18:33:26,710 utils (0.001) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
-DEBUG 2019-06-20 18:33:54,668 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:33:54,669 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:33:54,670 utils (0.001) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:33:54,695 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:33:54,697 utils (0.001) SHOW FULL TABLES; args=None
-DEBUG 2019-06-20 18:33:54,700 utils (0.001) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
-DEBUG 2019-06-20 18:34:41,843 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:34:41,844 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:34:41,845 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:34:41,867 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:34:41,868 utils (0.001) SHOW FULL TABLES; args=None
-DEBUG 2019-06-20 18:34:41,871 utils (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
-DEBUG 2019-06-20 18:34:46,103 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:34:46,104 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:34:46,104 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:34:46,127 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:34:46,128 utils (0.000) SHOW FULL TABLES; args=None
-DEBUG 2019-06-20 18:34:46,130 utils (0.001) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
-DEBUG 2019-06-20 18:34:53,734 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:34:53,735 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:34:53,736 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:34:53,760 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:34:53,761 utils (0.000) SHOW FULL TABLES; args=None
-DEBUG 2019-06-20 18:34:53,764 utils (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
-DEBUG 2019-06-20 18:35:09,436 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
-DEBUG 2019-06-20 18:35:09,437 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:35:09,437 utils (0.000) SELECT VERSION(); args=None
-DEBUG 2019-06-20 18:35:09,463 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
-DEBUG 2019-06-20 18:35:09,464 utils (0.000) SHOW FULL TABLES; args=None
-DEBUG 2019-06-20 18:35:09,467 utils (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
+DEBUG 2019-06-21 18:37:21,397 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
+DEBUG 2019-06-21 18:37:21,398 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:37:21,399 utils (0.000) SELECT VERSION(); args=None
+DEBUG 2019-06-21 18:37:21,423 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:37:21,424 utils (0.000) SHOW FULL TABLES; args=None
+DEBUG 2019-06-21 18:37:21,426 utils (0.001) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
+DEBUG 2019-06-21 18:37:21,450 utils (0.001) SELECT @@SQL_AUTO_IS_NULL; args=None
+DEBUG 2019-06-21 18:37:21,452 utils (0.001) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:37:21,454 utils (0.001) SELECT VERSION(); args=None
+DEBUG 2019-06-21 18:37:21,457 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:37:21,457 utils (0.000) SELECT `myapp_db_instance`.`id`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port`, `myapp_db_instance`.`role`, `myapp_db_instance`.`db_type` FROM `myapp_db_instance` WHERE `myapp_db_instance`.`id` = 3; args=(3,)
+DEBUG 2019-06-21 18:37:21,461 utils (0.001) SELECT `mysql_slow_query_review`.`fingerprint` AS `SQLText`, `mysql_slow_query_review`.`checksum` AS `SQLId`, MAX(`mysql_slow_query_review_history`.`ts_max`) AS `CreateTime`, MAX(`mysql_slow_query_review_history`.`db_max`) AS `DBName`, (SUM(`mysql_slow_query_review_history`.`Query_time_sum`) / SUM(`mysql_slow_query_review_history`.`ts_cnt`)) AS `QueryTimeAvg`, SUM(`mysql_slow_query_review_history`.`ts_cnt`) AS `MySQLTotalExecutionCounts`, SUM(`mysql_slow_query_review_history`.`Query_time_sum`) AS `MySQLTotalExecutionTimes`, SUM(`mysql_slow_query_review_history`.`Rows_examined_sum`) AS `ParseTotalRowCounts`, SUM(`mysql_slow_query_review_history`.`Rows_sent_sum`) AS `ReturnTotalRowCounts` FROM `mysql_slow_query_review` INNER JOIN `mysql_slow_query_review_history` ON (`mysql_slow_query_review`.`checksum` = `mysql_slow_query_review_history`.`checksum`) WHERE (`mysql_slow_query_review_history`.`db_max` = 'niuniu_db' AND `mysql_slow_query_review_history`.`hostname_max` = '39.108.17.17:3306' AND `mysql_slow_query_review_history`.`ts_min` BETWEEN '2019-06-19 00:00:00' AND '2019-06-21 00:00:00') GROUP BY `mysql_slow_query_review`.`checksum` ORDER BY `MySQLTotalExecutionCounts` DESC LIMIT 1; args=('niuniu_db', '39.108.17.17:3306', '2019-06-19 00:00:00', '2019-06-21 00:00:00')
+DEBUG 2019-06-21 18:37:35,937 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
+DEBUG 2019-06-21 18:37:35,937 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:37:35,938 utils (0.001) SELECT VERSION(); args=None
+DEBUG 2019-06-21 18:37:35,964 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:37:35,965 utils (0.000) SHOW FULL TABLES; args=None
+DEBUG 2019-06-21 18:37:35,968 utils (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
+DEBUG 2019-06-21 18:37:36,092 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
+DEBUG 2019-06-21 18:37:36,093 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:37:36,094 utils (0.000) SELECT VERSION(); args=None
+DEBUG 2019-06-21 18:37:36,096 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:37:36,097 utils (0.000) SELECT `myapp_db_instance`.`id`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port`, `myapp_db_instance`.`role`, `myapp_db_instance`.`db_type` FROM `myapp_db_instance` WHERE `myapp_db_instance`.`id` = 3; args=(3,)
+DEBUG 2019-06-21 18:37:36,102 utils (0.001) SELECT `mysql_slow_query_review`.`fingerprint` AS `SQLText`, `mysql_slow_query_review`.`checksum` AS `SQLId`, MAX(`mysql_slow_query_review_history`.`ts_max`) AS `CreateTime`, MAX(`mysql_slow_query_review_history`.`db_max`) AS `DBName`, (SUM(`mysql_slow_query_review_history`.`Query_time_sum`) / SUM(`mysql_slow_query_review_history`.`ts_cnt`)) AS `QueryTimeAvg`, SUM(`mysql_slow_query_review_history`.`ts_cnt`) AS `MySQLTotalExecutionCounts`, SUM(`mysql_slow_query_review_history`.`Query_time_sum`) AS `MySQLTotalExecutionTimes`, SUM(`mysql_slow_query_review_history`.`Rows_examined_sum`) AS `ParseTotalRowCounts`, SUM(`mysql_slow_query_review_history`.`Rows_sent_sum`) AS `ReturnTotalRowCounts` FROM `mysql_slow_query_review` INNER JOIN `mysql_slow_query_review_history` ON (`mysql_slow_query_review`.`checksum` = `mysql_slow_query_review_history`.`checksum`) WHERE (`mysql_slow_query_review_history`.`db_max` = 'niuniu_db' AND `mysql_slow_query_review_history`.`hostname_max` = '39.108.17.17:3306' AND `mysql_slow_query_review_history`.`ts_min` BETWEEN '2019-06-19 00:00:00' AND '2019-06-21 00:00:00') GROUP BY `mysql_slow_query_review`.`checksum` ORDER BY `MySQLTotalExecutionCounts` DESC LIMIT 2; args=('niuniu_db', '39.108.17.17:3306', '2019-06-19 00:00:00', '2019-06-21 00:00:00')
+DEBUG 2019-06-21 18:38:01,838 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
+DEBUG 2019-06-21 18:38:01,839 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:38:01,840 utils (0.000) SELECT VERSION(); args=None
+DEBUG 2019-06-21 18:38:01,867 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:38:01,868 utils (0.001) SHOW FULL TABLES; args=None
+DEBUG 2019-06-21 18:38:01,871 utils (0.001) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
+DEBUG 2019-06-21 18:38:02,084 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
+DEBUG 2019-06-21 18:38:02,085 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:38:02,086 utils (0.000) SELECT VERSION(); args=None
+DEBUG 2019-06-21 18:38:02,088 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:38:02,090 utils (0.001) SELECT `myapp_db_instance`.`id`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port`, `myapp_db_instance`.`role`, `myapp_db_instance`.`db_type` FROM `myapp_db_instance` WHERE `myapp_db_instance`.`id` = 3; args=(3,)
+DEBUG 2019-06-21 18:38:02,094 utils (0.001) SELECT `mysql_slow_query_review`.`fingerprint` AS `SQLText`, `mysql_slow_query_review`.`checksum` AS `SQLId`, MAX(`mysql_slow_query_review_history`.`ts_max`) AS `CreateTime`, MAX(`mysql_slow_query_review_history`.`db_max`) AS `DBName`, (SUM(`mysql_slow_query_review_history`.`Query_time_sum`) / SUM(`mysql_slow_query_review_history`.`ts_cnt`)) AS `QueryTimeAvg`, SUM(`mysql_slow_query_review_history`.`ts_cnt`) AS `MySQLTotalExecutionCounts`, SUM(`mysql_slow_query_review_history`.`Query_time_sum`) AS `MySQLTotalExecutionTimes`, SUM(`mysql_slow_query_review_history`.`Rows_examined_sum`) AS `ParseTotalRowCounts`, SUM(`mysql_slow_query_review_history`.`Rows_sent_sum`) AS `ReturnTotalRowCounts` FROM `mysql_slow_query_review` INNER JOIN `mysql_slow_query_review_history` ON (`mysql_slow_query_review`.`checksum` = `mysql_slow_query_review_history`.`checksum`) WHERE (`mysql_slow_query_review_history`.`db_max` = 'niuniu_db' AND `mysql_slow_query_review_history`.`hostname_max` = '39.108.17.17:3306' AND `mysql_slow_query_review_history`.`ts_min` BETWEEN '2019-06-19 00:00:00' AND '2019-06-21 00:00:00') GROUP BY `mysql_slow_query_review`.`checksum` ORDER BY `MySQLTotalExecutionCounts` DESC LIMIT 1 OFFSET 1; args=('niuniu_db', '39.108.17.17:3306', '2019-06-19 00:00:00', '2019-06-21 00:00:00')
+DEBUG 2019-06-21 18:38:42,577 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
+DEBUG 2019-06-21 18:38:42,578 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:38:42,579 utils (0.000) SELECT VERSION(); args=None
+DEBUG 2019-06-21 18:38:42,604 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:38:42,605 utils (0.001) SHOW FULL TABLES; args=None
+DEBUG 2019-06-21 18:38:42,608 utils (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
+DEBUG 2019-06-21 18:38:45,682 utils (0.001) SELECT @@SQL_AUTO_IS_NULL; args=None
+DEBUG 2019-06-21 18:38:45,683 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:38:45,684 utils (0.000) SELECT VERSION(); args=None
+DEBUG 2019-06-21 18:38:45,710 utils (0.001) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:38:45,711 utils (0.001) SHOW FULL TABLES; args=None
+DEBUG 2019-06-21 18:38:45,716 utils (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
+DEBUG 2019-06-21 18:38:56,760 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
+DEBUG 2019-06-21 18:38:56,761 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:38:56,763 utils (0.001) SELECT VERSION(); args=None
+DEBUG 2019-06-21 18:38:56,788 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:38:56,789 utils (0.001) SHOW FULL TABLES; args=None
+DEBUG 2019-06-21 18:38:56,792 utils (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
+DEBUG 2019-06-21 18:38:56,986 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
+DEBUG 2019-06-21 18:38:56,987 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:38:56,988 utils (0.000) SELECT VERSION(); args=None
+DEBUG 2019-06-21 18:38:56,990 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:38:56,991 utils (0.000) SELECT `myapp_db_instance`.`id`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port`, `myapp_db_instance`.`role`, `myapp_db_instance`.`db_type` FROM `myapp_db_instance` WHERE `myapp_db_instance`.`id` = 3; args=(3,)
+DEBUG 2019-06-21 18:38:56,995 utils (0.001) SELECT `mysql_slow_query_review`.`fingerprint` AS `SQLText`, `mysql_slow_query_review`.`checksum` AS `SQLId`, MAX(`mysql_slow_query_review_history`.`ts_max`) AS `CreateTime`, MAX(`mysql_slow_query_review_history`.`db_max`) AS `DBName`, (SUM(`mysql_slow_query_review_history`.`Query_time_sum`) / SUM(`mysql_slow_query_review_history`.`ts_cnt`)) AS `QueryTimeAvg`, SUM(`mysql_slow_query_review_history`.`ts_cnt`) AS `MySQLTotalExecutionCounts`, SUM(`mysql_slow_query_review_history`.`Query_time_sum`) AS `MySQLTotalExecutionTimes`, SUM(`mysql_slow_query_review_history`.`Rows_examined_sum`) AS `ParseTotalRowCounts`, SUM(`mysql_slow_query_review_history`.`Rows_sent_sum`) AS `ReturnTotalRowCounts` FROM `mysql_slow_query_review` INNER JOIN `mysql_slow_query_review_history` ON (`mysql_slow_query_review`.`checksum` = `mysql_slow_query_review_history`.`checksum`) WHERE (`mysql_slow_query_review_history`.`db_max` = 'niuniu_db' AND `mysql_slow_query_review_history`.`hostname_max` = '39.108.17.17:3306' AND `mysql_slow_query_review_history`.`ts_min` BETWEEN '2019-06-19 00:00:00' AND '2019-06-21 00:00:00') GROUP BY `mysql_slow_query_review`.`checksum` ORDER BY `MySQLTotalExecutionCounts` DESC LIMIT 2 OFFSET 1; args=('niuniu_db', '39.108.17.17:3306', '2019-06-19 00:00:00', '2019-06-21 00:00:00')
+DEBUG 2019-06-21 18:39:14,569 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
+DEBUG 2019-06-21 18:39:14,571 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:39:14,572 utils (0.000) SELECT VERSION(); args=None
+DEBUG 2019-06-21 18:39:14,595 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:39:14,596 utils (0.001) SHOW FULL TABLES; args=None
+DEBUG 2019-06-21 18:39:14,598 utils (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
+DEBUG 2019-06-21 18:39:23,325 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
+DEBUG 2019-06-21 18:39:23,326 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:39:23,327 utils (0.000) SELECT VERSION(); args=None
+DEBUG 2019-06-21 18:39:23,351 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:39:23,352 utils (0.001) SHOW FULL TABLES; args=None
+DEBUG 2019-06-21 18:39:23,355 utils (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
+DEBUG 2019-06-21 18:39:24,663 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
+DEBUG 2019-06-21 18:39:24,664 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:39:24,664 utils (0.000) SELECT VERSION(); args=None
+DEBUG 2019-06-21 18:39:24,668 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:39:24,670 utils (0.000) SELECT `myapp_db_instance`.`id`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port`, `myapp_db_instance`.`role`, `myapp_db_instance`.`db_type` FROM `myapp_db_instance` WHERE `myapp_db_instance`.`id` = 3; args=(3,)
+DEBUG 2019-06-21 18:39:24,673 utils (0.001) SELECT `mysql_slow_query_review`.`fingerprint` AS `SQLText`, `mysql_slow_query_review`.`checksum` AS `SQLId`, MAX(`mysql_slow_query_review_history`.`ts_max`) AS `CreateTime`, MAX(`mysql_slow_query_review_history`.`db_max`) AS `DBName`, (SUM(`mysql_slow_query_review_history`.`Query_time_sum`) / SUM(`mysql_slow_query_review_history`.`ts_cnt`)) AS `QueryTimeAvg`, SUM(`mysql_slow_query_review_history`.`ts_cnt`) AS `MySQLTotalExecutionCounts`, SUM(`mysql_slow_query_review_history`.`Query_time_sum`) AS `MySQLTotalExecutionTimes`, SUM(`mysql_slow_query_review_history`.`Rows_examined_sum`) AS `ParseTotalRowCounts`, SUM(`mysql_slow_query_review_history`.`Rows_sent_sum`) AS `ReturnTotalRowCounts` FROM `mysql_slow_query_review` INNER JOIN `mysql_slow_query_review_history` ON (`mysql_slow_query_review`.`checksum` = `mysql_slow_query_review_history`.`checksum`) WHERE (`mysql_slow_query_review_history`.`db_max` = 'niuniu_db' AND `mysql_slow_query_review_history`.`hostname_max` = '39.108.17.17:3306' AND `mysql_slow_query_review_history`.`ts_min` BETWEEN '2019-06-19 00:00:00' AND '2019-06-21 00:00:00') GROUP BY `mysql_slow_query_review`.`checksum` ORDER BY `MySQLTotalExecutionCounts` DESC LIMIT 1; args=('niuniu_db', '39.108.17.17:3306', '2019-06-19 00:00:00', '2019-06-21 00:00:00')
+DEBUG 2019-06-21 18:39:27,380 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
+DEBUG 2019-06-21 18:39:27,381 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:39:27,383 utils (0.000) SELECT VERSION(); args=None
+DEBUG 2019-06-21 18:39:27,386 utils (0.001) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:39:27,387 utils (0.000) SELECT `myapp_db_instance`.`id`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port`, `myapp_db_instance`.`role`, `myapp_db_instance`.`db_type` FROM `myapp_db_instance` WHERE `myapp_db_instance`.`id` = 3; args=(3,)
+DEBUG 2019-06-21 18:39:27,392 utils (0.001) SELECT `mysql_slow_query_review`.`fingerprint` AS `SQLText`, `mysql_slow_query_review`.`checksum` AS `SQLId`, MAX(`mysql_slow_query_review_history`.`ts_max`) AS `CreateTime`, MAX(`mysql_slow_query_review_history`.`db_max`) AS `DBName`, (SUM(`mysql_slow_query_review_history`.`Query_time_sum`) / SUM(`mysql_slow_query_review_history`.`ts_cnt`)) AS `QueryTimeAvg`, SUM(`mysql_slow_query_review_history`.`ts_cnt`) AS `MySQLTotalExecutionCounts`, SUM(`mysql_slow_query_review_history`.`Query_time_sum`) AS `MySQLTotalExecutionTimes`, SUM(`mysql_slow_query_review_history`.`Rows_examined_sum`) AS `ParseTotalRowCounts`, SUM(`mysql_slow_query_review_history`.`Rows_sent_sum`) AS `ReturnTotalRowCounts` FROM `mysql_slow_query_review` INNER JOIN `mysql_slow_query_review_history` ON (`mysql_slow_query_review`.`checksum` = `mysql_slow_query_review_history`.`checksum`) WHERE (`mysql_slow_query_review_history`.`db_max` = 'niuniu_db' AND `mysql_slow_query_review_history`.`hostname_max` = '39.108.17.17:3306' AND `mysql_slow_query_review_history`.`ts_min` BETWEEN '2019-06-19 00:00:00' AND '2019-06-21 00:00:00') GROUP BY `mysql_slow_query_review`.`checksum` ORDER BY `MySQLTotalExecutionCounts` DESC LIMIT 1; args=('niuniu_db', '39.108.17.17:3306', '2019-06-19 00:00:00', '2019-06-21 00:00:00')
+DEBUG 2019-06-21 18:39:27,887 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
+DEBUG 2019-06-21 18:39:27,888 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:39:27,888 utils (0.000) SELECT VERSION(); args=None
+DEBUG 2019-06-21 18:39:27,891 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:39:27,892 utils (0.000) SELECT `myapp_db_instance`.`id`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port`, `myapp_db_instance`.`role`, `myapp_db_instance`.`db_type` FROM `myapp_db_instance` WHERE `myapp_db_instance`.`id` = 3; args=(3,)
+DEBUG 2019-06-21 18:39:27,897 utils (0.001) SELECT `mysql_slow_query_review`.`fingerprint` AS `SQLText`, `mysql_slow_query_review`.`checksum` AS `SQLId`, MAX(`mysql_slow_query_review_history`.`ts_max`) AS `CreateTime`, MAX(`mysql_slow_query_review_history`.`db_max`) AS `DBName`, (SUM(`mysql_slow_query_review_history`.`Query_time_sum`) / SUM(`mysql_slow_query_review_history`.`ts_cnt`)) AS `QueryTimeAvg`, SUM(`mysql_slow_query_review_history`.`ts_cnt`) AS `MySQLTotalExecutionCounts`, SUM(`mysql_slow_query_review_history`.`Query_time_sum`) AS `MySQLTotalExecutionTimes`, SUM(`mysql_slow_query_review_history`.`Rows_examined_sum`) AS `ParseTotalRowCounts`, SUM(`mysql_slow_query_review_history`.`Rows_sent_sum`) AS `ReturnTotalRowCounts` FROM `mysql_slow_query_review` INNER JOIN `mysql_slow_query_review_history` ON (`mysql_slow_query_review`.`checksum` = `mysql_slow_query_review_history`.`checksum`) WHERE (`mysql_slow_query_review_history`.`db_max` = 'niuniu_db' AND `mysql_slow_query_review_history`.`hostname_max` = '39.108.17.17:3306' AND `mysql_slow_query_review_history`.`ts_min` BETWEEN '2019-06-19 00:00:00' AND '2019-06-21 00:00:00') GROUP BY `mysql_slow_query_review`.`checksum` ORDER BY `MySQLTotalExecutionCounts` DESC LIMIT 1; args=('niuniu_db', '39.108.17.17:3306', '2019-06-19 00:00:00', '2019-06-21 00:00:00')
+DEBUG 2019-06-21 18:39:28,148 utils (0.001) SELECT @@SQL_AUTO_IS_NULL; args=None
+DEBUG 2019-06-21 18:39:28,150 utils (0.001) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:39:28,152 utils (0.001) SELECT VERSION(); args=None
+DEBUG 2019-06-21 18:39:28,160 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:39:28,161 utils (0.000) SELECT `myapp_db_instance`.`id`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port`, `myapp_db_instance`.`role`, `myapp_db_instance`.`db_type` FROM `myapp_db_instance` WHERE `myapp_db_instance`.`id` = 3; args=(3,)
+DEBUG 2019-06-21 18:39:28,166 utils (0.002) SELECT `mysql_slow_query_review`.`fingerprint` AS `SQLText`, `mysql_slow_query_review`.`checksum` AS `SQLId`, MAX(`mysql_slow_query_review_history`.`ts_max`) AS `CreateTime`, MAX(`mysql_slow_query_review_history`.`db_max`) AS `DBName`, (SUM(`mysql_slow_query_review_history`.`Query_time_sum`) / SUM(`mysql_slow_query_review_history`.`ts_cnt`)) AS `QueryTimeAvg`, SUM(`mysql_slow_query_review_history`.`ts_cnt`) AS `MySQLTotalExecutionCounts`, SUM(`mysql_slow_query_review_history`.`Query_time_sum`) AS `MySQLTotalExecutionTimes`, SUM(`mysql_slow_query_review_history`.`Rows_examined_sum`) AS `ParseTotalRowCounts`, SUM(`mysql_slow_query_review_history`.`Rows_sent_sum`) AS `ReturnTotalRowCounts` FROM `mysql_slow_query_review` INNER JOIN `mysql_slow_query_review_history` ON (`mysql_slow_query_review`.`checksum` = `mysql_slow_query_review_history`.`checksum`) WHERE (`mysql_slow_query_review_history`.`db_max` = 'niuniu_db' AND `mysql_slow_query_review_history`.`hostname_max` = '39.108.17.17:3306' AND `mysql_slow_query_review_history`.`ts_min` BETWEEN '2019-06-19 00:00:00' AND '2019-06-21 00:00:00') GROUP BY `mysql_slow_query_review`.`checksum` ORDER BY `MySQLTotalExecutionCounts` DESC LIMIT 1; args=('niuniu_db', '39.108.17.17:3306', '2019-06-19 00:00:00', '2019-06-21 00:00:00')
+DEBUG 2019-06-21 18:39:28,407 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
+DEBUG 2019-06-21 18:39:28,408 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:39:28,409 utils (0.000) SELECT VERSION(); args=None
+DEBUG 2019-06-21 18:39:28,412 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:39:28,414 utils (0.001) SELECT `myapp_db_instance`.`id`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port`, `myapp_db_instance`.`role`, `myapp_db_instance`.`db_type` FROM `myapp_db_instance` WHERE `myapp_db_instance`.`id` = 3; args=(3,)
+DEBUG 2019-06-21 18:39:28,419 utils (0.001) SELECT `mysql_slow_query_review`.`fingerprint` AS `SQLText`, `mysql_slow_query_review`.`checksum` AS `SQLId`, MAX(`mysql_slow_query_review_history`.`ts_max`) AS `CreateTime`, MAX(`mysql_slow_query_review_history`.`db_max`) AS `DBName`, (SUM(`mysql_slow_query_review_history`.`Query_time_sum`) / SUM(`mysql_slow_query_review_history`.`ts_cnt`)) AS `QueryTimeAvg`, SUM(`mysql_slow_query_review_history`.`ts_cnt`) AS `MySQLTotalExecutionCounts`, SUM(`mysql_slow_query_review_history`.`Query_time_sum`) AS `MySQLTotalExecutionTimes`, SUM(`mysql_slow_query_review_history`.`Rows_examined_sum`) AS `ParseTotalRowCounts`, SUM(`mysql_slow_query_review_history`.`Rows_sent_sum`) AS `ReturnTotalRowCounts` FROM `mysql_slow_query_review` INNER JOIN `mysql_slow_query_review_history` ON (`mysql_slow_query_review`.`checksum` = `mysql_slow_query_review_history`.`checksum`) WHERE (`mysql_slow_query_review_history`.`db_max` = 'niuniu_db' AND `mysql_slow_query_review_history`.`hostname_max` = '39.108.17.17:3306' AND `mysql_slow_query_review_history`.`ts_min` BETWEEN '2019-06-19 00:00:00' AND '2019-06-21 00:00:00') GROUP BY `mysql_slow_query_review`.`checksum` ORDER BY `MySQLTotalExecutionCounts` DESC LIMIT 1; args=('niuniu_db', '39.108.17.17:3306', '2019-06-19 00:00:00', '2019-06-21 00:00:00')
+DEBUG 2019-06-21 18:39:28,493 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
+DEBUG 2019-06-21 18:39:28,494 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:39:28,495 utils (0.000) SELECT VERSION(); args=None
+DEBUG 2019-06-21 18:39:28,498 utils (0.001) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:39:28,500 utils (0.001) SELECT `myapp_db_instance`.`id`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port`, `myapp_db_instance`.`role`, `myapp_db_instance`.`db_type` FROM `myapp_db_instance` WHERE `myapp_db_instance`.`id` = 3; args=(3,)
+DEBUG 2019-06-21 18:39:28,505 utils (0.001) SELECT `mysql_slow_query_review`.`fingerprint` AS `SQLText`, `mysql_slow_query_review`.`checksum` AS `SQLId`, MAX(`mysql_slow_query_review_history`.`ts_max`) AS `CreateTime`, MAX(`mysql_slow_query_review_history`.`db_max`) AS `DBName`, (SUM(`mysql_slow_query_review_history`.`Query_time_sum`) / SUM(`mysql_slow_query_review_history`.`ts_cnt`)) AS `QueryTimeAvg`, SUM(`mysql_slow_query_review_history`.`ts_cnt`) AS `MySQLTotalExecutionCounts`, SUM(`mysql_slow_query_review_history`.`Query_time_sum`) AS `MySQLTotalExecutionTimes`, SUM(`mysql_slow_query_review_history`.`Rows_examined_sum`) AS `ParseTotalRowCounts`, SUM(`mysql_slow_query_review_history`.`Rows_sent_sum`) AS `ReturnTotalRowCounts` FROM `mysql_slow_query_review` INNER JOIN `mysql_slow_query_review_history` ON (`mysql_slow_query_review`.`checksum` = `mysql_slow_query_review_history`.`checksum`) WHERE (`mysql_slow_query_review_history`.`db_max` = 'niuniu_db' AND `mysql_slow_query_review_history`.`hostname_max` = '39.108.17.17:3306' AND `mysql_slow_query_review_history`.`ts_min` BETWEEN '2019-06-19 00:00:00' AND '2019-06-21 00:00:00') GROUP BY `mysql_slow_query_review`.`checksum` ORDER BY `MySQLTotalExecutionCounts` DESC LIMIT 1; args=('niuniu_db', '39.108.17.17:3306', '2019-06-19 00:00:00', '2019-06-21 00:00:00')
+DEBUG 2019-06-21 18:39:28,671 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
+DEBUG 2019-06-21 18:39:28,672 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:39:28,673 utils (0.001) SELECT VERSION(); args=None
+DEBUG 2019-06-21 18:39:28,678 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:39:28,679 utils (0.000) SELECT `myapp_db_instance`.`id`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port`, `myapp_db_instance`.`role`, `myapp_db_instance`.`db_type` FROM `myapp_db_instance` WHERE `myapp_db_instance`.`id` = 3; args=(3,)
+DEBUG 2019-06-21 18:39:28,683 utils (0.002) SELECT `mysql_slow_query_review`.`fingerprint` AS `SQLText`, `mysql_slow_query_review`.`checksum` AS `SQLId`, MAX(`mysql_slow_query_review_history`.`ts_max`) AS `CreateTime`, MAX(`mysql_slow_query_review_history`.`db_max`) AS `DBName`, (SUM(`mysql_slow_query_review_history`.`Query_time_sum`) / SUM(`mysql_slow_query_review_history`.`ts_cnt`)) AS `QueryTimeAvg`, SUM(`mysql_slow_query_review_history`.`ts_cnt`) AS `MySQLTotalExecutionCounts`, SUM(`mysql_slow_query_review_history`.`Query_time_sum`) AS `MySQLTotalExecutionTimes`, SUM(`mysql_slow_query_review_history`.`Rows_examined_sum`) AS `ParseTotalRowCounts`, SUM(`mysql_slow_query_review_history`.`Rows_sent_sum`) AS `ReturnTotalRowCounts` FROM `mysql_slow_query_review` INNER JOIN `mysql_slow_query_review_history` ON (`mysql_slow_query_review`.`checksum` = `mysql_slow_query_review_history`.`checksum`) WHERE (`mysql_slow_query_review_history`.`db_max` = 'niuniu_db' AND `mysql_slow_query_review_history`.`hostname_max` = '39.108.17.17:3306' AND `mysql_slow_query_review_history`.`ts_min` BETWEEN '2019-06-19 00:00:00' AND '2019-06-21 00:00:00') GROUP BY `mysql_slow_query_review`.`checksum` ORDER BY `MySQLTotalExecutionCounts` DESC LIMIT 1; args=('niuniu_db', '39.108.17.17:3306', '2019-06-19 00:00:00', '2019-06-21 00:00:00')
+DEBUG 2019-06-21 18:42:00,728 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
+DEBUG 2019-06-21 18:42:00,729 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:42:00,730 utils (0.000) SELECT VERSION(); args=None
+DEBUG 2019-06-21 18:42:00,755 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:42:00,757 utils (0.001) SHOW FULL TABLES; args=None
+DEBUG 2019-06-21 18:42:00,760 utils (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
+DEBUG 2019-06-21 18:45:47,229 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
+DEBUG 2019-06-21 18:45:47,230 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:45:47,231 utils (0.001) SELECT VERSION(); args=None
+DEBUG 2019-06-21 18:45:47,256 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:45:47,257 utils (0.001) SHOW FULL TABLES; args=None
+DEBUG 2019-06-21 18:45:47,260 utils (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
+DEBUG 2019-06-21 18:45:59,398 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
+DEBUG 2019-06-21 18:45:59,399 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:45:59,399 utils (0.000) SELECT VERSION(); args=None
+DEBUG 2019-06-21 18:45:59,424 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:45:59,425 utils (0.001) SHOW FULL TABLES; args=None
+DEBUG 2019-06-21 18:45:59,428 utils (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
+DEBUG 2019-06-21 18:46:32,233 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
+DEBUG 2019-06-21 18:46:32,235 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:46:32,236 utils (0.000) SELECT VERSION(); args=None
+DEBUG 2019-06-21 18:46:32,264 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:46:32,266 utils (0.001) SHOW FULL TABLES; args=None
+DEBUG 2019-06-21 18:46:32,270 utils (0.001) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
+DEBUG 2019-06-21 18:46:37,648 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
+DEBUG 2019-06-21 18:46:37,650 utils (0.001) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:46:37,652 utils (0.001) SELECT VERSION(); args=None
+DEBUG 2019-06-21 18:46:37,694 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-06-21 18:46:37,696 utils (0.001) SHOW FULL TABLES; args=None
+DEBUG 2019-06-21 18:46:37,700 utils (0.001) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
