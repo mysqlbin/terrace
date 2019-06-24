@@ -23,8 +23,10 @@ urlpatterns = [
 
     path('index/', myapp_view.index, name='index'),
 
-    path('binlog_parse/', myapp_view.binlog_parse, name='binlog_parse'),  # name:定义url名称
-    path('slow_query/', myapp_view.slow_query, name='slow_query'),  # name:定义url名称
+    path('binlog_parse/', myapp_view.binlog_parse, name='binlog_parse'),
+    path('slow_query/', myapp_view.slow_query, name='slow_query'),
+    #path('slowquery_review_history/', myapp_view.slowquery_review_history, name='slowquery_review_history'),
+    path('slowquery_review_history/<SQLId>/', myapp_view.slowquery_review_history, name='slowsql_info'),
 
     # path('login/', myapp_view.login, name='login'),
 

@@ -1,0 +1,48 @@
+{% extends "include/base.html" %}
+{% block title %}
+    <title>showsql_info</title>
+{% endblock %}
+{% block name %}
+    慢查询SQL明细
+{% endblock %}
+{%block content%}
+    <div class="col-xs-10 col-md-12 main ">
+
+        <table class="table table-condensed" border="1">
+            <thead>
+            <tr >
+                <th>执行开始时间</th>
+                <th>数据库名</th>
+                <th>用户名</th>
+                <th>SQL语句</th>
+                <th>执行总次数</th>
+                <th>执行时长(95%)</th>
+                <th>执行总时长(秒)</th>
+                <th>锁定总时长(秒)</th>
+                <th>解析总行数</th>
+                <th>返回总行数</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for res in slow_sql_record_result %}
+                <tr>
+                    <td> {{ res.ExecutionStartTime }} </td>
+                    <td> {{ res.DBName }} </td>
+                    <td> {{ res.HostAddress }} </td>
+                    <td> {{ res.SQLText}} </td>
+                    <td> {{ res.TotalExecutionCounts }} </td>
+                    <td> {{ res.QueryTimePct95 }} </td>
+                    <td> {{ res.QueryTimes }} </td>
+                    <td> {{ res.LockTimes }} </td>
+                    <td> {{ res.ParseRowCounts }} </td>
+                    <td> {{ res.ReturnRowCounts }} </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+    </div>
+
+{% endblock %}
+
