@@ -5,6 +5,7 @@
 {% block name %}
     慢查询统计
 {% endblock %}
+
 {%block content%}
     <div class="col-xs-10 col-md-12 main ">
 
@@ -77,11 +78,13 @@
 
     </div>
 
-{% endblock content %}
+{% endblock %}
 
 {% block script %}
     <!-- 选择框和切换控件 -->
     <script>
+
+        alter(1);
         // 初始化时间控件
         $('#reservation').daterangepicker({
             startDate: moment().startOf('day'),

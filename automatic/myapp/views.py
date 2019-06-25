@@ -18,6 +18,8 @@ from django.db.models import F,Max,Sum,Value as V
 
 from django.db.models.functions import Concat
 
+from django.forms.models import model_to_dict
+
 
 
 @login_required(login_url='/admin/login/')
@@ -32,7 +34,6 @@ def slow_query(request):
     insname = Db_instance.objects.get(id=int(request.POST.get('instance', '3')))
 
     dbname_list = insname.db_name_set.all()
-
 
     if request.method == 'POST':
 
@@ -91,10 +92,24 @@ def slow_query(request):
 
 def slowquery_review_history(request, SQLId):
 
-    insname = Db_instance.objects.get(id=3)
+    """
+    把需要的SQL查询出来
+    select hostname_max from mysql_slow_query_review_history where `checksum`='751B6804D43917F6CFBAB7F3D65EB9CB'  limit 1;
+    select * from myapp_db_instance where ip='39.108.17.17' and `port`=3306;
+    select dbname from myapp_db_name db_name join myapp_db_name_instance db_instance on db_name.id=db_instance.db_name_id where db_instance_id=3;
+    """
 
-    # dbresult, col = meta.get_process_data(insname, 'show databases')
-    db_name = 'niuniu_db'
+    results = SlowQueryHistory.objects.filter(checksum=SQLId).values('hostname_max')[0]
+
+    results_lists = list(results)
+
+    instance_res = Db_instance.objects.get(ip='39.108.17.17', port=3306)
+
+    # 返回所有与 a 对象对应的 Entry 对象
+    dbname_list = instance_res.db_name_set.all().values('dbname')
+    
+    db_name = request.POST.get('dbname')
+    # return HttpResponse(db_name)
     start_time = '2019-06-19'
     end_time = '2019-06-21'
     offset = 0
@@ -104,8 +119,8 @@ def slowquery_review_history(request, SQLId):
 
     if sql_id:
         # 获取慢查明细数据
-        slow_sql_record_obj = SlowQueryHistory.objects.filter(
-            hostname_max=('{}:{}'.format(insname.ip, insname.port)),
+        slow_sql_record_result = SlowQueryHistory.objects.filter(
+            hostname_max=('{}:{}'.format(instance_res.ip, instance_res.port)),
             checksum=sql_id,
             ts_min__range=(start_time, end_time)
         ).annotate(ExecutionStartTime=F('ts_min'),  # 本次统计(每5分钟一次)该类型sql语句出现的最小时间
@@ -122,8 +137,8 @@ def slowquery_review_history(request, SQLId):
     else:
         if db_name:
             # 获取慢查明细数据
-            slow_sql_record_obj = SlowQueryHistory.objects.filter(
-                hostname_max=('{}:{}'.format(insname.ip, insname.port)),
+            slow_sql_record_result = SlowQueryHistory.objects.filter(
+                hostname_max=('{}:{}'.format(instance_res.ip, instance_res.port)),
                 db_max=db_name,
                 ts_min__range=(start_time, end_time)
             ).annotate(ExecutionStartTime=F('ts_min'),  # 本次统计(每5分钟一次)该类型sql语句出现的最小时间
@@ -139,8 +154,8 @@ def slowquery_review_history(request, SQLId):
                        )
         else:
             # 获取慢查明细数据
-            slow_sql_record_obj = SlowQueryHistory.objects.filter(
-                hostname_max=('{}:{}'.format(insname.ip, insname.port)),
+            slow_sql_record_result = SlowQueryHistory.objects.filter(
+                hostname_max=('{}:{}'.format(instance_res.ip, instance_res.port)),
                 ts_min__range=(start_time, end_time)
             ).annotate(ExecutionStartTime=F('ts_min'),  # 本次统计(每5分钟一次)该类型sql语句出现的最小时间
                        DBName=F('db_max'),  # 数据库名
@@ -155,7 +170,8 @@ def slowquery_review_history(request, SQLId):
                        )
 
     # return HttpResponse(slow_sql_record_obj)
-    return render(request, 'showsql_info.html', {'slow_sql_record_result': slow_sql_record_obj})
+    # return render(request, 'showsql_info.html', {'slow_sql_record_result': slow_sql_record_obj})
+    return render(request, 'showsql_info.html', locals())
 
 
 @login_required(login_url='/admin/login/')
