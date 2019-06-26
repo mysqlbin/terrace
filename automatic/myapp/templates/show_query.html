@@ -27,15 +27,15 @@
                         <td> 选择数据库 : </td>
                         <td>
                             <select id='dbname' class="form-control col-md-3" name="dbname">
-                                {% for obj in dbname_list%}
-                                <option value = "{{ obj.dbname }}" >{{ obj.dbname }}</option>
+                                {% for obj in dblist%}
+                                <option value = "{{ obj }}" {% if obj == db_name %} selected {% endif %}  >{{ obj }}</option>
                                 {% endfor %}
                             </select>
                         </td>
 
                         <td> 选择时间 : </td>
                         <td>
-                         <input id="reservation" type="text" readonly class="form-control"/>
+                            <input class="dateinput dateicon je-mr25 form-control col-md-6" id="ranges01" name="range-time" type="text"  value = "{{ start_time|date:'Y-m-d H:i:s' }} To {{ end_time|date:'Y-m-d H:i:s' }}" readonly>
                         </td>
 
                     </tr>
@@ -59,20 +59,27 @@
             </tr>
             </thead>
             <tbody>
+
+            {% if slow_sql_result %}
                 {% for res in slow_sql_result %}
                 <tr>
-                    <td> {{ res.CreateTime }} </td>
+                    <td> {{ res.CreateTime|date:'Y-m-d H:i:s' }} </td>
                     <td> {{ res.DBName }} </td>
-                    <td> <a href="{% url 'slowsql_info' res.SQLId %}" >{{ res.SQLText|truncatewords:5 }} </a> </td>
+                    <td> <a href="{% url 'slowsql_info' res.SQLId start_time end_time %} " >{{ res.SQLText|truncatewords:5 }} </a> </td>
                     <td> {{ res.MySQLTotalExecutionCounts }} </td>
                     <td> {{ res.MySQLTotalExecutionTimes }} </td>
                     <td> {{ res.ParseTotalRowCounts }} </td>
                     <td> {{ res.ReturnTotalRowCounts }} </td>
                 </tr>
                 {% endfor %}
+             {% else %}
+                <tr class="no-records-found">
+                     <td colspan="8" style="vertical-align: middle !important;text-align: center;"> 没有匹配的记录...... </td>
+                </tr>
+             {% endif %}
+
             </tbody>
         </table>
-
 
     </form>
 
@@ -81,56 +88,17 @@
 {% endblock %}
 
 {% block script %}
-    <!-- 选择框和切换控件 -->
+
     <script>
 
-        alter(1);
-        // 初始化时间控件
-        $('#reservation').daterangepicker({
-            startDate: moment().startOf('day'),
-            endDate: moment(),
-            locale: {
-                "format": "YYYY-MM-DD",// 显示格式
-                "separator": " / ",// 两个日期之间的分割线
-                // 中文化
-                "applyLabel": "确定",
-                "cancelLabel": "取消",
-                "fromLabel": "开始",
-                "toLabel": "结束",
-                "customRangeLabel": "自定义",
-                "daysOfWeek": ["日", "一", "二", "三", "四", "五", "六"],
-                "monthNames": ["一月", "二月", "三月", "四月", "五月", "六", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-                "firstDay": 1
-            },
-            ranges: {
-                "今日": [moment().startOf('day'), moment()],
-                "昨日": [moment().subtract('days', 1).startOf('day'), moment().subtract('days', 1).endOf('day')],
-                "最近7日": [moment().subtract('days', 6), moment()],
-                "最近30日": [moment().subtract('days', 29), moment()],
-                "本月": [moment().startOf("month"), moment().endOf("month")],
-                "上个月": [moment().subtract(1, "month").startOf("month"), moment().subtract(1, "month").endOf("month")]
-            }
-        }, function (start, end, label) {
-            // 设置最小宽度，否则显示不全
-        }).css("min-width", "210px").next("i").click(function () {
-            // 对日期的i标签增加click事件，使其在鼠标点击时可以拉出日期选择
-            $(this).parent().find('input').click();
+        jeDate("#ranges01",{
+
+            range:" To ",
+            minDate:'2018-06-16 00:00:00',
+            maxDate:'2099-06-16 00:00:00',
+            format: 'YYYY-MM-DD hh:mm:ss'
+
         });
-
-        //时间变动保存
-        $('#reservation').on('apply.daterangepicker', function (ev, picker) {
-            sessionStorage.removeItem('SQLId');
-            var start_date = picker.startDate.format('YYYY-MM-DD');
-            var end_date = picker.endDate.format('YYYY-MM-DD');
-            sessionStorage.setItem('start_date', start_date);
-            sessionStorage.setItem('end_date', end_date);
-            var slowsql_active_li_id = sessionStorage.getItem('slowsql_active_li_id');
-            if (slowsql_active_li_id === 'slowsql_tab') {
-                slowquery_review()
-            } else if (slowsql_active_li_id === 'slowsqlinfo_tab') {
-                slowquery_review_history()
-
-            }
 
     </script>
 

@@ -20,6 +20,7 @@ from django.db.models.functions import Concat
 
 from django.forms.models import model_to_dict
 
+import datetime,time
 
 
 @login_required(login_url='/admin/login/')
@@ -30,67 +31,67 @@ def index(request):
 def slow_query(request):
 
     inslist = Db_instance.objects.filter(db_type='mysql').order_by("ip")
-
     insname = Db_instance.objects.get(id=int(request.POST.get('instance', '3')))
+    dbname_res = insname.db_name_set.all().values('dbname')
 
-    dbname_list = insname.db_name_set.all()
+    dblist = []
+    if dbname_res.exists():
+        dblist.append('全部数据库')
+        for res in dbname_res:
+            dblist.append(res.get('dbname'))
 
-    if request.method == 'POST':
+    db_name = request.POST.get('dbname')
 
-        db_name = request.POST['dbname']
+    default_begin_time = time.strftime("%Y-%m-%d")
+    default_begin_time = datetime.datetime.strptime(default_begin_time, '%Y-%m-%d') + datetime.timedelta(days=-1)
 
-        start_time = '2019-06-19'
-        end_time = '2019-06-21'
-        offset = 0
-        limit = 1
+    default_stop_time  = time.strftime('%Y-%m-%d %X', time.localtime())
+    default_range_time = '{} To {}'.format(default_begin_time, default_stop_time)
+    range_time = request.POST.get('range-time', default_range_time)
+    range_time_split = range_time.split("To")
 
-        """
-        offset = 1
-        limit = 2
-        LIMIT 1 OFFSET 1
-        """
+    start_time = range_time_split[0].strip()
+    start_time = datetime.datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
 
-        if db_name:
-            # 获取慢查数据
-            slowsql_obj = SlowQuery.objects.filter(
-                slowqueryhistory__hostname_max=('{}:{}'.format(insname.ip, insname.port)),
-                slowqueryhistory__db_max=db_name,
-                slowqueryhistory__ts_min__range=(start_time, end_time)
-            ).annotate(SQLText=F('fingerprint'), SQLId=F('checksum')).values('SQLText', 'SQLId').annotate(
-                CreateTime=Max('slowqueryhistory__ts_max'),
-                DBName=Max('slowqueryhistory__db_max'),  # 数据库
-                QueryTimeAvg=Sum('slowqueryhistory__query_time_sum') / Sum('slowqueryhistory__ts_cnt'),  # 平均执行时长
-                MySQLTotalExecutionCounts=Sum('slowqueryhistory__ts_cnt'),  # 执行总次数
-                MySQLTotalExecutionTimes=Sum('slowqueryhistory__query_time_sum'),  # 执行总时长
-                ParseTotalRowCounts=Sum('slowqueryhistory__rows_examined_sum'),  # 扫描总行数
-                ReturnTotalRowCounts=Sum('slowqueryhistory__rows_sent_sum'),  # 返回总行数
-            )
-        else:
-            # 获取慢查数据
-            slowsql_obj = SlowQuery.objects.filter(
-                slowqueryhistory__hostname_max=( '{}:{}'.format(insname.ip,insname.port)),
-                slowqueryhistory__ts_min__range=(start_time, end_time),
-            ).annotate(SQLText=F('fingerprint'), SQLId=F('checksum')).values('SQLText', 'SQLId').annotate(
-                CreateTime=Max('slowqueryhistory__ts_max'),
-                DBName=Max('slowqueryhistory__db_max'),  # 数据库
-                QueryTimeAvg=Sum('slowqueryhistory__query_time_sum') / Sum('slowqueryhistory__ts_cnt'),  # 平均执行时长
-                MySQLTotalExecutionCounts=Sum('slowqueryhistory__ts_cnt'),  # 执行总次数
-                MySQLTotalExecutionTimes=Sum('slowqueryhistory__query_time_sum'),  # 执行总时长
-                ParseTotalRowCounts=Sum('slowqueryhistory__rows_examined_sum'),  # 扫描总行数
-                ReturnTotalRowCounts=Sum('slowqueryhistory__rows_sent_sum'),  # 返回总行数
-            )
-        # 执行总次数倒序排列
-        slow_sql_result = slowsql_obj.order_by('-MySQLTotalExecutionCounts')
-        #{'slow_sql_result': slow_sql_result},
+    end_time = range_time_split[1].strip()
+    end_time = datetime.datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S')
 
-        return render(request, 'show_query.html', locals())
-
-        # slow_sql_result 这里的结果集是一个字典, 把字典结果集的键 以列表的形式返回给 sql_slow_log 这个变量
-        #sql_slow_log = [SlowLog for SlowLog in slow_sql_result]
+    if db_name and db_name != '全部数据库':
+        # 获取慢查数据
+        slowsql_obj = SlowQuery.objects.filter(
+            slowqueryhistory__hostname_max=('{}:{}'.format(insname.ip, insname.port)),
+            slowqueryhistory__db_max=db_name,
+            slowqueryhistory__ts_min__range=(start_time, end_time)
+        ).annotate(SQLText=F('fingerprint'), SQLId=F('checksum')).values('SQLText', 'SQLId').annotate(
+            CreateTime=Max('slowqueryhistory__ts_max'),
+            DBName=Max('slowqueryhistory__db_max'),  # 数据库
+            QueryTimeAvg=Sum('slowqueryhistory__query_time_sum') / Sum('slowqueryhistory__ts_cnt'),  # 平均执行时长
+            MySQLTotalExecutionCounts=Sum('slowqueryhistory__ts_cnt'),  # 执行总次数
+            MySQLTotalExecutionTimes=Sum('slowqueryhistory__query_time_sum'),  # 执行总时长
+            ParseTotalRowCounts=Sum('slowqueryhistory__rows_examined_sum'),  # 扫描总行数
+            ReturnTotalRowCounts=Sum('slowqueryhistory__rows_sent_sum'),  # 返回总行数
+        )
     else:
-        return render(request, 'show_query.html', locals())
+        # 获取慢查数据
+        slowsql_obj = SlowQuery.objects.filter(
+            slowqueryhistory__hostname_max=('{}:{}'.format(insname.ip, insname.port)),
+            slowqueryhistory__ts_min__range=(start_time, end_time),
+        ).annotate(SQLText=F('fingerprint'), SQLId=F('checksum')).values('SQLText', 'SQLId').annotate(
+            CreateTime=Max('slowqueryhistory__ts_max'),
+            DBName=Max('slowqueryhistory__db_max'),  # 数据库
+            QueryTimeAvg=Sum('slowqueryhistory__query_time_sum') / Sum('slowqueryhistory__ts_cnt'),  # 平均执行时长
+            MySQLTotalExecutionCounts=Sum('slowqueryhistory__ts_cnt'),  # 执行总次数
+            MySQLTotalExecutionTimes=Sum('slowqueryhistory__query_time_sum'),  # 执行总时长
+            ParseTotalRowCounts=Sum('slowqueryhistory__rows_examined_sum'),  # 扫描总行数
+            ReturnTotalRowCounts=Sum('slowqueryhistory__rows_sent_sum'),  # 返回总行数
+        )
 
-def slowquery_review_history(request, SQLId):
+    slow_sql_result = slowsql_obj.order_by('-MySQLTotalExecutionCounts')
+
+    return render(request, 'show_query.html', locals())
+
+
+def slowquery_review_history(request, SQLId, startTime, endTime):
 
     """
     把需要的SQL查询出来
@@ -99,23 +100,46 @@ def slowquery_review_history(request, SQLId):
     select dbname from myapp_db_name db_name join myapp_db_name_instance db_instance on db_name.id=db_instance.db_name_id where db_instance_id=3;
     """
 
-    results = SlowQueryHistory.objects.filter(checksum=SQLId).values('hostname_max')[0]
+    hostname_db_max_results = SlowQueryHistory.objects.filter(checksum=SQLId).values('hostname_max', 'db_max')[0:1]
 
-    results_lists = list(results)
+    ip_addr = '127.0.0.1'
+    port = 3306
+    has_db_name = ''
+    if hostname_db_max_results.exists():
+        hostname_max = ''
+        for res in hostname_db_max_results:
+            hostname_max = res.get('hostname_max')
+            has_db_name = res.get('db_max')
+        hostname_max_list = hostname_max.split(":")
+        ip_addr = hostname_max_list[0]
+        port = hostname_max_list[1]
 
-    instance_res = Db_instance.objects.get(ip='39.108.17.17', port=3306)
+    instance_res = Db_instance.objects.get(ip=ip_addr, port=port)
+    dbname_res = instance_res.db_name_set.all().values('dbname')
 
-    # 返回所有与 a 对象对应的 Entry 对象
-    dbname_list = instance_res.db_name_set.all().values('dbname')
-    
-    db_name = request.POST.get('dbname')
-    # return HttpResponse(db_name)
-    start_time = '2019-06-19'
-    end_time = '2019-06-21'
-    offset = 0
-    limit = 1
+    dblist = []
+    if dbname_res.exists():
+        dblist.append('全部数据库')
+        for res in dbname_res:
+            dblist.append(res.get('dbname'))
 
-    sql_id = '{}'.format(SQLId)
+    sql_id = ''
+    db_name = request.POST.get('dbname', has_db_name)
+    if db_name == '' and has_db_name == '':
+        sql_id = '{}'.format(SQLId)
+
+
+    default_begin_time = startTime
+    default_stop_time = endTime
+    default_range_time = '{} To {}'.format(default_begin_time, default_stop_time)
+
+    range_time = request.POST.get('range-time', default_range_time)
+    range_time_split = range_time.split("To")
+
+    start_time = range_time_split[0].strip()
+    start_time = datetime.datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
+    end_time = range_time_split[1].strip()
+    end_time = datetime.datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S')
 
     if sql_id:
         # 获取慢查明细数据
@@ -135,7 +159,7 @@ def slowquery_review_history(request, SQLId):
                    ReturnRowCounts=F('rows_sent_sum')  # 本次统计该sql语句返回总行数
                    )
     else:
-        if db_name:
+        if db_name and db_name != '全部数据库':
             # 获取慢查明细数据
             slow_sql_record_result = SlowQueryHistory.objects.filter(
                 hostname_max=('{}:{}'.format(instance_res.ip, instance_res.port)),
@@ -169,8 +193,6 @@ def slowquery_review_history(request, SQLId):
                        ReturnRowCounts=F('rows_sent_sum')  # 本次统计该sql语句返回总行数
                        )
 
-    # return HttpResponse(slow_sql_record_obj)
-    # return render(request, 'showsql_info.html', {'slow_sql_record_result': slow_sql_record_obj})
     return render(request, 'showsql_info.html', locals())
 
 
@@ -184,14 +206,10 @@ def binlog_parse(request):
         try:
 
             parse_sql_number = [10,50,200]   #这里可以加入配置文件中
-            #获取对象
-            insname = Db_instance.objects.get(id=int(request.POST['ins_set']))
-            # return HttpResponse(insname)   #192.168.0.252 3306 admin mysql
 
-            return HttpResponse(insname.db_name_set.all())   #252_test kpi
+            insname = Db_instance.objects.get(id=int(request.POST['ins_set']))
 
             binresult, col = meta.get_process_data(insname, 'show binary logs')
-            #return HttpResponse(binresult)
 
             dbresult, col = meta.get_process_data(insname, 'show databases')
 

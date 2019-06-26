@@ -22,15 +22,15 @@
                         <td> 选择数据库 : </td>
                         <td>
                             <select id='dbname' class="form-control col-md-3" name="dbname">
-                                {% for obj in dbname_list%}
-                                <option value = "{{ obj.dbname }}" {% if obj.dbname == db_name %} selected {% endif %} >{{ obj.dbname }}</option>
+                                {% for obj in dblist %}
+                                <option value = "{{ obj }}" {% if obj == db_name %} selected {% endif %} >{{ obj }}</option>
                                 {% endfor %}
                             </select>
                         </td>
 
-                        <td> 选择时间 : </td>
+                          <td> 选择时间 : </td>
                         <td>
-                         <input id="reservation" type="text" readonly class="form-control" value="{{ db_name }}" />
+                            <input class="dateinput dateicon je-mr25 form-control col-md-6" id="ranges01" name="range-time" type="text"  value = "{{ start_time|date:'Y-m-d H:i:s' }} To {{ end_time|date:'Y-m-d H:i:s' }}" readonly>
                         </td>
 
                     </tr>
@@ -41,7 +41,7 @@
                 </br>
             </div>
 
-        <table class="table table-condensed" border="1">
+        <table class="table table-condensed" border="1" style="margin-top:10px">
             <thead>
             <tr >
                 <th>执行开始时间</th>
@@ -57,9 +57,10 @@
             </tr>
             </thead>
             <tbody>
+            {% if slow_sql_record_result %}
                 {% for res in slow_sql_record_result %}
                 <tr>
-                    <td> {{ res.ExecutionStartTime }} </td>
+                    <td> {{ res.ExecutionStartTime|date:'Y-m-d H:i:s' }} </td>
                     <td> {{ res.DBName }} </td>
                     <td> {{ res.HostAddress }} </td>
                     <td> {{ res.SQLText}} </td>
@@ -71,6 +72,12 @@
                     <td> {{ res.ReturnRowCounts }} </td>
                 </tr>
                 {% endfor %}
+            {% else %}
+                <tr class="no-records-found">
+                     <td colspan="10" style="vertical-align: middle !important;text-align: center;"> 没有匹配的记录...... </td>
+                </tr>
+            {% endif %}
+
             </tbody>
         </table>
 
@@ -80,3 +87,20 @@
 
 {% endblock %}
 
+
+{% block script %}
+
+    <script>
+
+        jeDate("#ranges01",{
+
+            range:" To ",
+            minDate:'2018-06-16 00:00:00',
+            maxDate:'2099-06-16 00:00:00',
+            format: 'YYYY-MM-DD hh:mm:ss'
+
+        });
+
+    </script>
+
+{% endblock %}
