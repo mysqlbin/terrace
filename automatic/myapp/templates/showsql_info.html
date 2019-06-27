@@ -65,9 +65,9 @@
                     <td> {{ res.HostAddress }} </td>
                     <td> {{ res.SQLText}} </td>
                     <td> {{ res.TotalExecutionCounts }} </td>
-                    <td> {{ res.QueryTimePct95 }} </td>
-                    <td> {{ res.QueryTimes }} </td>
-                    <td> {{ res.LockTimes }} </td>
+                    <td> {{ res.QueryTimePct95|floatformat:2 }} </td>
+                    <td> {{ res.QueryTimes|floatformat:2 }} </td>
+                    <td> {{ res.LockTimes|floatformat:2 }} </td>
                     <td> {{ res.ParseRowCounts }} </td>
                     <td> {{ res.ReturnRowCounts }} </td>
                 </tr>

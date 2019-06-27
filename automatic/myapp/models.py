@@ -8,7 +8,7 @@ read_write = (
     ('write1', 'write2'),
     ('all1','all2'),
     ('idle1','idle2'),
-    ('admin1','admin2'),
+    ('admin','admin'),
 )
 
 read_write_account = (
@@ -18,11 +18,40 @@ read_write_account = (
     ('admin1','admin2'),
 )
 
+DB_TYPE_CHOICES = (
+    ('mysql', 'MySQL'),
+    ('mongodb', 'MongoDB'),
+    ('mssql', 'MsSQL'),
+    ('redis', 'Redis'),
+    ('pgsql', 'PgSQL'),
+    ('oracle', 'Oracle'))
+
+INSTANCE_TYPE_CHOICES = (
+    ('master', '主库'),
+    ('slave', '从库'),
+    ('alone', '单机'))
+
 class Db_instance(models.Model):
-    ip = models.CharField(max_length=30)
+    # instance_name = models.CharField('实例名称', max_length=50, unique=True)
+    # type = models.CharField('实例类型', max_length=6, choices=(('master', '主库'), ('slave', '从库')))
+    # db_type = models.CharField('数据库类型', max_length=30, default='mysql', choices=DB_TYPE_CHOICES, )
+    # ip = models.CharField('IP地址', max_length=30)
+    # port = models.CharField('端口号', max_length=10)
+    # role = models.CharField('角色', max_length=30, choices=read_write, )
+    # charset = models.CharField('字符集', max_length=20, default='', blank=True)
+    # create_time = models.DateTimeField('创建时间', auto_now_add=True)
+    # update_time = models.DateTimeField('更新时间', auto_now=True)
+
+    instance_name = models.CharField(max_length=50, default='',)
+    type = models.CharField( max_length=6, default='', choices=INSTANCE_TYPE_CHOICES,)
+    db_type = models.CharField(max_length=30, default='mysql', choices=DB_TYPE_CHOICES, )
+    ip = models.CharField( max_length=30)
     port = models.CharField(max_length=10)
     role = models.CharField(max_length=30, choices=read_write, )
-    db_type = models.CharField(max_length=30, default='mysql')
+    charset = models.CharField(max_length=20, default='', blank=True)
+    create_time = models.DateTimeField(auto_now_add=True)
+    update_time = models.DateTimeField(auto_now=True)
+
     def __str__(self):
         return u'%s %s %s %s' % (self.ip, self.port, self.role, self.db_type)     #查询之后的返回值
     class Meta:          #创建唯一的联合索引

@@ -18,14 +18,39 @@ from django.db.models import F,Max,Sum,Value as V
 
 from django.db.models.functions import Concat
 
-from django.forms.models import model_to_dict
-
 import datetime,time
 
 
 @login_required(login_url='/admin/login/')
 def index(request):
     return render(request, 'index.html')
+
+def instance(request):
+
+    type_list = {'all': '全部', 'master': '主库', 'slave': '从库', 'alone': '单机'}
+    db_type_list = {'all': '全部', 'mysql': 'MySQL', 'mongodb': 'MongoDB', 'mssql': 'MsSQL', 'redis': 'Redis', 'pgsql': 'PgSQL', 'oracle': 'Oracle'}
+
+    instance_name = request.POST.get('instance', 'all')
+    type          = request.POST.get('type', 'all')
+    db_type       = request.POST.get('db_type', 'all')
+
+    instance_obj = Db_instance.objects.all()
+    # 过滤搜索实例名称
+    if instance_name != 'all':
+        instance_obj = instance_obj.filter(instance_name__icontains=instance_name)
+    # 过滤实例类型
+    if type != 'all':
+        instance_obj = instance_obj.filter(type=type)
+    # 过滤数据库类型
+    if db_type != 'all':
+        instance_obj = instance_obj.filter(db_type=db_type)
+
+    instance_res = instance_obj.values('', 'instance_name', 'type', 'db_type', 'ip', 'port', )
+    # return HttpResponse(instance_res)
+
+
+
+    return render(request, 'instance.html', locals())
 
 
 def slow_query(request):
@@ -57,7 +82,7 @@ def slow_query(request):
     end_time = datetime.datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S')
 
     if db_name and db_name != '全部数据库':
-        # 获取慢查数据
+        # 获取慢查数据, 跨表多对一查询
         slowsql_obj = SlowQuery.objects.filter(
             slowqueryhistory__hostname_max=('{}:{}'.format(insname.ip, insname.port)),
             slowqueryhistory__db_max=db_name,
@@ -72,7 +97,7 @@ def slow_query(request):
             ReturnTotalRowCounts=Sum('slowqueryhistory__rows_sent_sum'),  # 返回总行数
         )
     else:
-        # 获取慢查数据
+        # 获取慢查数据, 跨表多对一查询
         slowsql_obj = SlowQuery.objects.filter(
             slowqueryhistory__hostname_max=('{}:{}'.format(insname.ip, insname.port)),
             slowqueryhistory__ts_min__range=(start_time, end_time),
@@ -92,13 +117,6 @@ def slow_query(request):
 
 
 def slowquery_review_history(request, SQLId, startTime, endTime):
-
-    """
-    把需要的SQL查询出来
-    select hostname_max from mysql_slow_query_review_history where `checksum`='751B6804D43917F6CFBAB7F3D65EB9CB'  limit 1;
-    select * from myapp_db_instance where ip='39.108.17.17' and `port`=3306;
-    select dbname from myapp_db_name db_name join myapp_db_name_instance db_instance on db_name.id=db_instance.db_name_id where db_instance_id=3;
-    """
 
     hostname_db_max_results = SlowQueryHistory.objects.filter(checksum=SQLId).values('hostname_max', 'db_max')[0:1]
 
@@ -127,7 +145,6 @@ def slowquery_review_history(request, SQLId, startTime, endTime):
     db_name = request.POST.get('dbname', has_db_name)
     if db_name == '' and has_db_name == '':
         sql_id = '{}'.format(SQLId)
-
 
     default_begin_time = startTime
     default_stop_time = endTime
@@ -193,8 +210,18 @@ def slowquery_review_history(request, SQLId, startTime, endTime):
                        ReturnRowCounts=F('rows_sent_sum')  # 本次统计该sql语句返回总行数
                        )
 
-    return render(request, 'showsql_info.html', locals())
+        slow_sql_record_result = slow_sql_record_result.values('ExecutionStartTime',
+                                                               'DBName',
+                                                               'HostAddress',
+                                                               'SQLText',
+                                                               'TotalExecutionCounts',
+                                                               'QueryTimePct95',
+                                                               'QueryTimes',
+                                                               'LockTimes',
+                                                               'ParseRowCounts',
+                                                               'ReturnRowCounts')
 
+    return render(request, 'showsql_info.html', locals())
 
 @login_required(login_url='/admin/login/')
 def binlog_parse(request):

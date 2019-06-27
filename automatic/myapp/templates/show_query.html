@@ -67,7 +67,7 @@
                     <td> {{ res.DBName }} </td>
                     <td> <a href="{% url 'slowsql_info' res.SQLId start_time end_time %} " >{{ res.SQLText|truncatewords:5 }} </a> </td>
                     <td> {{ res.MySQLTotalExecutionCounts }} </td>
-                    <td> {{ res.MySQLTotalExecutionTimes }} </td>
+                    <td> {{ res.MySQLTotalExecutionTimes|floatformat:2}} </td>
                     <td> {{ res.ParseTotalRowCounts }} </td>
                     <td> {{ res.ReturnTotalRowCounts }} </td>
                 </tr>
