@@ -48,8 +48,6 @@ def instance(request):
     instance_res = instance_obj.values('', 'instance_name', 'type', 'db_type', 'ip', 'port', )
     # return HttpResponse(instance_res)
 
-
-
     return render(request, 'instance.html', locals())
 
 
