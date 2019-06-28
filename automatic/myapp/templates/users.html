@@ -1,0 +1,56 @@
+{% extends "include/base.html" %}
+{% block title %}
+    <title>users</title>
+{% endblock %}
+{% block name %}
+    实例 <strong>{{instance_name}}</strong> 的用户权限列表
+{% endblock %}
+
+{%block content%}
+    <div class="col-xs-10 col-md-12 main ">
+
+        <form role="form" method='post'>
+            {% csrf_token %}
+        <table class="table table-condensed" border="1" style="margin-top:10px">
+            <thead>
+            <tr >
+                <th>User@Host</th>
+                <th>privileges</th>
+
+            </tr>
+            </thead>
+            <tbody>
+                {% if res_user_priv %}
+                {% for res in res_user_priv %}
+                <tr>
+                    <td> {{ res.user }} </td>
+                    <td>
+                        {% for pri_list in res.privileges %}
+                            {{ pri_list.0 }}  </br>
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+             {% else %}
+                <tr class="no-records-found">
+                     <td colspan="8" style="vertical-align: middle !important;text-align: center;"> 没有匹配的记录...... </td>
+                </tr>
+             {% endif %}
+            </tbody>
+        </table>
+
+    </form>
+
+    </div>
+
+{% endblock %}
+
+{% block script %}
+
+    <script>
+
+    </script>
+
+
+{% endblock %}
+

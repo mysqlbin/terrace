@@ -9,7 +9,6 @@ from myapp.form import AddForm
 from blacklist import blFunction as bc
 from myapp.models import Db_instance,SlowQuery,SlowQueryHistory
 
-# from form import AddForm,LoginForm,Captcha
 from django.contrib import auth
 
 from django.contrib.auth.decorators import login_required,permission_required
@@ -24,6 +23,29 @@ import datetime,time
 @login_required(login_url='/admin/login/')
 def index(request):
     return render(request, 'index.html')
+
+
+def ins_users(request, id, instance_name):
+
+    instance_name = instance_name
+    try:
+        insname = Db_instance.objects.get(id=int(id))
+    except Db_instance.DoesNotExist:
+       return HttpResponse('实例不存在')
+
+    sql_get_user = '''select concat("\'", user, "\'", '@', "\'", host,"\'") as query from mysql.user;'''
+    users_res, col = meta.get_process_data(insname, sql_get_user)
+    # 获取用户权限信息
+    res_user_priv = []
+    for db_user in users_res:
+        user_info = {}
+        sql_get_permission        =  'show grants for {};'.format(db_user[0])
+        user_priv, col            = meta.get_process_data(insname, sql_get_permission)
+        user_info['user']        = db_user[0]
+        user_info['privileges'] = user_priv
+        res_user_priv.append(user_info)
+
+    return render(request, 'users.html', locals())
 
 def instance(request):
 
@@ -45,7 +67,7 @@ def instance(request):
     if db_type != 'all':
         instance_obj = instance_obj.filter(db_type=db_type)
 
-    instance_res = instance_obj.values('', 'instance_name', 'type', 'db_type', 'ip', 'port', )
+    instance_res = instance_obj.values('id', 'instance_name', 'type', 'db_type', 'ip', 'port', )
     # return HttpResponse(instance_res)
 
     return render(request, 'instance.html', locals())
@@ -125,7 +147,7 @@ def slowquery_review_history(request, SQLId, startTime, endTime):
         hostname_max = ''
         for res in hostname_db_max_results:
             hostname_max = res.get('hostname_max')
-            has_db_name = res.get('db_max')
+            has_db_name  = res.get('db_max')
         hostname_max_list = hostname_max.split(":")
         ip_addr = hostname_max_list[0]
         port = hostname_max_list[1]

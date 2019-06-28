@@ -4,11 +4,15 @@
 {% endblock %}
 {% block name %}
     实例列表
+    <button id="btn_add_master" type="button" class="btn btn-default" onclick="window.open('/admin/myapp/db_instance/add/')">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        去后台添加实例
+    </button>
 {% endblock %}
 
 {%block content%}
     <div class="col-xs-10 col-md-12 main ">
-
+        
         <form role="form" method='post'>
             {% csrf_token %}
             <div>
@@ -71,7 +75,7 @@
                     <td> {{ res.db_type }} </td>
                     <td> {{ res.ip }} </td>
                     <td> {{ res.port }} </td>
-                    <td> <a href=""> 用户权限列表 </a> </td>
+                    <td> <a href="{% url 'users' res.id res.instance_name %}" > 用户权限列表 </a> </td>
                 </tr>
                 {% endfor %}
              {% else %}

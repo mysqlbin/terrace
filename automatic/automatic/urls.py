@@ -28,6 +28,7 @@ urlpatterns = [
     path('slowquery_review_history/<SQLId>/<startTime>/<endTime>/', myapp_view.slowquery_review_history, name='slowsql_info'),
 
     path('instance/', myapp_view.instance, name='instance'),
+    path('ins_users/<id>/<instance_name>/', myapp_view.ins_users, name='users'),
 
     # path('login/', myapp_view.login, name='login'),
 
