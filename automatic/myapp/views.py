@@ -10,12 +10,10 @@ from blacklist import blFunction as bc
 from myapp.models import Db_instance,SlowQuery,SlowQueryHistory
 
 from django.contrib import auth
-
 from django.contrib.auth.decorators import login_required,permission_required
-
 from django.db.models import F,Max,Sum,Value as V
-
 from django.db.models.functions import Concat
+from automatic import settings
 
 import datetime,time
 
@@ -39,7 +37,7 @@ def ins_users(request, id, instance_name):
     res_user_priv = []
     for db_user in users_res:
         user_info = {}
-        sql_get_permission        =  'show grants for {};'.format(db_user[0])
+        sql_get_permission        = 'show grants for {};'.format(db_user[0])
         user_priv, col            = meta.get_process_data(insname, sql_get_permission)
         user_info['user']        = db_user[0]
         user_info['privileges'] = user_priv
@@ -68,7 +66,6 @@ def instance(request):
         instance_obj = instance_obj.filter(db_type=db_type)
 
     instance_res = instance_obj.values('id', 'instance_name', 'type', 'db_type', 'ip', 'port', )
-    # return HttpResponse(instance_res)
 
     return render(request, 'instance.html', locals())
 
@@ -251,58 +248,60 @@ def binlog_parse(request):
     inslist = Db_instance.objects.filter(db_type='mysql').order_by("ip")
     if request.method == 'POST':
         try:
-
-            parse_sql_number = [10,50,200]   #这里可以加入配置文件中
+            #　{% if begin_time %} {{ begin_time }} {% endif %}
+            parse_sql_number = settings.parse_sql_number
 
             insname = Db_instance.objects.get(id=int(request.POST['ins_set']))
-
             binresult, col = meta.get_process_data(insname, 'show binary logs')
-
             dbresult, col = meta.get_process_data(insname, 'show databases')
-
             binlist = []
             dblist = []
+            if col != ['error']:
+                dblist.append('all')
 
-            dblist.append('all')
+                for i in binresult:
+                    binlist.append(i[0])
+                for i in dbresult:
+                    dblist.append(i[0])
+            else:
+                del binlist
+                return render(request, 'binlog_parse.html', locals())
 
-            for i in binresult:
-                binlist.append(i[0])
-
-            for i in dbresult:
-                dblist.append(i[0])
 
             if 'show_binary' in request.POST:
+                begin_time = None
+                stop_time = None
+
                 start_pos = 4
                 return render(request, 'binlog_parse.html', locals())
 
             elif 'parse_commit' in request.POST:
 
-                binname    = request.POST['binary_list']
+                binname    = request.POST['binary']
 
-                start_pos  = str(request.POST['start_pos'])
-                if start_pos == '4':
-                    start_pos = 4
-                else:
-                    start_pos = int(start_pos)
+                start_pos  = int(request.POST['start_pos'])
 
                 stop_pos   = str(request.POST['stop_pos'])
+
                 if stop_pos == '0' or stop_pos == '':
                     stop_pos = ''
                 else:
                     stop_pos = int(stop_pos)
 
                 begin_time = request.POST['begin_time']
-                stop_time = request.POST['stop_time']
+                stop_time  = request.POST['stop_time']
                 tbname     = request.POST['tbname']
-                dbselected = request.POST['dblist']
+                dbselected = request.POST['dbname']
                 if dbselected == 'all':
                     dbselected = ''
 
                 countnum = int(request.POST['countnum'])
+
                 if countnum not in [1, 10, 50, 200]:
                     countnum = 1
 
                 sql_type = int(request.POST['sql_type'])
+
                 if sql_type == 1:
                     flashback = True
                 else:
@@ -313,10 +312,12 @@ def binlog_parse(request):
                 return render(request, 'binlog_parse.html', locals())
 
         except Exception as e:
-            print(e)
+
             return render(request, 'binlog_parse.html', locals())
     else:
         return render(request, 'binlog_parse.html', locals())
+
+
 
 def mysql_querys(request):
 

@@ -33,18 +33,18 @@
                     <table>
                         <tr>
                             <td>
-                                CHOOSE BINLOG:</br>
-                                <select  class="form-control col-md-3" name = "binary_list">
-                                    {% for obj in binlist %}
-                                      <option value ="{{ obj }}" {% if obj == binname %} selected {% endif %} >{{ obj }}</option>
+                                选择要解析的binlog:</br>
+                                <select  class="form-control col-md-3" name = "binary">
+                                    {% for obj in binresult %}
+                                      <option value ="{{ obj.0 }}" {% if obj.0 == binname %} selected {% endif %} >{{ obj.0 }} size: {{ obj.1 }}</option>
                                     {% endfor %}
                                 </select>
                                 </br>
                             </td>
 
                             <td>
-                                CHOOSE DB:</br>
-                                <select  class="form-control col-md-3" name = "dblist">
+                                选择要解析的DB:</br>
+                                <select  class="form-control col-md-3" name = "dbname">
                                     {% for obj in dblist %}
                                     <option value="{{ obj }}" {% if obj == dbselected %} selected {% endif %} >{{ obj }}</option>
                                     {% endfor %}
@@ -52,31 +52,27 @@
                             </td>
 
                             <td>
-                                解析的表名:</br>
+                                选择要解析的表名:</br>
                                 <input type="text" placeholder="tablename" class="form-control" maxlength="30" value="{% if tbname %} {{ tbname }} {% endif %}" name="tbname">
                             </td>
 
                             <td>
-                                起始解析位置:</br>
+                                起始解析位置(可选):</br>
                                 <input type="number" placeholder="start-position" min="4" class="form-control" size="30" {% if start_pos %} value="{{ start_pos }}" {% endif %} name="start_pos">
                             </td>
 
                             <td>
-                                终止解析位置:</br>
+                                终止解析位置(可选):</br>
                                 <input type="number" placeholder="stop-position" min="0" class="form-control" size="30" {% if stop_pos %}  value="{{ stop_pos }}" {% endif %} name="stop_pos">
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                CHOOSE BEGIN_TIME:</br>
-                                {% if begin_time %}
-                                    <input type="text" id="id_begin_time"  value="{{ begin_time }}" class="form-control" maxlength="30" name="begin_time">
-                                {% else %}
-                                    <input type="text" id="id_begin_time"  class="form-control" maxlength="30" name="begin_time">
-                                {% endif %}
+                                起始解析时间(可选):</br>
+                                    <input type="text" id="id_begin_time"  value="" class="form-control" maxlength="30" name="begin_time">
                             </td>
                             <td>
-                                CHOOSE STOP_TIME:</br>
+                                终止解析时间(可选):</br>
                                 {% if stop_time %}
                                     <input type="text" id="id_stop_time"  value="{{ stop_time }}" class="form-control" maxlength="30" name="stop_time">
                                 {% else %}
@@ -86,10 +82,8 @@
                             </td>
 
                             <td>
-                                CHOOSE 解析条数:</br>
+                                解析SQL行数:</br>
                                 <select class="form-control col-md-3" name = "countnum">
-
-                                    {# 这里可以优化 #}
 
                                     {% if countnum == 1 %}
                                      <option value=1 selected="selected">1</option>
@@ -114,6 +108,8 @@
                                     {% else %}
                                      <option value=200>200</option>
                                     {% endif %}
+
+
                                 </select>
                             </td>
 
@@ -128,11 +124,11 @@
 
                         </tr>
                     </table>
+
+                     <button name="parse_commit"  class="btn btn-default" value="1">获取SQL</button >
                 {% endif %}
 
-                {% if binlist %}
-                    <button name="parse_commit"  class="btn btn-default" value="1">提交</button >
-                {% endif %}
+
             </div>
 
         </form >
@@ -163,13 +159,13 @@
     <script>
 
         jeDate("#id_begin_time",{
-			isinitVal:true,
+			isinitVal: false,
             festival: true,
-			format:"YYYY-MM-DD"
+			format:"YYYY-MM-DD hh:mm:ss"
         });
 
         jeDate("#id_stop_time",{
-			isinitVal:true,
+			isinitVal:false,
 			festival: true,
 			format:"YYYY-MM-DD hh:mm:ss"
         });

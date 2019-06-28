@@ -142,19 +142,7 @@ STATICFILES_DIRS = (
 os.path.join(BASE_DIR, "static"),
 )
 
-# SaltStack API
-SALT_API_URL = 'https://192.168.23.161:8888/'
-SALT_API_USER = 'saltapi'
-SALT_API_PASSWD = 'saltapi'
-
-SALT_DATABASE = {
-    'NAME': 'salt',
-    'USER': 'salt_user',
-    'PASSWORD': '123456abc',
-    'HOST': '192.168.23.161',
-    #'HOST': '192.168.1.26',
-    'PORT': '3306',
-}
+parse_sql_number = [10,50,200]
 
 
 LOGGING = {
@@ -188,23 +176,3 @@ LOGGING = {
         },
     }
 }
-
-"""
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console':{
-            'level':'DEBUG',
-            'class':'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'django.db.backends': {
-            'handlers': ['console'],
-            'propagate': True,
-            'level':'DEBUG',
-        },
-    }
-}
-"""

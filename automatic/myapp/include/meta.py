@@ -4,23 +4,29 @@ import pymysql
 import sys,string,time,datetime
 
 def mysql_query(sql,user,passwd,host,port,dbname):
+    try:
+        conn   = pymysql.connect(host=host,user=user,passwd=passwd,port=int(port),connect_timeout=5,charset='utf8mb4')
+        conn.select_db(dbname)
+        cursor = conn.cursor()
+        count  = cursor.execute(sql)
+        index  = cursor.description
+        col=[]
+        #获取列名
+        try:
+            for i in index:
+                col.append(i[0])
+        except Exception as e:
+            conn.commit()
+            cursor.close()
+            conn.close()
+            return (['ok'], ''), ['set']
 
-    conn=pymysql.connect(host=host,user=user,passwd=passwd,port=int(port),connect_timeout=5,charset='utf8')
-    conn.select_db(dbname)
-    cursor = conn.cursor()
-    count=cursor.execute(sql)
-    index=cursor.description
-    col=[]
-    #get column name
-
-    for i in index:
-        col.append(i[0])
-    result=cursor.fetchall()
-    # result=cursor.fetchmany(size=int(limitnum))
-    cursor.close()
-    conn.close()
-    return (result,col)
-
+        result=cursor.fetchall()
+        cursor.close()
+        conn.close()
+        return (result,col)
+    except Exception as e:
+        return ([str(e)],''), ['error']
 
 
 
