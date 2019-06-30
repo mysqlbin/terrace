@@ -263,7 +263,6 @@ def binlog_parse(request):
                 return render(request, 'binlog_parse.html', locals())
 
             if 'show_binary' in request.POST:
-
                 return render(request, 'binlog_parse.html', locals())
 
             elif 'parse_commit' in request.POST:
@@ -274,7 +273,6 @@ def binlog_parse(request):
                 stop_time  = request.POST['stop_time']
                 tbname     = request.POST['tbname']
                 dbname     = request.POST['dbname']
-
                 sql_type   = int(request.POST['sql_type'])
                 countnum   = int(request.POST['countnum'])
 
@@ -284,13 +282,9 @@ def binlog_parse(request):
                 if dbname == 'all':
                     dbname = None
 
-                # return HttpResponse(dbname)
-                
                 flashback = True if sql_type == 1 else False
                 
-                sqllist = parse_to_binlog2sql(insname, binname, start_pos, stop_pos, begin_time, stop_time, tbname, dbname, flashback, countnum)
-
-                # 思考， 如何打印出完整的 binlog2sql 语句
+                sqllist = parse_to_binlog2sql(insname, binname, start_pos, stop_pos, begin_time, stop_time, dbname, tbname, flashback, countnum)
                 return render(request, 'binlog_parse.html', locals())
 
         except Exception as e:

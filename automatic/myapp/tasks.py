@@ -8,7 +8,7 @@ from django.template import loader
 # from mypro.settings import EMAIL_SENDER
 
 
-def parse_to_binlog2sql(insname, binname, start_pos, stop_pos, begin_time, stop_time, tbname, dbname, flashback, countnum):
+def parse_to_binlog2sql(insname, binname, start_pos, stop_pos, begin_time, stop_time, dbname, tbname, flashback, countnum):
 
     flag = True
 
