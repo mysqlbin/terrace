@@ -8,7 +8,7 @@ from django.template import loader
 # from mypro.settings import EMAIL_SENDER
 
 
-def parse_to_binlog2sql(insname, binname, start_pos, stop_pos, begin_time, tbname, dbselected, flashback, countnum):
+def parse_to_binlog2sql(insname, binname, start_pos, stop_pos, begin_time, stop_time, tbname, dbname, flashback, countnum):
 
     flag = True
 
@@ -21,14 +21,13 @@ def parse_to_binlog2sql(insname, binname, start_pos, stop_pos, begin_time, tbnam
         if flag == False:
             break
 
-
     connection_settings = {'host': insname.ip, 'port': int(insname.port), 'user': tar_username, 'passwd': tar_passwd}
 
     sqltype = ['INSERT', 'UPDATE', 'DELETE']
 
     binlogsql = binlog2sql.Binlog2sql(connection_settings=connection_settings, start_file=binname,
                                           start_pos=start_pos, end_file='', end_pos=stop_pos,
-                                          start_time=begin_time, stop_time='', only_schemas=dbselected,
+                                          start_time=begin_time, stop_time=stop_time, only_schemas=dbname,
                                           only_tables=tbname, no_pk=False, flashback=flashback, stop_never=False,
                                           back_interval=1.0, only_dml=False, sql_type=sqltype, countnum=countnum
                                           )
