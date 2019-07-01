@@ -46,9 +46,10 @@
                                 选择要解析的DB:</br>
                                 <select  class="form-control col-md-3" name = "dbname">
                                     {% for obj in dblist %}
-                                    <option value="{{ obj }}" {% if obj == dbselected %} selected {% endif %} >{{ obj }}</option>
+                                    <option value="{{ obj }}" {% if obj == dbname %} selected {% endif %} >{{ obj }}</option>
                                     {% endfor %}
                                 </select>
+                                {{ dbname }}
                             </td>
 
                             <td>
@@ -58,25 +59,27 @@
 
                             <td>
                                 起始解析位置(可选):</br>
-                                <input type="number" placeholder="start-position" min="4" class="form-control" size="30" {% if start_pos %} value="{{ start_pos }}" {% endif %} name="start_pos">
+                                <input type="number" placeholder="start-position" min="4" class="form-control" size="30" {% if start_pos %} value="{{ start_pos }}"  {% endif %} name="start_pos">
+                                {{ start_pos }}
                             </td>
 
                             <td>
                                 终止解析位置(可选):</br>
                                 <input type="number" placeholder="stop-position" min="0" class="form-control" size="30" {% if stop_pos %}  value="{{ stop_pos }}" {% endif %} name="stop_pos">
+                                {{ stop_pos }}
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 起始解析时间(可选):</br>
-                                    <input type="text" id="id_begin_time"  value="" class="form-control" maxlength="30" name="begin_time">
+                                    <input type="text" id="id_begin_time"  value="" class="form-control" maxlength="30" name="begin_time" placeholder="起始解析时间(可选)">
                             </td>
                             <td>
                                 终止解析时间(可选):</br>
                                 {% if stop_time %}
-                                    <input type="text" id="id_stop_time"  value="{{ stop_time }}" class="form-control" maxlength="30" name="stop_time">
+                                    <input type="text" id="id_stop_time"  value="{{ stop_time }}" class="form-control" maxlength="30" name="stop_time" >
                                 {% else %}
-                                    <input type="text" id="id_stop_time"  class="form-control" maxlength="30" name="stop_time">
+                                    <input type="text" id="id_stop_time"  class="form-control" maxlength="30" name="stop_time" placeholder="终止解析时间(可选)">
 
                                 {% endif %}
                             </td>

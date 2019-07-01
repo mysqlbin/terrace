@@ -33,6 +33,7 @@ def ins_users(request, id, instance_name):
 
     sql_get_user = '''select concat("\'", user, "\'", '@', "\'", host,"\'") as query from mysql.user;'''
     users_res, col = meta.get_process_data(insname, sql_get_user)
+    # return HttpResponse(col)
     # 获取用户权限信息
     res_user_priv = []
     for db_user in users_res:
@@ -55,13 +56,10 @@ def instance(request):
     db_type       = request.POST.get('db_type', 'all')
 
     instance_obj = Db_instance.objects.all()
-    # 过滤搜索实例名称
     if instance_name != 'all':
         instance_obj = instance_obj.filter(instance_name__icontains=instance_name)
-    # 过滤实例类型
     if type != 'all':
         instance_obj = instance_obj.filter(type=type)
-    # 过滤数据库类型
     if db_type != 'all':
         instance_obj = instance_obj.filter(db_type=db_type)
 
@@ -243,12 +241,10 @@ def slowquery_review_history(request, SQLId, startTime, endTime):
 @login_required(login_url='/admin/login/')
 def binlog_parse(request):
 
-    # insname.db_name_set.all()
-
     inslist = Db_instance.objects.filter(db_type='mysql').order_by("ip")
     if request.method == 'POST':
         try:
-            #　{% if begin_time %} {{ begin_time }} {% endif %}
+
             parse_sql_number = settings.parse_sql_number
 
             insname = Db_instance.objects.get(id=int(request.POST['ins_set']))
@@ -258,7 +254,6 @@ def binlog_parse(request):
             dblist = []
             if col != ['error']:
                 dblist.append('all')
-
                 for i in binresult:
                     binlist.append(i[0])
                 for i in dbresult:
@@ -267,48 +262,29 @@ def binlog_parse(request):
                 del binlist
                 return render(request, 'binlog_parse.html', locals())
 
-
             if 'show_binary' in request.POST:
-                begin_time = None
-                stop_time = None
-
-                start_pos = 4
                 return render(request, 'binlog_parse.html', locals())
 
             elif 'parse_commit' in request.POST:
-
                 binname    = request.POST['binary']
-
-                start_pos  = int(request.POST['start_pos'])
-
-                stop_pos   = str(request.POST['stop_pos'])
-
-                if stop_pos == '0' or stop_pos == '':
-                    stop_pos = ''
-                else:
-                    stop_pos = int(stop_pos)
-
+                start_pos  = request.POST['start_pos']
+                stop_pos   = request.POST['stop_pos']
                 begin_time = request.POST['begin_time']
                 stop_time  = request.POST['stop_time']
                 tbname     = request.POST['tbname']
-                dbselected = request.POST['dbname']
-                if dbselected == 'all':
-                    dbselected = ''
+                dbname     = request.POST['dbname']
+                sql_type   = int(request.POST['sql_type'])
+                countnum   = int(request.POST['countnum'])
 
-                countnum = int(request.POST['countnum'])
+                start_pos = None if not start_pos else int(start_pos)
+                stop_pos  = None if not stop_pos else int(stop_pos)
 
-                if countnum not in [1, 10, 50, 200]:
-                    countnum = 1
+                if dbname == 'all':
+                    dbname = None
 
-                sql_type = int(request.POST['sql_type'])
-
-                if sql_type == 1:
-                    flashback = True
-                else:
-                    flashback = False
-
-                sqllist = parse_to_binlog2sql(insname, binname, start_pos, stop_pos, begin_time, tbname, dbselected, flashback, countnum)
-
+                flashback = True if sql_type == 1 else False
+                
+                sqllist = parse_to_binlog2sql(insname, binname, start_pos, stop_pos, begin_time, stop_time, dbname, tbname, flashback, countnum)
                 return render(request, 'binlog_parse.html', locals())
 
         except Exception as e:
