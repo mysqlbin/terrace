@@ -153,8 +153,7 @@ def get_binlog_to_sql(request):
         async_task(binlog2sql_file, args=args, user=request.user, hook=notify_for_binlog2sql)
 
     # 返回查询结果
-    return HttpResponse(json.dumps(result, cls=ExtendJSONEncoder, bigint_as_string=True),
-                        content_type='application/json')
+    return HttpResponse(json.dumps(resul), content_type='application/json')
 
 def binlog2sql(request):
     return render(request, 'binlog2sql.html')

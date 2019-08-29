@@ -79,5 +79,5 @@ if 'username' in vars():
 length: 5
 __proto__: Array(0)
 
-
-
+github 利用.gitignore文件忽略指定文件
+https://blog.csdn.net/qq_31617409/article/details/82085818
