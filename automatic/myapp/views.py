@@ -609,6 +609,8 @@ def all_instances_test(request):
     # instance_obj = serializers.serialize("json", Db_instance.objects.all())
     return HttpResponse(instance_obj)
 
+
+
 def all_instances(request):
     # inslist = Db_instance.objects.filter(db_type='mysql').order_by("ip")
     # instance_obj = serializers.serialize("json", Db_instance.objects.values('instance_name'))
@@ -621,20 +623,43 @@ def all_instances(request):
 
 def get_instances_database(request):
 
-    insname = Db_instance.objects.get(id=int(request.POST['ins_set']))
-    binresult, col = meta.get_process_data(insname, 'show binary logs')
-    dbresult, col = meta.get_process_data(insname, 'show databases')
-    binlist = []
-    dblist = []
-    if col != ['error']:
-        dblist.append('all')
-        for i in binresult:
-            binlist.append(i[0])
-        for i in dbresult:
-            dblist.append(i[0])
-    else:
-        del binlist
-        return render(request, 'binlog_parse.html', locals())
+    resource_type = request.POST.get('resource_type')
+
+    db_name = request.POST.get('db_name')
+    schema_name = request.POST.get('schema_name')
+    tb_name = request.POST.get('tb_name')
+
+
+    insname = Db_instance.objects.get(id=8)
+
+    result = {'status': 1, 'msg': 'ok', 'data': []}
+
+
+    # resource_type = 'table'
+    # db_name = 'sbtest'
+
+    if resource_type == 'database':
+        dbresult, col = meta.get_process_data(insname, 'show databases')
+        resource = [row[0] for row in dbresult
+                   if row[0] not in ('information_schema', 'performance_schema', 'mysql', 'test', 'sys')]
+
+    elif resource_type == 'table':
+        dbtable, col = meta.get_process_data(insname, 'show tables', db_name)
+        resource = [row[0] for row in dbtable if row[0] not in ['test']]
+
+    result['data'] = resource
+
+    # return HttpResponse(json.dumps(result))
+    """
+    {"status": 0, "msg": "ok", "data": ["dt_query", "repl_monitor", "sbtest", "terrace_db", "zst"]}
+    """
+
+    return HttpResponse(json.dumps(result), content_type = 'application/json')
+    """
+    {"status": 0, "msg": "ok", "data": ["dt_query", "repl_monitor", "sbtest", "terrace_db", "zst"]}
+    """
+
+
 
 
 @login_required(login_url='/admin/login/')

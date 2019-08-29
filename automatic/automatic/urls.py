@@ -48,6 +48,10 @@ urlpatterns = [
 
     path('all_instances_test/', myapp_view.all_instances_test),
     path('all_instances/', myapp_view.all_instances, name='get_polling'),
+    # path('get_instance_dbname/', myapp_view.get_instance_dbname, name='get_polling'),
+
+    path('get_instances_database/', myapp_view.get_instances_database, name='get_polling'),
+
     path('admin/', admin.site.urls),
 
 ]
