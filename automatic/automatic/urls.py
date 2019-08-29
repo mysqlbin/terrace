@@ -30,6 +30,13 @@ urlpatterns = [
     path('instance/', myapp_view.instance, name='instance'),
     path('ins_users/<id>/<instance_name>/', myapp_view.ins_users, name='users'),
 
+    path('polling_report/', myapp_view.polling_report, name='polling_report'),
+
+    # path('get_polling_report/<id>/<instance_name>/', myapp_view.get_polling_report, name='get_polling_report'),
+    path('get_polling_report/', myapp_view.get_polling_report, name='get_polling_report'),
+
+    # path('polling/', myapp_view.polling, name='polling'),
+
     # path('login/', myapp_view.login, name='login'),
 
     path('mysql_query/', myapp_view.mysql_query, name='mysql_query'),
@@ -37,7 +44,10 @@ urlpatterns = [
 
     # path('metas/', myapp_view.metas, name='metas'),
 
+    path('binlog2sql/', myapp_view.binlog2sql, name='binlog2sql'),
 
+    path('all_instances_test/', myapp_view.all_instances_test),
+    path('all_instances/', myapp_view.all_instances, name='get_polling'),
     path('admin/', admin.site.urls),
 
 ]

@@ -1,63 +1,161 @@
-{% load staticfiles %}
-<!DOCTYPE html>
-<html lang="zh-CN">
+﻿<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    {% block  title %}
-    <title>实例状态查询</title>
-    {% endblock %}
+    {% load staticfiles %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>1</title>
 
-    {% block head %}
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <!-- 引入 Bootstrap -->
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'metisMenu/css/metisMenu.min.css' %}" rel="stylesheet">
+    <link href="{% static 'sb-admin-2/css/sb-admin-2.css' %}" rel="stylesheet">
+    <link href="{% static 'font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'bootstrap-select/css/bootstrap-select.min.css' %}" rel="stylesheet">
+    <link href="{% static 'bootstrap-table/css/bootstrap-table.min.css' %}" rel="stylesheet">
 
-        <link href="{% static 'bootstrap/css/bootstrap.css' %}" rel="stylesheet">
-        <link href="{% static 'myauto/css/style.css' %}" rel="stylesheet">
-        <link href="{% static 'bootstrap/css/jquery.dataTables.min.css' %}" rel="stylesheet">
-        <link href="{% static 'jedate/skin/jedate.css' %}" rel="stylesheet">
+    <script src="{% static 'jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'metisMenu/js/metisMenu.min.js' %}"></script>
+    <script src="{% static 'sb-admin-2/js/sb-admin-2.js' %}"></script>
+    <script src="{% static 'bootstrap-select/js/bootstrap-select.min.js' %}"></script>
+    <script src="{% static 'bootstrap-select/js/i18n/defaults-zh_CN.min.js' %}"></script>
+    <script src="{% static 'bootstrap-table/js/bootstrap-table.min.js' %}"></script>
+    <script src="{% static 'bootstrap-table/js/bootstrap-table-zh-CN.min.js' %}"></script>
 
-        <script src="{% static 'bootstrap/js/jquery-3.1.1.min.js' %}"></script>
-        <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-        <script src="{% static 'bootstrap/js/jquery.dataTables.min.js' %}"></script>
-        <script src="{% static 'jedate/src/jedate.js' %}"></script>
+    <script src="{% static 'dist/js/formatter.js' %}"></script>
 
-
-    {% endblock %}
 </head>
+<body>
 
-<body >
+<div id="wrapper">
 
-<div class="container-fluid">
-
-    <div class="row">
-        <div class="col-xs-2 col-md-2">
-            {% block nav %}
-                {% include "include/nav.html" %}
-            {% endblock %}
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index/">1</a>
         </div>
-         <div class="col-xs-10 col-md-10" style="margin-top:25px; margin-bottom: 25px">
-{#            <div class="container col-md-offset-2" style="margin-top:25px">#}
-{#            <div class="row">#}
 
-                 <h1 style="font-size:25px">{% block name %}欢迎使用数据库管理平台 {% endblock %}</h1>
+        <!-- /.navbar-header -->
+        <ul class="nav navbar-top-links navbar-right">
+            <li>
+                <a>你好</a>
+            </li>
 
-                {%block content%}
-                    {% include "chart/basechart.html" %}
-                {% endblock %}
+            <li>
+                <a href="/workflow/">
+                    <span class="fa fa-bell "></span>
+                </a>
+            </li>
 
-{#            </div>#}
-{#            </div>#}
-         </div>
+            <!-- /.dropdown -->
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li><a href="/admin/password_change/"><i class="fa fa-user fa-fw"></i> 修改密码</a></li>
+                    <li><a href="/logout/"><i class="fa fa-gear fa-fw"></i> 退出</a></li>
+                </ul>
+                <!-- /.dropdown-user -->
+            </li>
+            <!-- /.dropdown -->
+        </ul>
+
+
+        <div class="navbar-default sidebar" role="navigation">
+            <div class="sidebar-nav navbar-collapse">
+                <ul class="nav" id="side-menu">
+
+
+                        <li>
+                            <a href="#"><i class="fa fa-database fa-fw"></i> 实例管理<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                    <li>
+                                        <a href="/instance/">实例列表</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="/dbdiagnostic/">会话管理</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="/dbdiagnostic/">会话管理</a>
+                                    </li>
+
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+
+                        <li>
+                            <a href="#"><i class="fa fa-sitemap fa-fw"></i> 相关文档<span
+                                    class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="/dbaprinciples/">设计规范</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+
+                </ul>
+            </div>
+            <!-- /.sidebar-collapse -->
+        </div>
+        <!-- /.navbar-static-side -->
+    </nav>
+
+    <!-- Page Content -->
+    <div id="page-wrapper">
+        <div class="clearfix">
+            <br>
+            {% block content %}
+
+            {% endblock content %}
+            <!--底部部分 -->
+            <hr>
+        </div>
     </div>
+    <!-- /#page-wrapper -->
+
 </div>
 
-{% block script %}
-{% endblock %}
+
 
 </body>
+<script>
+    <!-- 解决CSRF-->
+    $(function () {
+        $.ajaxSetup({
+            headers: {"X-CSRFToken": getCookie("csrftoken")}
+        });
+    });
+
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
+{% block js %}
+{% endblock %}
 </html>
-
-
-
