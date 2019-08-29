@@ -81,3 +81,24 @@ __proto__: Array(0)
 
 github 利用.gitignore文件忽略指定文件
 https://blog.csdn.net/qq_31617409/article/details/82085818
+
+
+
+"""
+python3 binlog2sql.py -h192.168.0.54 -P3306 -uroot -p'123456abc' -ddb1 -taccountinfo --start-file='mysql-bin.000006' --start-datetime='2019-08-30 03:50:14' --stop-datetime='2019-08-30 03:55:14'
+USE b'db1';
+CREATE TABLE `accountinfo` (
+  `AccountId` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '账号编号',
+  `Ip` varchar(512) DEFAULT NULL,
+  PRIMARY KEY (`AccountId`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4;
+INSERT INTO `db1`.`accountinfo`(`AccountId`, `Ip`) VALUES (1, '1'); #start 973 end 1208 time 2019-08-30 03:52:27
+
+python binlog2sql.py -h192.168.0.54 -u192.168.0.54 -p'192.168.0.54' -P3306 --back-interval --start-position='10' --stop-position='20' --sql-type INSERT UPDATE DELETE
+"""
+
+	
+Bootstrap Table使用方法详解
+https://www.php.cn/js-tutorial-347740.html
+
+

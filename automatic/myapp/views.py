@@ -49,17 +49,14 @@ def get_binlog_to_sql(request):
 
     no_pk = True if request.POST.get('no_pk') == 'true' else False
     flashback = True if request.POST.get('flashback') == 'true' else False
-    # back_interval = 0 if request.POST.get('back_interval') == '' else int(request.POST.get('back_interval'))
-    # num = 30 if request.POST.get('num') == '' else int(request.POST.get('num'))
-    back_interval = 0
-    num = 30
-
-    start_file = request.POST.get('start_file', 'mysql-bin.000006')
-    start_pos = request.POST.get('start_pos') if request.POST.get('start_pos') == '' else int(request.POST.get('start_pos', 973))
+    back_interval = 0 if request.POST.get('back_interval') == '' else int(request.POST.get('back_interval'))
+    num = 30 if request.POST.get('num') == '' else int(request.POST.get('num'))
+    start_file = request.POST.get('start_file')
+    start_pos = request.POST.get('start_pos') if request.POST.get('start_pos') == '' else int(request.POST.get('start_pos'))
     end_file = request.POST.get('end_file')
-    end_pos = request.POST.get('end_pos') if request.POST.get('end_pos') == '' else int(request.POST.get('end_pos', 1208))
-    stop_time = request.POST.get('stop_time', '2019-08-30 03:55:14')
-    start_time = request.POST.get('start_time', '2019-08-30 03:50:14')
+    end_pos = request.POST.get('end_pos') if request.POST.get('end_pos') == '' else int(request.POST.get('end_pos'))
+    stop_time = request.POST.get('stop_time')
+    start_time = request.POST.get('start_time')
     only_schemas = request.POST.getlist('only_schemas')
     only_tables = request.POST.getlist('only_tables[]')
     only_dml = True if request.POST.get('only_dml') == 'true' else False
@@ -69,7 +66,7 @@ def get_binlog_to_sql(request):
 
 
     # flashback=True获取DML回滚语句
-    result = {'status': 0, 'msg': 'ok', 'data': ''}
+    result = {'status': 1, 'msg': 'ok', 'data': ''}
 
     # 提交给binlog2sql进行解析
 
@@ -96,22 +93,10 @@ def get_binlog_to_sql(request):
     # 参数检查
     args_check_result = binlog2sql.check_args(args)
 
-    if args_check_result['status'] == 1:
+    if args_check_result['status'] == 0:
         return HttpResponse(json.dumps(args_check_result), content_type='application/json')
     # 参数转换
     cmd_args = binlog2sql.generate_args2cmd(args, shell=True)
-    """
-    python3 binlog2sql.py -h192.168.0.54 -P3306 -uroot -p'123456abc' -ddb1 -taccountinfo --start-file='mysql-bin.000006' --start-datetime='2019-08-30 03:50:14' --stop-datetime='2019-08-30 03:55:14'
-    USE b'db1';
-    CREATE TABLE `accountinfo` (
-      `AccountId` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '账号编号',
-      `Ip` varchar(512) DEFAULT NULL,
-      PRIMARY KEY (`AccountId`)
-    ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4;
-    INSERT INTO `db1`.`accountinfo`(`AccountId`, `Ip`) VALUES (1, '1'); #start 973 end 1208 time 2019-08-30 03:52:27
-
-    python binlog2sql.py -h192.168.0.54 -u192.168.0.54 -p'192.168.0.54' -P3306 --back-interval --start-position='10' --stop-position='20' --sql-type INSERT UPDATE DELETE
-    """
 
     # 执行命令
     try:
@@ -121,6 +106,9 @@ def get_binlog_to_sql(request):
         rows = []
         n = 1
         for line in iter(p.stdout.readline, ''):
+            """
+            line = INSERT INTO `test`.`test3`(`addtime`, `data`, `id`) VALUES ('2016-12-10 13:03:38', 'english', 4); #start 981 end 1147
+           """
             if n <= num:
                 n = n + 1
                 row_info = {}
@@ -137,7 +125,7 @@ def get_binlog_to_sql(request):
             # 判断是否有异常
             stderr = p.stderr.read()
             if stderr:
-                result['status'] = 1
+                result['status'] = 0
                 result['msg'] = stderr
                 return HttpResponse(json.dumps(result), content_type='application/json')
         # 终止子进程
@@ -145,7 +133,7 @@ def get_binlog_to_sql(request):
         result['data'] = rows
     except Exception as e:
         logger.error(traceback.format_exc())
-        result['status'] = 1
+        result['status'] = 0
         result['msg'] = str(e)
 
     # 异步保存到文件，去除conn_options避免展示密码信息
@@ -154,6 +142,9 @@ def get_binlog_to_sql(request):
 
     # 返回查询结果
     return HttpResponse(json.dumps(result), content_type='application/json')
+    """
+    {"status": 0, "msg": "ok", "data": [{"sql": "INSERT INTO `db1`.`accountinfo`(`AccountId`, `Ip`) VALUES (1, '1');", "binlog_info": "start 973 end 1208 time 2019-08-30 03:52:27\n"}]}
+    """
 
 def binlog2sql(request):
     return render(request, 'binlog2sql.html')
