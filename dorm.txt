@@ -29,14 +29,33 @@ https://docs.saltstack.com/en/latest/topics/releases/2017.7.0.html#python-3
 
 
 
+在django模板中添加jquery
+https://www.bbsmax.com/A/n2d9baQ4zD/
+
+jquery文档:
+http://jquery.cuishifeng.cn/
+
+Ajax: 
+https://docs.djangoproject.com/en/2.1/ref/csrf/
+https://cloud.tencent.com/developer/article/1145518
+
+
+bootstrap-select:
+https://c.runoob.com/codedemo/4904
+
+
+https://blog.csdn.net/yuanxiang01/article/details/78560681
+
+
+{% block js %} 和 {% block script %}  的区别
+
+
+
+jquery $.each()遍历json数组
+https://www.cnblogs.com/dushan/p/4747936.html
 
 
 
 
-
-
-
-
-
-
+'dict' object has no attribute '_meta'
 
