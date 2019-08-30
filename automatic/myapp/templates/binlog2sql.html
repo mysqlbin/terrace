@@ -152,8 +152,17 @@
 
 
 {% block js %}
+    {% load staticfiles %}
+    <link href="{% static 'datetimepicker/css/bootstrap-datetimepicker.css' %}" rel="stylesheet" type="text/css"/>
+    <script src="{% static 'daterangepicker/js/moment.min.js' %}"></script>
+    <script src="{% static 'datetimepicker/js/bootstrap-datetimepicker.js' %}"></script>
+    <script src="{% static 'datetimepicker/js/bootstrap-datetimepicker.zh-CN.js' %}"></script>
+    <script src="{% static 'bootstrap-table/js/bootstrap-table-export.min.js' %}"></script>
+    <script src="{% static 'bootstrap-table/js/tableExport.min.js' %}"></script>
 
     <script>
+
+        $(".form_datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii:ss', language: 'zh-CN', autoclose: true});
 
          //获取用户实例列表
         $(function () {
@@ -289,6 +298,116 @@
                 }
             });
         });
+
+
+        $("#binlog2sql").click(function () {
+            if ($("#instance_name").val() && $("#start_file").val()) {
+                $(this).addClass('disabled');
+                $(this).prop('disabled', true);
+                $.ajax({
+                    type: "post",
+                    url: "/get_binlog_to_sql/",
+                    dataType: "json",
+                    data: {
+                        instance_name: $("#instance_name").val(),
+                        save_sql: document.getElementById("save_sql").checked,
+                        no_pk: document.getElementById("no_pk").checked,
+                        flashback: document.getElementById("flashback").checked,
+                        back_interval: $("#back_interval").val(),
+                        num: $("#num").val(),
+                        start_file: $("#start_file").val(),
+                        start_pos: $("#start_pos").val(),
+                        end_file: $("#end_file").val(),
+                        end_pos: $("#end_pos").val(),
+                        stop_time: $("#stop_time").val(),
+                        start_time: $("#start_time").val(),
+                        only_schemas: $("#only_schemas").val(),
+                        only_tables: $("#only_tables").val(),
+                        only_dml: document.getElementById("only_dml").checked,
+                        sql_type: $("#sql_type").val(),
+                    },
+                    complete: function () {
+                        $("#binlog2sql").removeClass('disabled');
+                        $("#binlog2sql").prop('disabled', false);
+                    },
+                    success: function (data) {
+                        if (data.status === 1) {
+                            $('#tb-binlog2sql').bootstrapTable('destroy').bootstrapTable({
+                                escape: true,
+                                striped: true,                      //是否显示行间隔色
+                                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                                pagination: true,                   //是否显示分页（*）
+                                sortable: true,                     //是否启用排序
+                                sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+                                pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
+                                pageSize: 100,                       //每页的记录行数（*）
+                                pageList: [100, 500, 1000],         //可供选择的每页的行数（*）
+                                search: false,                       //是否显示表格搜索
+                                strictSearch: false,                //是否全匹配搜索
+                                showColumns: true,                  //是否显示所有的列（选择显示的列）
+                                showRefresh: false,                  //是否显示刷新按钮
+                                showExport: true,
+                                exportDataType: "all",
+                                minimumCountColumns: 1,             //最少允许的列数
+                                clickToSelect: false,                //是否启用点击选中行
+                                uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+                                showToggle: true,                   //是否显示详细视图和列表视图的切换按钮
+                                cardView: false,                    //是否显示详细视图
+                                locale: 'zh-CN',                    //本地化
+                                detailView: true,                   //是否显示父子表
+                                //格式化详情
+                                detailFormatter: function (index, row) {
+                                    var html = [];
+                                    $.each(row, function (key, value) {
+                                        if (key === 'sql') {
+                                            var sql = window.sqlFormatter.format(value);
+                                            //替换所有的换行符
+                                            sql = sql.replace(/\r\n/g, "<br>");
+                                            sql = sql.replace(/\n/g, "<br>");
+                                            //替换所有的空格
+                                            sql = sql.replace(/\s/g, "&nbsp;");
+                                            html.push('<span>' + sql + '</span>');
+                                        }
+                                    });
+                                    return html.join('');
+                                },
+                                data: data.data,
+                                columns: [{
+                                    title: 'BINLOG_INFO',
+                                    field: 'binlog_info'
+                                }, {
+                                    title: 'SQL',
+                                    field: 'sql',
+                                    formatter: function (value, row, index) {
+                                        if (value.length > 200) {
+                                            var sql = value.substr(0, 200) + '...';
+                                            return sql;
+                                        } else {
+                                            return value
+                                        }
+                                    }
+                                }, {
+                                    title: '完整SQL',
+                                    field: 'sql',
+                                    visible: false // 默认不显示
+                                }],
+                                onLoadSuccess: function () {
+                                },
+                                onLoadError: function () {
+                                    alert("数据加载失败！请检查接口返回信息和错误日志！");
+                                }
+                            });
+                        } else {
+                            alert(data.msg);
+                        }
+                    }
+                });
+            } else {
+                alert("请选择实例和起始解析文件！")
+            }
+
+        })
+
 
         });
 

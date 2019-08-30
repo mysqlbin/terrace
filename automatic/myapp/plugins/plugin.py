@@ -23,22 +23,22 @@ class Plugin:
     def check_args(self, args):
         """
         检查请求参数列表
-        :return: {'status': 0, 'msg': 'ok', 'data': {}}
+        :return: {'status': 1, 'msg': 'ok', 'data': {}}
         """
-        args_check_result = {'status': 0, 'msg': 'ok', 'data': {}}
+        args_check_result = {'status':1, 'msg': 'ok', 'data': {}}
         # 检查路径
         if self.path is None:
-            return {'status': 1, 'msg': '可执行文件路径不能为空！', 'data': {}}
+            return {'status': 0, 'msg': '可执行文件路径不能为空！', 'data': {}}
         # 检查禁用参数
         for arg in args.keys():
             if arg in self.disable_args:
-                return {'status': 1, 'msg': '{arg}参数已被禁用'.format(arg=arg), 'data': {}}
+                return {'status': 0, 'msg': '{arg}参数已被禁用'.format(arg=arg), 'data': {}}
         # 检查必须参数
         for req_arg in self.required_args:
             if req_arg not in args.keys():
-                return {'status': 1, 'msg': '必须指定{arg}参数'.format(arg=req_arg), 'data': {}}
+                return {'status': 0, 'msg': '必须指定{arg}参数'.format(arg=req_arg), 'data': {}}
             elif args[req_arg] is None or args[req_arg] == '':
-                return {'status': 1, 'msg': '{arg}参数值不能为空'.format(arg=req_arg), 'data': {}}
+                return {'status': 0, 'msg': '{arg}参数值不能为空'.format(arg=req_arg), 'data': {}}
         return args_check_result
 
     def generate_args2cmd(self, args, shell):
