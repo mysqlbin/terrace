@@ -13150,3 +13150,9 @@ DEBUG 2019-08-29 18:11:05,036 utils (0.000) SELECT `myapp_db_instance`.`instance
 DEBUG 2019-08-29 18:12:33,868 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
 DEBUG 2019-08-29 18:12:33,870 utils (0.001) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
 DEBUG 2019-08-29 18:12:33,871 utils (0.001) SELECT `myapp_db_instance`.`instance_name`, `myapp_db_instance`.`id` FROM `myapp_db_instance`; args=()
+DEBUG 2019-08-29 18:33:16,760 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
+DEBUG 2019-08-29 18:33:16,760 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-08-29 18:33:16,761 utils (0.000) SELECT VERSION(); args=None
+DEBUG 2019-08-29 18:33:16,790 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-08-29 18:33:16,879 utils (0.088) SHOW FULL TABLES; args=None
+DEBUG 2019-08-29 18:33:16,890 utils (0.009) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()
