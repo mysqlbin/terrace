@@ -1,20 +1,16 @@
 [root@localhost automatic]# python3
-Python 3.5.0 (default, Dec  4 2018, 20:10:20) 
+Python 3.6.0 (default, Dec  4 2018, 20:10:20) 
 [GCC 4.8.5 20150623 (Red Hat 4.8.5-36)] on linux
 Type "help", "copyright", "credits" or "license" for more information.
 
 
-
-
- 
-pip install -t /usr/local/python3/lib/python3.6/site-packages/ Django
+cd Django-2.0.5
+python3 setup.py install
 
 
 pip3 install -t /usr/local/python3/lib/python3.6/site-packages/ mysqlclient    
-
-
-
 pip3 install --upgrade pip
+pip3 install -t /usr/local/python3/lib/python3.6/site-packages/  pyMySQL
 
 
 
@@ -23,18 +19,15 @@ django.core.exceptions.ImproperlyConfigured: Error loading MySQLdb module.
 Did you install mysqlclient?
 
 
-pip3 install -t /usr/local/python3/lib/python3.5/site-packages/  pyMySQL
-pip3 install -t /usr/local/python3/lib/python3.5/site-packages/  python-devel.x86_64
-pip3 install -t /usr/local/python3/lib/python3.5/site-packages/  mysql-devel --skip-broken
+pip3 install -t /usr/local/python3/lib/python3.6/site-packages/  pyMySQL
+pip3 install -t /usr/local/python3/lib/python3.6/site-packages/  python-devel.x86_64
+pip3 install -t /usr/local/python3/lib/python3.6/site-packages/  mysql-devel --skip-broken
 
-pip3 install -t /usr/local/python3/lib/python3.5/site-packages/  mysqlclient
+pip3 install -t /usr/local/python3/lib/python3.6/site-packages/  mysqlclient
 
 
 
 yum install python-devel.x86_64
-
-
-
 
 yum remove mysql-libs
 

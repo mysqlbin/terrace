@@ -46,11 +46,14 @@ urlpatterns = [
 
     path('binlog2sql/', myapp_view.binlog2sql, name='binlog2sql'),
 
-    path('all_instances_test/', myapp_view.all_instances_test),
-    path('all_instances/', myapp_view.all_instances, name='get_polling'),
-    # path('get_instance_dbname/', myapp_view.get_instance_dbname, name='get_polling'),
+    path('get_all_instances/', myapp_view.get_all_instances, name='get_polling'),
 
-    path('get_instances_database/', myapp_view.get_instances_database, name='get_polling'),
+    path('get_instances_resource/', myapp_view.get_instances_resource, name='get_polling'),
+    path('get_instances_binlog/', myapp_view.get_instances_binlog, name='get_polling'),
+
+
+    # path('binlog/binlog2sql/', myapp_view.binlog2sql, name='get_polling'),
+    path('get_binlog_to_sql/', myapp_view.get_binlog_to_sql, name='get_polling'),
 
     path('admin/', admin.site.urls),
 

@@ -155,12 +155,11 @@
 
     <script>
 
-        console.log(1);
          //获取用户实例列表
         $(function () {
            $.get({
                 type: "POST",
-                url: "/all_instances/",
+                url: "/get_all_instances/",
                 dataType: "json",
                 complete: function () {
                 },
@@ -196,7 +195,7 @@
             //获取db_name
             $.get({
                 type: "post",
-                url: "/get_instances_database/",
+                url: "/get_instances_resource/",
                 dataType: "json",
                 data: {
                     instance_name: $("#instance_name").val(),
@@ -208,11 +207,11 @@
                 success: function (data) {
                     if (data.status === 1) {
                         var result = data.data;
-                        console.log(result)
+                        <!--console.log(result)-->
                         $("#only_schemas").empty();
                         for (var i = 0; i < result.length; i++) {
-                            var name = "<option value=\"" + result[i] + "\">" + result[i] + "</option>";
-                            $("#only_schemas").append(name);
+                            var db_name = "<option value=\"" + result[i] + "\">" + result[i] + "</option>";
+                            $("#only_schemas").append(db_name);
                         }
                         $('#only_schemas').selectpicker('render');
                         $('#only_schemas').selectpicker('refresh');
@@ -220,7 +219,41 @@
                         alert(data.msg);
                     }
                 }
-            })
+            });
+
+             //获取binlog
+            $.get({
+                type: "post",
+                url: "/get_instances_binlog/",
+                dataType: "json",
+                data: {
+                    instance_name: $("#instance_name").val(),
+                    data_id: $('#instance_name').find("option:selected").data("id"),
+
+                },
+                complete: function () {
+                },
+                success: function (data) {
+                    if (data.status === 1) {
+                        var result = data.data;
+                        console.log(result)
+                        $("#start_file").empty();
+                        $("#end_file").empty();
+                        for (var i = 0; i < result.length; i++) {
+                            var binlog_name = "<option value=\"" + result[i][0] + "\">" + result[i][0] + '   Size:' + result[i][1] + "</option>";
+                            $("#start_file").append(binlog_name);
+                            $("#end_file").append(binlog_name);
+                        }
+                        $('#start_file').selectpicker('render');
+                        $('#start_file').selectpicker('refresh');
+                        $('#end_file').selectpicker('render');
+                        $('#end_file').selectpicker('refresh');
+                    } else {
+                        alert(data.msg);
+                    }
+                }
+            });
+
           });
 
 
@@ -229,12 +262,13 @@
             //将数据通过ajax提交给获取db_name
             $.ajax({
                 type: "post",
-                url: "/get_instances_database/",
+                url: "/get_instances_resource/",
                 dataType: "json",
                 data: {
                     instance_name: $("#instance_name").val(),
                     db_name: $("#only_schemas").val(),
-                    resource_type: "table"
+                    resource_type: "table",
+                    data_id: $('#instance_name').find("option:selected").data("id")
                 },
                 complete: function () {
                 },

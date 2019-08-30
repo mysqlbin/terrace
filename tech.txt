@@ -3,8 +3,8 @@ http://www.runoob.com/python/python-func-locals.html
 Python 环境搭建
 python3 setup.py install
 ln -s /usr/local/python3/bin/python3.6 /usr/local/bin/python3
-ln -s /usr/local/python3/bin/pip3.6 /usr/bin/pip
-pip install --upgrade pip
+ln -s /usr/local/python3/bin/pip3.6 /usr/bin/pip3
+pip3 install --upgrade pip
 
 
 [root@env html]# find / -name django-admin.py
@@ -176,17 +176,6 @@ https://blog.csdn.net/zy_zhengyang/article/details/78581259
 
 基于 Python3 的 Class SaltApi 类：
 https://www.cnblogs.com/wang-yc/p/7904376.html
-
-
-
-
-
-
-
-
-
-
-
 
 
 ImportError: No module named wsgi

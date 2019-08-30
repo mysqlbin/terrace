@@ -22,6 +22,8 @@ from myapp.include.polling_project import get_table_schema_engine,get_version,ge
     get_innodb_lock_waits_list,get_instance_user_privileges, get_too_much_columns_indexs,get_not_primary_index, get_param_value,get_status_value
 
 
+from myapp.plugins.binglog2sql import Binlog2Sql
+
 import datetime,time
 import json
 import os
@@ -30,6 +32,124 @@ import os
 @login_required(login_url='/admin/login/')
 def index(request):
     return render(request, 'index.html')
+
+def get_binlog_to_sql(request):
+
+    """
+       通过解析binlog获取SQL
+       :param request:
+       :return:
+       """
+
+    instance = Db_instance.objects.get(id=int(1))
+
+    # instance_name = request.POST.get('instance_name')
+    save_sql = True if request.POST.get('save_sql') == 'true' else False
+    # instance = Instance.objects.get(instance_name=instance_name)
+    back_interval = 1
+    no_pk = True if request.POST.get('no_pk') == 'true' else False
+    flashback = True if request.POST.get('flashback') == 'true' else False
+    # back_interval = 0 if request.POST.get('back_interval') == '' else int(request.POST.get('back_interval'))
+    # num = 30 if request.POST.get('num') == '' else int(request.POST.get('num'))
+    start_file = request.POST.get('start_file')
+    start_pos = request.POST.get('start_pos') if request.POST.get('start_pos') == '' else int(request.POST.get('start_pos', 10))
+    end_file = request.POST.get('end_file')
+    end_pos = request.POST.get('end_pos') if request.POST.get('end_pos') == '' else int(request.POST.get('end_pos', 20))
+    stop_time = request.POST.get('stop_time')
+    start_time = request.POST.get('start_time')
+    only_schemas = request.POST.getlist('only_schemas')
+    only_tables = request.POST.getlist('only_tables[]')
+    only_dml = True if request.POST.get('only_dml') == 'true' else False
+    sql_type = ['INSERT', 'UPDATE', 'DELETE'] if request.POST.getlist('sql_type[]') == [] else request.POST.getlist(
+        'sql_type[]')
+
+
+
+    # flashback=True获取DML回滚语句
+    result = {'status': 0, 'msg': 'ok', 'data': ''}
+
+    # 提交给binlog2sql进行解析
+
+    binlog2sql = Binlog2Sql()
+    # 准备参数
+    args = {"conn_options": fr"-h{instance.ip} -u{instance.ip} -p'{instance.ip}' -P{instance.port} ",
+           "stop_never": False,
+            "no-primary-key": no_pk,
+            "flashback": flashback,
+            "back-interval": back_interval,
+            "start-file": start_file,
+            "start-position": start_pos,
+            "stop-file": end_file,
+            "stop-position": end_pos,
+            "start-datetime": start_time,
+            "stop-datetime": stop_time,
+            "databases": ' '.join(only_schemas),
+            "tables": ' '.join(only_tables),
+            "only-dml": only_dml,
+            "sql-type": ' '.join(sql_type),
+            "instance": instance
+    }
+
+    # 参数检查
+    args_check_result = binlog2sql.check_args(args)
+
+    if args_check_result['status'] == 1:
+        return HttpResponse(json.dumps(args_check_result), content_type='application/json')
+    # 参数转换
+    cmd_args = binlog2sql.generate_args2cmd(args, shell=True)
+    """
+    python binlog2sql.py -h192.168.0.54 -u192.168.0.54 -p'192.168.0.54' -P3306 --back-interval --start-position='10' --stop-position='20' --sql-type INSERT UPDATE DELETE
+    """
+
+    # 执行命令
+    try:
+        p = binlog2sql.execute_cmd(cmd_args, shell=True)
+        # return HttpResponse(p)
+        # 读取前num行后结束
+        rows = []
+        n = 1
+        for line in iter(p.stdout.readline, ''):
+            if n <= num:
+                n = n + 1
+                row_info = {}
+                try:
+                    row_info['sql'] = line.split('; #')[0] + ";"
+                    row_info['binlog_info'] = line.split('; #')[1].rstrip('\"')
+                except IndexError:
+                    row_info['sql'] = line
+                    row_info['binlog_info'] = None
+                rows.append(row_info)
+            else:
+                break
+        if rows.__len__() == 0:
+            # 判断是否有异常
+            stderr = p.stderr.read()
+            if stderr:
+                result['status'] = 1
+                result['msg'] = stderr
+                return HttpResponse(json.dumps(result), content_type='application/json')
+        # 终止子进程
+        p.kill()
+        result['data'] = rows
+    except Exception as e:
+        logger.error(traceback.format_exc())
+        result['status'] = 1
+        result['msg'] = str(e)
+
+    # 异步保存到文件，去除conn_options避免展示密码信息
+    if save_sql:
+        async_task(binlog2sql_file, args=args, user=request.user, hook=notify_for_binlog2sql)
+
+    # 返回查询结果
+    return HttpResponse(json.dumps(result, cls=ExtendJSONEncoder, bigint_as_string=True),
+                        content_type='application/json')
+
+def binlog2sql(request):
+    return render(request, 'binlog2sql.html')
+
+    instance_res = instance_obj.values('id', 'instance_name', 'type', 'db_type', 'ip', 'port', )
+
+
 
 
 def polling_report(request):
@@ -597,46 +717,29 @@ def slowquery_review_history(request, SQLId, startTime, endTime):
     return render(request, 'showsql_info.html', locals())
 
 
-def binlog2sql(request):
-    return render(request, 'binlog2sql.html')
-
-    instance_res = instance_obj.values('id', 'instance_name', 'type', 'db_type', 'ip', 'port', )
-
-
-def all_instances_test(request):
-    # inslist = Db_instance.objects.filter(db_type='mysql').order_by("ip")
-    instance_obj = Db_instance.objects.values('instance_name')
-    # instance_obj = serializers.serialize("json", Db_instance.objects.all())
-    return HttpResponse(instance_obj)
 
 
 
-def all_instances(request):
-    # inslist = Db_instance.objects.filter(db_type='mysql').order_by("ip")
-    # instance_obj = serializers.serialize("json", Db_instance.objects.values('instance_name'))
+def get_all_instances(request):
+
     instance_obj = Db_instance.objects.values('instance_name', 'id')
     rows = [row for row in instance_obj]
-
     res = {'status': 1, 'msg': 'ok', 'data': rows}
-
     return HttpResponse(json.dumps(res))
 
-def get_instances_database(request):
+def get_instances_resource(request):
 
     resource_type = request.POST.get('resource_type')
-
     db_name = request.POST.get('db_name')
     schema_name = request.POST.get('schema_name')
     tb_name = request.POST.get('tb_name')
 
-
-    insname = Db_instance.objects.get(id=8)
+    insname = Db_instance.objects.get(id = int(request.POST.get('data_id')))
 
     result = {'status': 1, 'msg': 'ok', 'data': []}
 
-
-    # resource_type = 'table'
-    # db_name = 'sbtest'
+    # insname = Db_instance.objects.get(id=int(1))
+    # db_name = 'db1'
 
     if resource_type == 'database':
         dbresult, col = meta.get_process_data(insname, 'show databases')
@@ -649,18 +752,18 @@ def get_instances_database(request):
 
     result['data'] = resource
 
-    # return HttpResponse(json.dumps(result))
-    """
-    {"status": 0, "msg": "ok", "data": ["dt_query", "repl_monitor", "sbtest", "terrace_db", "zst"]}
-    """
-
     return HttpResponse(json.dumps(result), content_type = 'application/json')
-    """
-    {"status": 0, "msg": "ok", "data": ["dt_query", "repl_monitor", "sbtest", "terrace_db", "zst"]}
-    """
 
 
+def get_instances_binlog(request):
 
+    result = {'status': 1, 'msg': 'ok', 'data': []}
+    insname = Db_instance.objects.get(id=int(request.POST.get('data_id')))
+    binlog, col = meta.get_process_data(insname, 'show binary logs')
+    resource = [row for row in binlog]
+    result['data'] = resource
+
+    return HttpResponse(json.dumps(result), content_type='application/json')
 
 @login_required(login_url='/admin/login/')
 def binlog_parse(request):
