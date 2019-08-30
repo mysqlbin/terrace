@@ -575,7 +575,7 @@ def slowquery_review(request):
 
     inslist = Db_instance.objects.filter(db_type='mysql').order_by("ip")
     insname = Db_instance.objects.get(id=int(request.POST.get('instance', '3')))
-    
+
     db_name = request.POST.get('dbname')
 
     default_begin_time = time.strftime("%Y-%m-%d")
