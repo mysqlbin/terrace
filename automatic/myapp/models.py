@@ -53,7 +53,7 @@ class Db_instance(models.Model):
     update_time = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return u'%s %s %s %s' % (self.ip, self.port, self.role, self.db_type, self.instance_name)     #查询之后的返回值
+        return u'%s %s %s %s' % (self.ip, self.port, self.role, self.db_type)     #查询之后的返回值
     class Meta:          #创建唯一的联合索引
         unique_together = ("ip", "port")
 

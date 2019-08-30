@@ -23,11 +23,13 @@ urlpatterns = [
 
     path('index/', myapp_view.index, name='index'),
 
-    path('binlog_parse/', myapp_view.binlog_parse, name='binlog_parse'),
+
     path('slow_query/', myapp_view.slow_query, name='slow_query'),
+    path('slowquery_review/', myapp_view.slowquery_review, name='slowquery_review'),
     path('slowquery_review_history/<SQLId>/<startTime>/<endTime>/', myapp_view.slowquery_review_history, name='slowsql_info'),
 
     path('instance/', myapp_view.instance, name='instance'),
+    path('get_instance_list/', myapp_view.get_instance_list, name='instance'),
     path('ins_users/<id>/<instance_name>/', myapp_view.ins_users, name='users'),
 
     path('polling_report/', myapp_view.polling_report, name='polling_report'),
@@ -35,7 +37,6 @@ urlpatterns = [
     # path('get_polling_report/<id>/<instance_name>/', myapp_view.get_polling_report, name='get_polling_report'),
     path('get_polling_report/', myapp_view.get_polling_report, name='get_polling_report'),
 
-    # path('polling/', myapp_view.polling, name='polling'),
 
     # path('login/', myapp_view.login, name='login'),
 

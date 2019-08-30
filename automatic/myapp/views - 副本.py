@@ -568,14 +568,16 @@ def ins_users(request, id, instance_name):
 
 def slow_query(request):
 
-    return render(request, 'show_query.html')
-
-
-def slowquery_review(request):
-
     inslist = Db_instance.objects.filter(db_type='mysql').order_by("ip")
     insname = Db_instance.objects.get(id=int(request.POST.get('instance', '3')))
-    
+    dbname_res = insname.db_name_set.all().values('dbname')
+
+    dblist = []
+    if dbname_res.exists():
+        dblist.append('全部数据库')
+        for res in dbname_res:
+            dblist.append(res.get('dbname'))
+
     db_name = request.POST.get('dbname')
 
     default_begin_time = time.strftime("%Y-%m-%d")
