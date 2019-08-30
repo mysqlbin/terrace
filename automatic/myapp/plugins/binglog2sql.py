@@ -15,7 +15,7 @@ class Binlog2Sql(Plugin):
 
     def __init__(self):
         # self.path = SysConfig().get('binlog2sql')
-        self.path = 'binlog2sql.py'
+        self.path = '/root/binlog2sql/binlog2sql/binlog2sql.py'
         self.required_args = []
         self.disable_args = []
         super(Plugin, self).__init__()
@@ -34,7 +34,7 @@ class Binlog2Sql(Plugin):
         filter_options = ['databases', 'tables', 'only-dml', 'sql-type']
 
         if shell:
-            cmd_args = f'python {self.path}' if self.path else ''
+            cmd_args = f'python3 {self.path}' if self.path else ''
             for name, value in args.items():
                 if name in conn_options:
                     cmd_args += f' {value}'

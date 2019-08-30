@@ -46,17 +46,20 @@ def get_binlog_to_sql(request):
     # instance_name = request.POST.get('instance_name')
     save_sql = True if request.POST.get('save_sql') == 'true' else False
     # instance = Instance.objects.get(instance_name=instance_name)
-    back_interval = 1
+
     no_pk = True if request.POST.get('no_pk') == 'true' else False
     flashback = True if request.POST.get('flashback') == 'true' else False
     # back_interval = 0 if request.POST.get('back_interval') == '' else int(request.POST.get('back_interval'))
     # num = 30 if request.POST.get('num') == '' else int(request.POST.get('num'))
-    start_file = request.POST.get('start_file')
-    start_pos = request.POST.get('start_pos') if request.POST.get('start_pos') == '' else int(request.POST.get('start_pos', 10))
+    back_interval = 1
+    num = 30
+
+    start_file = request.POST.get('start_file', 'mysql-bin.000006')
+    start_pos = request.POST.get('start_pos') if request.POST.get('start_pos') == '' else int(request.POST.get('start_pos', 973))
     end_file = request.POST.get('end_file')
-    end_pos = request.POST.get('end_pos') if request.POST.get('end_pos') == '' else int(request.POST.get('end_pos', 20))
-    stop_time = request.POST.get('stop_time')
-    start_time = request.POST.get('start_time')
+    end_pos = request.POST.get('end_pos') if request.POST.get('end_pos') == '' else int(request.POST.get('end_pos', 1208))
+    stop_time = request.POST.get('stop_time', '2019-08-30 03:55:14')
+    start_time = request.POST.get('start_time', '2019-08-30 03:50:14')
     only_schemas = request.POST.getlist('only_schemas')
     only_tables = request.POST.getlist('only_tables[]')
     only_dml = True if request.POST.get('only_dml') == 'true' else False
@@ -98,6 +101,15 @@ def get_binlog_to_sql(request):
     # 参数转换
     cmd_args = binlog2sql.generate_args2cmd(args, shell=True)
     """
+    python3 binlog2sql.py -h192.168.0.54 -P3306 -uroot -p'123456abc' -ddb1 -taccountinfo --start-file='mysql-bin.000006' --start-datetime='2019-08-30 03:50:14' --stop-datetime='2019-08-30 03:55:14'
+    USE b'db1';
+    CREATE TABLE `accountinfo` (
+      `AccountId` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '账号编号',
+      `Ip` varchar(512) DEFAULT NULL,
+      PRIMARY KEY (`AccountId`)
+    ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4;
+    INSERT INTO `db1`.`accountinfo`(`AccountId`, `Ip`) VALUES (1, '1'); #start 973 end 1208 time 2019-08-30 03:52:27
+
     python binlog2sql.py -h192.168.0.54 -u192.168.0.54 -p'192.168.0.54' -P3306 --back-interval --start-position='10' --stop-position='20' --sql-type INSERT UPDATE DELETE
     """
 
