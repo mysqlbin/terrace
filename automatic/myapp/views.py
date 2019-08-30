@@ -51,7 +51,7 @@ def get_binlog_to_sql(request):
     flashback = True if request.POST.get('flashback') == 'true' else False
     # back_interval = 0 if request.POST.get('back_interval') == '' else int(request.POST.get('back_interval'))
     # num = 30 if request.POST.get('num') == '' else int(request.POST.get('num'))
-    back_interval = 1
+    back_interval = 0
     num = 30
 
     start_file = request.POST.get('start_file', 'mysql-bin.000006')
