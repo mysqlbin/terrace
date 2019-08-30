@@ -53,7 +53,7 @@ def process(insname,flag=1,sql=''):
         return get_process_data(insname, sql)
 
 
-def get_process_data(insname,sql):
+def get_process_data(insname,sql, dbname = 'information_schema'):
     flag = True
     # pc = prpcrypt()
 
@@ -69,14 +69,14 @@ def get_process_data(insname,sql):
             break
         if flag == False:
             break
-    if 'username' in vars():
-        try:
-            results, col = mysql_query(sql, username, passwd, insname.ip, int(insname.port), 'information_schema')
-        except Exception as e:
-            results, col = ([str(e)], ''), ['error']
-        return results, col
-    else:
-        return (['PLEASE set the admin role account FIRST'], ''), ['error']
+    # if 'username' in vars():
+    try:
+        results, col = mysql_query(sql, username, passwd, insname.ip, int(insname.port), dbname)
+    except Exception as e:
+        results, col = ([str(e)], ''), ['error']
+    return results, col
+    # else:
+    #     return (['PLEASE set the admin role account FIRST'], ''), ['error']
 
 
 

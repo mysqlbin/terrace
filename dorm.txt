@@ -59,3 +59,25 @@ https://www.cnblogs.com/dushan/p/4747936.html
 
 'dict' object has no attribute '_meta'
 
+
+
+https://www.cnblogs.com/NKing/p/7698133.html#python-3
+
+
+if 'username' in vars():
+
+
+{"status": 0, "msg": "ok", "data": ["dt_query", "repl_monitor", "sbtest", "terrace_db", "zst"]}
+
+
+(5) ["dt_query", "repl_monitor", "sbtest", "terrace_db", "zst"]
+0: "dt_query"
+1: "repl_monitor"
+2: "sbtest"
+3: "terrace_db"
+4: "zst"
+length: 5
+__proto__: Array(0)
+
+
+
