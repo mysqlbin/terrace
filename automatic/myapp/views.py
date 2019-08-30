@@ -573,26 +573,34 @@ def slow_query(request):
 
 def slowquery_review(request):
 
+    start_time = request.POST.get('StartTime')
+    end_time = request.POST.get('EndTime')
+    db_name = request.POST.get('db_name')
+    sql_id = request.POST.get('SQLId')
+    limit = int(request.POST.get('limit'))
+    offset = int(request.POST.get('offset'))
+
     inslist = Db_instance.objects.filter(db_type='mysql').order_by("ip")
+
     insname = Db_instance.objects.get(id=int(request.POST.get('instance', '3')))
 
     db_name = request.POST.get('dbname')
 
-    default_begin_time = time.strftime("%Y-%m-%d")
-    default_begin_time = datetime.datetime.strptime(default_begin_time, '%Y-%m-%d') + datetime.timedelta(days=-1)
+    # default_begin_time = time.strftime("%Y-%m-%d")
+    # default_begin_time = datetime.datetime.strptime(default_begin_time, '%Y-%m-%d') + datetime.timedelta(days=-1)
+    #
+    # default_stop_time  = time.strftime('%Y-%m-%d %X', time.localtime())
+    # default_range_time = '{} To {}'.format(default_begin_time, default_stop_time)
+    # range_time = request.POST.get('range-time', default_range_time)
+    # range_time_split = range_time.split("To")
+    #
+    # start_time = range_time_split[0].strip()
+    # start_time = datetime.datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
+    #
+    # end_time = range_time_split[1].strip()
+    # end_time = datetime.datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S')
 
-    default_stop_time  = time.strftime('%Y-%m-%d %X', time.localtime())
-    default_range_time = '{} To {}'.format(default_begin_time, default_stop_time)
-    range_time = request.POST.get('range-time', default_range_time)
-    range_time_split = range_time.split("To")
-
-    start_time = range_time_split[0].strip()
-    start_time = datetime.datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
-
-    end_time = range_time_split[1].strip()
-    end_time = datetime.datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S')
-
-    if db_name and db_name != '全部数据库':
+    if db_name:
         # 获取慢查数据, 跨表多对一查询
         slowsql_obj = SlowQuery.objects.filter(
             slowqueryhistory__hostname_max=('{}:{}'.format(insname.ip, insname.port)),
@@ -622,9 +630,18 @@ def slowquery_review(request):
             ReturnTotalRowCounts=Sum('slowqueryhistory__rows_sent_sum'),  # 返回总行数
         )
 
-    slow_sql_result = slowsql_obj.order_by('-MySQLTotalExecutionCounts')
+    
+    slow_sql_count = slowsql_obj.count()
+    slow_sql_list = slowsql_obj.order_by('-MySQLTotalExecutionCounts')[offset:limit]  # 执行总次数倒序排列
 
-    return render(request, 'show_query.html', locals())
+    # QuerySet 序列化
+    sql_slow_log = [SlowLog for SlowLog in slow_sql_list]
+    result = {"total": slow_sql_count, "rows": sql_slow_log}
+
+
+    # 返回查询结果
+    return HttpResponse(json.dumps(result),
+                        content_type='application/json')
 
 
 def slowquery_review_history(request, SQLId, startTime, endTime):
@@ -687,7 +704,7 @@ def slowquery_review_history(request, SQLId, startTime, endTime):
                    ReturnRowCounts=F('rows_sent_sum')  # 本次统计该sql语句返回总行数
                    )
     else:
-        if db_name and db_name != '全部数据库':
+        if db_name:
             # 获取慢查明细数据
             slow_sql_record_result = SlowQueryHistory.objects.filter(
                 hostname_max=('{}:{}'.format(instance_res.ip, instance_res.port)),
