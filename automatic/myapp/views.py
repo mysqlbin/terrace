@@ -75,7 +75,7 @@ def get_binlog_to_sql(request):
 
     binlog2sql = Binlog2Sql()
     # 准备参数
-    args = {"conn_options": fr"-h{instance.ip} -u{instance.ip} -p'{instance.ip}' -P{instance.port} ",
+    args = {"conn_options": fr"-h{instance.ip} -uroot -p123456abc -P{instance.port} ",
            "stop_never": False,
             "no-primary-key": no_pk,
             "flashback": flashback,
