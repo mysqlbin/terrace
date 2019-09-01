@@ -16,7 +16,6 @@ def mysql_query(sql,user,passwd,host,port,dbname):
             for i in index:
                 col.append(i[0])
         except Exception as e:
-            conn.commit()
             cursor.close()
             conn.close()
             return (['ok'], ''), ['set']

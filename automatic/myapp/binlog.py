@@ -19,8 +19,6 @@ from .models import Instance
 
 logger = logging.getLogger('default')
 
-
-
 def binlog2sql(request):
     """
     通过解析binlog获取SQL

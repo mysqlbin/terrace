@@ -23,6 +23,9 @@ from myapp.include.polling_project import get_table_schema_engine,get_version,ge
 
 from myapp.plugins.binglog2sql import Binlog2Sql
 
+from myapp.common.utils.rewrite_json_encoder import RewriteJsonEncoder
+
+
 import datetime,time
 import json
 import os
@@ -75,7 +78,7 @@ def get_binlog_to_sql(request):
             "no-primary-key": no_pk,
             "flashback": flashback,
             "back-interval": back_interval,
-            "start-file": start_file,
+            # "start-file": start_file,
             "start-position": start_pos,
             "stop-file": end_file,
             "stop-position": end_pos,
@@ -93,6 +96,7 @@ def get_binlog_to_sql(request):
 
     if args_check_result['status'] == 0:
         return HttpResponse(json.dumps(args_check_result), content_type='application/json')
+
     # 参数转换
     cmd_args = binlog2sql.generate_args2cmd(args, shell=True)
 
@@ -125,10 +129,12 @@ def get_binlog_to_sql(request):
             if stderr:
                 result['status'] = 0
                 result['msg'] = stderr
+
                 return HttpResponse(json.dumps(result), content_type='application/json')
         # 终止子进程
         p.kill()
         result['data'] = rows
+
     except Exception as e:
         logger.error(traceback.format_exc())
         result['status'] = 0
@@ -147,48 +153,54 @@ def get_binlog_to_sql(request):
 def binlog2sql(request):
     return render(request, 'binlog2sql.html')
 
-    instance_res = instance_obj.values('id', 'instance_name', 'type', 'db_type', 'ip', 'port', )
-
-
-
-
 def polling_report(request):
 
-    type_list = {'all': '全部', 'master': '主库', 'slave': '从库', 'alone': '单机'}
-    db_type_list = {'all': '全部', 'mysql': 'MySQL', 'mongodb': 'MongoDB', 'mssql': 'MsSQL', 'redis': 'Redis',
-                    'pgsql': 'PgSQL', 'oracle': 'Oracle'}
+    return render(request, 'polling_report.html')
 
-    instance_name = request.POST.get('instance', 'all')
-    type = request.POST.get('type', 'all')
-    db_type = request.POST.get('db_type', 'all')
+def polling_list(request):
+
+    instance_name = request.POST.get('instance_name')
+    type = request.POST.get('type',)
+    db_type = request.POST.get('db_type')
+    limit = int(request.POST.get('limit'))
+    offset = int(request.POST.get('offset'))
+
+    # limit = offset + limit
 
     instance_obj = Db_instance.objects.all()
-    if instance_name != 'all':
+
+    if instance_name != '':
         instance_obj = instance_obj.filter(instance_name__icontains=instance_name)
-    if type != 'all':
+    if type != '':
         instance_obj = instance_obj.filter(type=type)
-    if db_type != 'all':
+    if db_type != '':
         instance_obj = instance_obj.filter(db_type=db_type)
 
-    instance_res = instance_obj.values('id', 'instance_name', 'type', 'db_type', 'ip', 'port', )
+    count = instance_obj.count()
+    instance_res = instance_obj[offset:limit].values('id', 'instance_name', 'type', 'db_type', 'ip', 'port', )
 
-    return render(request, 'polling_report.html', locals())
+    # QuerySet 序列化
+    rows = [row for row in instance_res]
+
+    result = {"total": count, "rows": rows}
+    return HttpResponse(json.dumps(result),
+                        content_type='application/json')
 
 
 def get_polling_report(request):
 
-    id = request.POST.get("id")
-    name = request.POST.get("name")
+    instance_id   = request.POST.get("instance_id")
+    instance_name = request.POST.get("instance_name")
 
     try:
-        insname = Db_instance.objects.get(id=int(id))
+        insname = Db_instance.objects.get(id=int(instance_id))
     except Db_instance.DoesNotExist:
         res = {'status': 0, 'msg': '实例不存在'}
         return HttpResponse(json.dumps(res))
 
     timestamp = int(time.time())
     path = os.path.join(settings.BASE_DIR, 'downloads/polling/')
-    filename = os.path.join(path, f"{name}的巡检报告{timestamp}.sql")
+    filename = os.path.join(path, f"{instance_name}的巡检报告{timestamp}.sql")
 
     with open(filename, 'a+') as f:
 
@@ -359,7 +371,7 @@ def get_polling_report(request):
         f.write(get_param_value(insname, 'binlog_cache_size') + '\n')
         f.write(get_param_value(insname, 'binlog_group_commit_sync_delay') + '\n')
         f.write(get_param_value(insname, 'binlog_group_commit_sync_no_delay_count') + '\n')
-        f.write(get_param_value(insname, 'binlog_transaction_dependency_tracking') + '\n')
+        # f.write(get_param_value(insname, 'binlog_transaction_dependency_tracking') + '\n')
 
         f.write('3.2.2 Server层线程/会话相关的内存参数:' + '\n')
         f.write(get_param_value(insname, 'key_buffer_size') + '\n')
@@ -509,11 +521,8 @@ def instance(request):
     return render(request, 'instance.html', locals())
 
 def get_instance_list(request):
-    """获取实例列表"""
-    # instance_name = request.POST.get('instance')
-    # type = request.POST.get('type')
-    # db_type = request.POST.get('db_type')
 
+    """获取实例列表"""
     limit = int(request.POST.get('limit'))
     offset = int(request.POST.get('offset'))
     type = request.POST.get('type')
@@ -533,6 +542,7 @@ def get_instance_list(request):
         instance_obj = instance_obj.filter(db_type=db_type)
     count = instance_obj.count()
     instance_res = instance_obj[offset:limit].values('id', 'instance_name', 'type', 'db_type', 'ip', 'port', )
+
     # QuerySet 序列化
     rows = [row for row in instance_res]
 
@@ -563,6 +573,8 @@ def ins_users(request, id, instance_name):
         user_info['privileges'] = user_priv
         res_user_priv.append(user_info)
 
+    # return HttpResponse(res_user_priv)
+
     return render(request, 'users.html', locals())
 
 
@@ -575,30 +587,13 @@ def slowquery_review(request):
 
     start_time = request.POST.get('StartTime')
     end_time = request.POST.get('EndTime')
+    # 时间处理
+    end_time = datetime.datetime.strptime(end_time, '%Y-%m-%d') + datetime.timedelta(days=1)
     db_name = request.POST.get('db_name')
-    sql_id = request.POST.get('SQLId')
     limit = int(request.POST.get('limit'))
     offset = int(request.POST.get('offset'))
 
-    inslist = Db_instance.objects.filter(db_type='mysql').order_by("ip")
-
-    insname = Db_instance.objects.get(id=int(request.POST.get('instance', '3')))
-
-    db_name = request.POST.get('dbname')
-
-    # default_begin_time = time.strftime("%Y-%m-%d")
-    # default_begin_time = datetime.datetime.strptime(default_begin_time, '%Y-%m-%d') + datetime.timedelta(days=-1)
-    #
-    # default_stop_time  = time.strftime('%Y-%m-%d %X', time.localtime())
-    # default_range_time = '{} To {}'.format(default_begin_time, default_stop_time)
-    # range_time = request.POST.get('range-time', default_range_time)
-    # range_time_split = range_time.split("To")
-    #
-    # start_time = range_time_split[0].strip()
-    # start_time = datetime.datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
-    #
-    # end_time = range_time_split[1].strip()
-    # end_time = datetime.datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S')
+    insname = Db_instance.objects.get(id=int(request.POST.get('instance_id')))
 
     if db_name:
         # 获取慢查数据, 跨表多对一查询
@@ -640,55 +635,29 @@ def slowquery_review(request):
 
 
     # 返回查询结果
-    return HttpResponse(json.dumps(result),
+    return HttpResponse(json.dumps(result, cls=RewriteJsonEncoder),
                         content_type='application/json')
 
 
-def slowquery_review_history(request, SQLId, startTime, endTime):
+def slowquery_review_history(request):
 
-    hostname_db_max_results = SlowQueryHistory.objects.filter(checksum=SQLId).values('hostname_max', 'db_max')[0:1]
+    start_time = request.POST.get('StartTime')
+    end_time = request.POST.get('EndTime')
+    # 时间处理
+    end_time = datetime.datetime.strptime(end_time, '%Y-%m-%d') + datetime.timedelta(days=1)
 
-    ip_addr = '127.0.0.1'
-    port = 3306
-    has_db_name = ''
-    if hostname_db_max_results.exists():
-        hostname_max = ''
-        for res in hostname_db_max_results:
-            hostname_max = res.get('hostname_max')
-            has_db_name  = res.get('db_max')
-        hostname_max_list = hostname_max.split(":")
-        ip_addr = hostname_max_list[0]
-        port = hostname_max_list[1]
+    db_name = request.POST.get('db_name')
+    sql_id = request.POST.get('SQLId')
+    limit = int(request.POST.get('limit'))
+    offset = int(request.POST.get('offset'))
+    limit = offset + limit
 
-    instance_res = Db_instance.objects.get(ip=ip_addr, port=port)
-    dbname_res = instance_res.db_name_set.all().values('dbname')
+    instance_res = Db_instance.objects.get(id=int(request.POST.get('instance_id')))
 
-    dblist = []
-    if dbname_res.exists():
-        dblist.append('全部数据库')
-        for res in dbname_res:
-            dblist.append(res.get('dbname'))
-
-    sql_id = ''
-    db_name = request.POST.get('dbname', has_db_name)
-    if db_name == '' and has_db_name == '':
-        sql_id = '{}'.format(SQLId)
-
-    default_begin_time = startTime
-    default_stop_time = endTime
-    default_range_time = '{} To {}'.format(default_begin_time, default_stop_time)
-
-    range_time = request.POST.get('range-time', default_range_time)
-    range_time_split = range_time.split("To")
-
-    start_time = range_time_split[0].strip()
-    start_time = datetime.datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
-    end_time = range_time_split[1].strip()
-    end_time = datetime.datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S')
 
     if sql_id:
         # 获取慢查明细数据
-        slow_sql_record_result = SlowQueryHistory.objects.filter(
+        slow_sql_record_obj = SlowQueryHistory.objects.filter(
             hostname_max=('{}:{}'.format(instance_res.ip, instance_res.port)),
             checksum=sql_id,
             ts_min__range=(start_time, end_time)
@@ -706,7 +675,7 @@ def slowquery_review_history(request, SQLId, startTime, endTime):
     else:
         if db_name:
             # 获取慢查明细数据
-            slow_sql_record_result = SlowQueryHistory.objects.filter(
+            slow_sql_record_obj = SlowQueryHistory.objects.filter(
                 hostname_max=('{}:{}'.format(instance_res.ip, instance_res.port)),
                 db_max=db_name,
                 ts_min__range=(start_time, end_time)
@@ -723,7 +692,7 @@ def slowquery_review_history(request, SQLId, startTime, endTime):
                        )
         else:
             # 获取慢查明细数据
-            slow_sql_record_result = SlowQueryHistory.objects.filter(
+            slow_sql_record_obj = SlowQueryHistory.objects.filter(
                 hostname_max=('{}:{}'.format(instance_res.ip, instance_res.port)),
                 ts_min__range=(start_time, end_time)
             ).annotate(ExecutionStartTime=F('ts_min'),  # 本次统计(每5分钟一次)该类型sql语句出现的最小时间
@@ -738,19 +707,25 @@ def slowquery_review_history(request, SQLId, startTime, endTime):
                        ReturnRowCounts=F('rows_sent_sum')  # 本次统计该sql语句返回总行数
                        )
 
-        slow_sql_record_result = slow_sql_record_result.values('ExecutionStartTime',
-                                                               'DBName',
-                                                               'HostAddress',
-                                                               'SQLText',
-                                                               'TotalExecutionCounts',
-                                                               'QueryTimePct95',
-                                                               'QueryTimes',
-                                                               'LockTimes',
-                                                               'ParseRowCounts',
-                                                               'ReturnRowCounts')
+    slow_sql_record_count = slow_sql_record_obj.count()
+    slow_sql_record_list  = slow_sql_record_obj.values('ExecutionStartTime',
+                                                           'DBName',
+                                                           'HostAddress',
+                                                           'SQLText',
+                                                           'TotalExecutionCounts',
+                                                           'QueryTimePct95',
+                                                           'QueryTimes',
+                                                           'LockTimes',
+                                                           'ParseRowCounts',
+                                                           'ReturnRowCounts')
 
-    return render(request, 'showsql_info.html', locals())
+    # QuerySet 序列化
+    sql_slow_record = [SlowRecord for SlowRecord in slow_sql_record_list]
+    result = {"total": slow_sql_record_count, "rows": sql_slow_record}
 
+    # 返回查询结果
+    return HttpResponse(json.dumps(result, cls=RewriteJsonEncoder),
+                    content_type='application/json')
 
 
 
