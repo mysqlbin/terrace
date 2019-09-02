@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from myapp import views as myapp_view, instance, slowlog, binlog, polling
+from myapp import views as myapp_view, instance, slowlog, binlog, polling, test
 
 app_name = ''
 
@@ -48,9 +48,9 @@ urlpatterns = [
     path('instance/get_instance_users/<id>/<instance_name>/', instance.get_instance_users, name='users'),
 
 
-    path('instance/get_instances_binlog/', instance.get_instances_binlog, name='get_polling'),
+    path('instance/get_instances_binlog/', instance.get_instances_binlog),
 
-
+    path('test/get_query_data/', test.get_query_data),
 
 
     #test

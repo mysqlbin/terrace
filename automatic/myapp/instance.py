@@ -75,12 +75,12 @@ def get_instances_resource(request):
     result = {'status': 1, 'msg': 'ok', 'data': []}
 
     if resource_type == 'database':
-        dbresult, col = meta.get_process_data(insname, 'show databases')
+        dbresult, col, error = meta.get_process_data(insname, 'show databases')
         resource = [row[0] for row in dbresult
                     if row[0] not in ('information_schema', 'performance_schema', 'mysql', 'test', 'sys')]
 
     elif resource_type == 'table':
-        dbtable, col = meta.get_process_data(insname, 'show tables', db_name)
+        dbtable, col, error  = meta.get_process_data(insname, 'show tables', db_name)
         resource = [row[0] for row in dbtable if row[0] not in ['test']]
 
     result['data'] = resource
@@ -92,7 +92,7 @@ def get_instances_binlog(request):
 
     result = {'status': 1, 'msg': 'ok', 'data': []}
     insname = Db_instance.objects.get(id=int(request.POST.get('data_id')))
-    binlog, col = meta.get_process_data(insname, 'show binary logs')
+    binlog, col, error = meta.get_process_data(insname, 'show binary logs')
     resource = [row for row in binlog]
     result['data'] = resource
 
@@ -108,14 +108,15 @@ def get_instance_users(request, id, instance_name):
        return HttpResponse('实例不存在')
 
     sql_get_user = '''select concat("\'", user, "\'", '@', "\'", host,"\'") as query from mysql.user;'''
-    users_res, col = meta.get_process_data(insname, sql_get_user)
+    users_res, col, error = meta.get_process_data(insname, sql_get_user)
+
 
     # 获取用户权限信息
     res_user_priv = []
     for db_user in users_res:
         user_info = {}
         sql_get_permission        = 'show grants for {};'.format(db_user[0])
-        user_priv, col            = meta.get_process_data(insname, sql_get_permission)
+        user_priv, col, error            = meta.get_process_data(insname, sql_get_permission)
         user_info['user']        = db_user[0]
         user_info['privileges'] = user_priv
         res_user_priv.append(user_info)
