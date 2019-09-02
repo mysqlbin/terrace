@@ -630,7 +630,7 @@ def slowquery_review(request):
             ReturnTotalRowCounts=Sum('slowqueryhistory__rows_sent_sum'),  # 返回总行数
         )
 
-    
+
     slow_sql_count = slowsql_obj.count()
     slow_sql_list = slowsql_obj.order_by('-MySQLTotalExecutionCounts')[offset:limit]  # 执行总次数倒序排列
 
