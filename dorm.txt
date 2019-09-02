@@ -20,12 +20,7 @@ https://blog.csdn.net/mayp1/article/details/52824889
 pip install -t /usr/local/python3/lib/python3.6/site-packages salt-master
 
 
-
-
-
 https://docs.saltstack.com/en/latest/topics/releases/2017.7.0.html#python-3
-
-
 
 
 
@@ -66,10 +61,10 @@ https://www.cnblogs.com/NKing/p/7698133.html#python-3
 
 if 'username' in vars():
 
-
+view.py: 
 {"status": 0, "msg": "ok", "data": ["dt_query", "repl_monitor", "sbtest", "terrace_db", "zst"]}
 
-
+jquery object:
 (5) ["dt_query", "repl_monitor", "sbtest", "terrace_db", "zst"]
 0: "dt_query"
 1: "repl_monitor"
@@ -78,6 +73,7 @@ if 'username' in vars():
 4: "zst"
 length: 5
 __proto__: Array(0)
+
 
 github 利用.gitignore文件忽略指定文件
 https://blog.csdn.net/qq_31617409/article/details/82085818
@@ -98,7 +94,75 @@ python binlog2sql.py -h192.168.0.54 -u192.168.0.54 -p'192.168.0.54' -P3306 --bac
 """
 
 	
-Bootstrap Table使用方法详解
-https://www.php.cn/js-tutorial-347740.html
+Bootstrap-Table使用方法详解
+https://blog.csdn.net/yapengliu/article/details/80191699
+https://bootstrap-table.com/docs/api/table-options/
+
+Django 使用 bootstrap-table插件，表格分页 + UTC、时间戳 互转
+https://blog.csdn.net/hahei2020/article/details/78340904
+'''服务端分页时，前端需要传回：limit（每页需要显示的数据量），offset（分页时 数据的偏移量，即第几页）'''
+'''mysql 利用 limit语法 进行分页查询'''
+'''服务端分页时，需要返回：total（数据总量），rows（每行数据）  如： {"total": total, "rows": []}'''
+
+
+
+Object of type 'datetime' is not JSON serializable 的解决办法 ：
+https://stackoverflow.com/questions/56554159/typeerror-object-of-type-datetime-is-not-json-serializable-with-serialize-fu
+https://www.cnblogs.com/alice-bj/articles/9790150.html
+
+
+---------------------------------------------
+
+Form Data
+
+instance_name: 测试库
+instance_id: 8
+db_name: 
+StartTime: 2019-08-31
+EndTime: 2019-08-31
+limit: 30
+offset: 0
+
+bootstrapTable: 
+queryParams: function (params) {
+
+	var instance_name = $("#instance_name").val();
+	var db_name = $("#db_name").val();
+	var StartTime = $('#reservation').data('daterangepicker').startDate.format('YYYY-MM-DD');
+	var EndTime = $("#reservation").data('daterangepicker').endDate.format('YYYY-MM-DD');
+	var instance_id = $('#instance_name').find("option:selected").data("id");
+
+	return {
+		instance_name: instance_name,
+		instance_id: instance_id,
+		db_name: db_name,
+		StartTime: StartTime,
+		EndTime: EndTime,
+		limit: params.limit,
+		offset: params.offset,
+
+	}
+},
+
+---------------------------------------------
+
+
+LocalStorage/SessionStorage: 
+https://www.cnblogs.com/DreamerLeaf/p/7055021.html
+
+
+
+[{'id': 1, 'name': 'abc'}, {'id': 2, 'name': 'efg'}]
+#这个是什么类型的数据结构
+ 是一个列表， 列表元素的数据结构是字典
+ 
+
+
+慢日志统计 和 慢日志明细  这个 tab 是如何实现切换的
+
+
+python3.6 f-string格式化字符串
+
+https://www.cnblogs.com/c-x-a/p/9333826.html
 
 

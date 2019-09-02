@@ -29,23 +29,20 @@ class Plugin:
         # 检查路径
         if self.path is None:
             return {'status': 0, 'msg': '可执行文件路径不能为空！', 'data': {}}
+
         # 检查禁用参数
         for arg in args.keys():
             if arg in self.disable_args:
                 return {'status': 0, 'msg': '{arg}参数已被禁用'.format(arg=arg), 'data': {}}
+
         # 检查必须参数
         for req_arg in self.required_args:
             if req_arg not in args.keys():
                 return {'status': 0, 'msg': '必须指定{arg}参数'.format(arg=req_arg), 'data': {}}
             elif args[req_arg] is None or args[req_arg] == '':
                 return {'status': 0, 'msg': '{arg}参数值不能为空'.format(arg=req_arg), 'data': {}}
-        return args_check_result
 
-    def generate_args2cmd(self, args, shell):
-        """
-        将请求参数转换为命令行参数
-        :return:
-        """
+        return args_check_result
 
     @staticmethod
     def execute_cmd(cmd_args, shell):

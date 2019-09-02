@@ -7,7 +7,7 @@
 {%block content%}
      <!-- 自定义操作按钮-->
     <div id="sqladvisor-toolbar" class="btn-group right" style="display:none;">
-        <button id=sqladvisor class="btn btn-default" style="" type="button">获取优化建议</button>
+<!--        <button id=sqladvisor class="btn btn-default" style="" type="button">获取优化建议</button>-->
     </div>
     <!-- Nav tabs -->
     <ul id="nav-tabs" class="nav nav-tabs" role="tablist">
@@ -59,15 +59,15 @@
     <script src="{% static 'daterangepicker/js/moment.min.js' %}"></script>
     <script src="{% static 'daterangepicker/js/daterangepicker.js' %}"></script>
     <script src="{% static 'bootstrap-table/js/bootstrap-table-export.min.js' %}"></script>
-    <script src="{% static 'bootstrap-table/js/tableExport.min.js' %}"></script>
+<!--    <script src="{% static 'bootstrap-table/js/tableExport.min.js' %}"></script>-->
     <!-- 选择框和切换控件 -->
 
     <script>
 
-         //获取用户实例列表
-        $(function () {
 
-            // 初始化时间控件
+
+
+        // 初始化时间控件
         $('#reservation').daterangepicker({
             startDate: moment().startOf('day'),
             endDate: moment(),
@@ -99,21 +99,121 @@
             $(this).parent().find('input').click();
         });
 
+         //时间变动保存， 并且触发获取慢查询日志数据
+        $('#reservation').on('apply.daterangepicker', function (ev, picker) {
+            sessionStorage.removeItem('SQLId');
+            var start_date = picker.startDate.format('YYYY-MM-DD');
+            var end_date = picker.endDate.format('YYYY-MM-DD');
+            sessionStorage.setItem('start_date', start_date);
+            sessionStorage.setItem('end_date', end_date);
+            var slowsql_active_li_id = sessionStorage.getItem('slowsql_active_li_id');
+            if (slowsql_active_li_id === 'slowsql_tab') {
+                slowquery_review()
+                console.log('date_trigger_get_slowquery_reivew')
+            } else if (slowsql_active_li_id === 'slowsqlinfo_tab') {
+                slowquery_review_history()
 
+            }
+        });
+
+        //实例变更获取数据库， 同时触发获取慢查询日志
+        $("#instance_name").change(function () {
+            sessionStorage.setItem('slow_query_instance_name', $("#instance_name").val());
+            sessionStorage.removeItem('slow_query_db_name');
+            sessionStorage.removeItem('SQLId');
+            get_db_list();
+
+        });
+
+        //获取数据库列表,并且获取慢查询日志数据
+        function get_db_list() {
+            //将数据通过ajax提交给获取db_name
+            dataId = $('#instance_name').find("option:selected").data("id");
+            console.log(dataId)
+            $.ajax({
+                type: "post",
+                url: "/get_instances_resource/",
+                dataType: "json",
+                data: {
+                    instance_name: $("#instance_name option:selected").text(),
+                    data_id: $('#instance_name').find("option:selected").data("id"),
+                    resource_type: "database"
+                },
+                complete: function () {
+                    var slowsql_active_li_id = sessionStorage.getItem('slowsql_active_li_id');
+                    if (slowsql_active_li_id === 'slowsql_tab') {
+                        slowquery_review()
+                    } else if (slowsql_active_li_id === 'slowsqlinfo_tab') {
+                        slowquery_review_history()
+
+                    }
+                },
+                success: function (data) {
+                    if (data.status == 1) {
+                        var result = data.data;
+                        $("#db_name").empty();
+                        for (var i = 0; i < result.length; i++) {
+                            var name = "<option value=\"" + result[i] + "\">" + result[i] + "</option>";
+                            $("#db_name").append(name);
+                        }
+                        $("#db_name").prepend("<option value=\"\" selected=\"selected\">全部数据库</option>");
+                        $('#db_name').selectpicker('render');
+                        $('#db_name').selectpicker('refresh');
+                    } else {
+                        alert(data.msg);
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(errorThrown);
+                }
+            });
+        }
+
+         //数据库变动自动获取日志
+        $("#db_name").change(function () {
+            sessionStorage.setItem('slow_query_db_name', $("#db_name").val());
+            sessionStorage.removeItem('SQLId');
+            var slowsql_active_li_id = sessionStorage.getItem('slowsql_active_li_id');
+            if (slowsql_active_li_id === 'slowsql_tab') {
+                slowquery_review()
+            } else if (slowsql_active_li_id === 'slowsqlinfo_tab') {
+                slowquery_review_history()
+
+            }
+        });
+
+        //获取实例列表, 如果已选择instance_name, 则缓存instance_name，进入页面自动加载
+        $(document).ready(function () {
+         console.log(sessionStorage.getItem('slow_query_instance_name'))
+         $(function () {
+           //获取实例列表
            $.get({
                 type: "POST",
                 url: "/get_all_instances/",
                 dataType: "json",
                 complete: function () {
+
+                //保留如果已选择instance_name，进入页面自动加载
+                sessionStorage.removeItem('SQLId');
+                sessionStorage.setItem('slowsql_active_li_id', 'slowsql_tab');
+                if (sessionStorage.getItem('slow_query_instance_name')) {
+                    var instance_name = sessionStorage.getItem('slow_query_instance_name');
+                    var start_date = sessionStorage.getItem('start_date');
+                    var end_date = sessionStorage.getItem('end_date');
+                    if (start_date && end_date) {
+                        $('#reservation').data('daterangepicker').setStartDate(start_date);
+                        $('#reservation').data('daterangepicker').setEndDate(end_date);
+                    }
+                    //对选中的实例，触发change，获取慢查询日志数据
+                    $("#instance_name").val(instance_name).trigger("change");
+
+                }
+
                 },
                 success: function (data) {
-
                     if (data.status === 1) {
-
                         $("#instance_name").empty();
-
                         $.each(data['data'],function(index,obj){
-
                             let instance = "<option value=\"" + obj.instance_name + "\" data-id=\"" + obj.id + "\" >" + obj.instance_name + "</option>";
                             $("#instance_name").append(instance);
 
@@ -128,92 +228,46 @@
                     alert(errorThrown);
                 }
             });
+            });
+        });
 
-              //实例变更获取数据库
-            $("#instance_name").change(function () {
 
-                dataId = $('#instance_name').find("option:selected").data("id");
-                console.log(dataId)
-                //获取db_name
-                $.get({
-                    type: "post",
-                    url: "/get_instances_resource/",
-                    dataType: "json",
-                    data: {
-                        instance_name: $("#instance_name").val(),
-                        data_id: $('#instance_name').find("option:selected").data("id"),
-                        resource_type: "database"
-                    },
-                    complete: function () {
-                        slowquery_review()
-                    },
-                    success: function (data) {
-                        if (data.status === 1) {
-                            var result = data.data;
-                            console.log(result)
-                            $("#db_name").empty();
-                            for (var i = 0; i < result.length; i++) {
-                                var db_name = "<option value=\"" + result[i] + "\">" + result[i] + "</option>";
-                                $("#db_name").append(db_name);
-                            }
-                            $('#db_name').selectpicker('render');
-                            $('#db_name').selectpicker('refresh');
-                        } else {
-                            alert(data.msg);
-                        }
+        //tab切换,保留当前激活的标签id
+        $(function () {
+            $("#nav-tabs").on('shown.bs.tab', "li", function (e) {
+                var active_li_id = $(e.target).parents().attr('id');
+                console.log(active_li_id);
+                sessionStorage.setItem('slowsql_active_li_id', active_li_id);
+                //当前激活的标签id
+                if ($("#instance_name").val()) {
+                    if (active_li_id === 'slowsql_tab') {
+                        sessionStorage.removeItem('SQLId');
+                        slowquery_review();
+                    } else if (active_li_id === 'slowsqlinfo_tab') {
+                        slowquery_review_history()
                     }
-                 });
-              });
+                }
+            });
+        });
 
-
-         <!--//将数据通过ajax提交给获取db_name-->
-            <!--$.ajax({-->
-                <!--type: "post",-->
-                <!--url: "/get_instances_resource/",-->
-                <!--dataType: "json",-->
-                <!--data: {-->
-                    <!--instance_name: $("#instance_name option:selected").text(),-->
-                    <!--resource_type: "database"-->
-                <!--},-->
-                <!--complete: function () {-->
-                    <!--&lt;!&ndash;var slowsql_active_li_id = sessionStorage.getItem('slowsql_active_li_id');&ndash;&gt;-->
-                    <!--&lt;!&ndash;if (slowsql_active_li_id === 'slowsql_tab') {&ndash;&gt;-->
-                        <!--&lt;!&ndash;slowquery_review()&ndash;&gt;-->
-                    <!--&lt;!&ndash;} else if (slowsql_active_li_id === 'slowsqlinfo_tab') {&ndash;&gt;-->
-                        <!--&lt;!&ndash;slowquery_review_history()&ndash;&gt;-->
-
-                    <!--&lt;!&ndash;}&ndash;&gt;-->
-                <!--},-->
-                <!--success: function (data) {-->
-                    <!--if (data.status == 1) {-->
-                        <!--var result = data.data;-->
-                        <!--$("#db_name").empty();-->
-                        <!--for (var i = 0; i < result.length; i++) {-->
-                            <!--var name = "<option value=\"" + result[i] + "\">" + result[i] + "</option>";-->
-                            <!--$("#db_name").append(name);-->
-                        <!--}-->
-                        <!--$("#db_name").prepend("<option value=\"\" selected=\"selected\">全部数据库</option>");-->
-                        <!--$('#db_name').selectpicker('render');-->
-                        <!--$('#db_name').selectpicker('refresh');-->
-                    <!--} else {-->
-                        <!--alert(data.msg);-->
-                    <!--}-->
-                <!--},-->
-                <!--error: function (XMLHttpRequest, textStatus, errorThrown) {-->
-                    <!--alert(errorThrown);-->
-                <!--}-->
-            <!--});-->
-          });
     </script>
 
-    <!-- 获取列表数据 -->
+    <script>
+        //点击sql统计跳转到对应sql详情列表
+        $(function () {
+            $('#slowsql-list').on('click-row.bs.table', function (e, row, element) {
+                sessionStorage.setItem('SQLId', row.SQLId);
+                $('#nav-tabs a[href="#slowsqlinfo"]').tab('show')
+            });
+        });
+    </script>
+
+    <!-- 获取列表数据的函数 -->
     <script>
         // 获取慢日志统计
         function slowquery_review() {
 
             var instance_name = $("#instance_name").val();
-            console.log(instance_name);
-            console.log(3);
 
             if (instance_name) {
                 //初始化table
@@ -242,20 +296,24 @@
                     cardView: false,                    //是否显示详细视图
                     detailView: true,                  //是否显示父子表
                     queryParamsType: 'limit',
+                    //请求服务数据时所传参数
                     queryParams: function (params) {
 
                         var instance_name = $("#instance_name").val();
                         var db_name = $("#db_name").val();
                         var StartTime = $('#reservation').data('daterangepicker').startDate.format('YYYY-MM-DD');
                         var EndTime = $("#reservation").data('daterangepicker').endDate.format('YYYY-MM-DD');
+                        var instance_id = $('#instance_name').find("option:selected").data("id");
 
                         return {
                             instance_name: instance_name,
+                            instance_id: instance_id,
                             db_name: db_name,
                             StartTime: StartTime,
                             EndTime: EndTime,
                             limit: params.limit,
-                            offset: params.offset
+                            offset: params.offset,
+
                         }
                     },
                     //格式化详情
@@ -263,7 +321,9 @@
                         var html = [];
                         $.each(row, function (key, value) {
                             if (key === 'SQLText') {
-                                var sql = window.sqlFormatter.format(value);
+                                console.log(value)
+<!--                                var sql = window.sqlFormatter.format(value);-->
+                                var sql = value;
                                 //替换所有的换行符
                                 sql = sql.replace(/\r\n/g, "<br>");
                                 sql = sql.replace(/\n/g, "<br>");
@@ -318,7 +378,7 @@
                     onLoadError: function () {
                         alert("数据加载失败！请检查接口返回信息和错误日志！");
                     },
-                    responseHandler: function (res) {
+                    responseHandler: function (res) {   //处理 从后端 返回的数据
                         //在ajax获取到数据，渲染表格之前，修改数据源
                         return res;
                     }
@@ -328,6 +388,132 @@
             }
         }
 
+
+        // 获取慢日志明细
+        function slowquery_review_history() {
+            $("#sqladvisor-toolbar").show();
+            var instance_name = $("#instance_name").val();
+            if (instance_name) {
+                //初始化table
+                $('#slowsqlinfo-list').bootstrapTable('destroy').bootstrapTable({
+                    escape: true,
+                    method: 'post',
+                    contentType: "application/x-www-form-urlencoded",
+                    url: "/slowquery_review_history/",
+                    striped: true,                      //是否显示行间隔色
+                    cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                    pagination: true,                   //是否显示分页（*）
+                    sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                    pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
+                    pageSize: 30,                     //每页的记录行数（*）
+                    pageList: [30, 50, 100],       //可供选择的每页的行数（*）
+                    search: false,                      //是否显示表格搜索
+                    strictSearch: false,                //是否全匹配搜索
+                    showColumns: true,                  //是否显示所有的列（选择显示的列）
+                    showRefresh: true,                  //是否显示刷新按钮
+                    showExport: true,
+                    exportDataType: "all",
+                    minimumCountColumns: 2,             //最少允许的列数
+                    clickToSelect: true,                //是否启用点击选中行
+                    uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+                    showToggle: true,                   //是否显示详细视图和列表视图的切换按钮
+                    cardView: false,                    //是否显示详细视图
+                    detailView: true,                  //是否显示父子表
+                    queryParamsType: 'limit',
+                    queryParams: function (params) {
+                        var instance_name = $("#instance_name").val();
+                        var db_name = $("#db_name").val();
+                        var SQLId = sessionStorage.getItem('SQLId');
+                        var StartTime = $('#reservation').data('daterangepicker').startDate.format('YYYY-MM-DD');
+                        var EndTime = $("#reservation").data('daterangepicker').endDate.format('YYYY-MM-DD');
+                        var instance_id = $('#instance_name').find("option:selected").data("id");
+
+                        return {
+                            instance_name: instance_name,
+                            instance_id: instance_id,
+                            db_name: db_name,
+                            SQLId: SQLId,
+                            StartTime: StartTime,
+                            EndTime: EndTime,
+                            limit: params.limit,
+                            offset: params.offset
+                        }
+                    },
+                    //格式化详情
+                    detailFormatter: function (index, row) {
+                        var html = [];
+                        $.each(row, function (key, value) {
+                            if (key === 'SQLText') {
+<!--                                var sql = window.sqlFormatter.format(value);-->
+                                var sql = value;
+                                //替换所有的换行符
+                                sql = sql.replace(/\r\n/g, "<br>");
+                                sql = sql.replace(/\n/g, "<br>");
+                                //替换所有的空格
+                                sql = sql.replace(/\s/g, "&nbsp;");
+                                html.push('<span>' + sql + '</span>');
+                            }
+                        });
+                        return html.join('');
+                    },
+                    columns: [{
+                        title: '',
+                        field: 'checkbox',
+                        checkbox: true
+                    }, {
+                        title: '执行开始时间',
+                        field: 'ExecutionStartTime'
+                    }, {
+                        title: '数据库名',
+                        field: 'DBName'
+                    }, {
+                        title: '用户名',
+                        field: 'HostAddress'
+                    }, {
+                        title: 'SQL语句',
+                        field: 'SQLText',
+                        formatter: function (value, row, index) {
+                            if (value.length > 100) {
+                                var sql = value.substr(0, 100) + '...';
+                                return sql;
+                            } else {
+                                return value
+                            }
+                        }
+                    }, {
+                        title: '执行总次数',
+                        field: 'TotalExecutionCounts'
+                    }, {
+                        title: '执行时长(95%)',
+                        field: 'QueryTimePct95'
+                    }, {
+                        title: '执行总时长(秒)',
+                        field: 'QueryTimes'
+                    }, {
+                        title: '锁定总时长(秒)',
+                        field: 'LockTimes'
+                    }, {
+                        title: '解析总行数',
+                        field: 'ParseRowCounts'
+                    }, {
+                        title: '返回总行数',
+                        field: 'ReturnRowCounts'
+                    }],
+                    singleSelect: true,
+                    toolbar: "#sqladvisor-toolbar",               //指明自定义的toolbar
+                    locale: 'zh-CN',
+                    onLoadError: function () {
+                        alert("数据加载失败！请检查接口返回信息和错误日志！");
+                    },
+                    responseHandler: function (res) {
+                        //在ajax获取到数据，渲染表格之前，修改数据源
+                        return res;
+                    }
+                });
+            } else {
+                alert("请选择实例")
+            }
+        }
 
     </script>
 

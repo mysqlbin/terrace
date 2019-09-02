@@ -28,9 +28,12 @@ class Binlog2Sql(Plugin):
         :return:
         """
         conn_options = ['conn_options']
+        #解析模式
         parse_mode_options = ['stop-never', 'no-primary-key', 'flashback', 'back-interval']
+        #解析范围控制
         range_options = ['start-file', 'start-position', 'stop-file', 'stop-position', 'start-datetime',
                          'stop-datetime']
+        #对象过滤
         filter_options = ['databases', 'tables', 'only-dml', 'sql-type']
 
         if shell:
