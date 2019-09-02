@@ -1,3 +1,15 @@
 DEBUG 2019-09-02 18:15:22,087 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
 DEBUG 2019-09-02 18:15:22,088 utils (0.001) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
 DEBUG 2019-09-02 18:15:22,094 utils (0.005) SELECT `myapp_db_instance`.`instance_name`, `myapp_db_instance`.`id` FROM `myapp_db_instance`; args=()
+DEBUG 2019-09-02 18:16:13,464 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
+DEBUG 2019-09-02 18:16:13,465 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-09-02 18:16:13,465 utils (0.000) SELECT `myapp_db_instance`.`instance_name`, `myapp_db_instance`.`id` FROM `myapp_db_instance`; args=()
+DEBUG 2019-09-02 18:16:14,521 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
+DEBUG 2019-09-02 18:16:14,523 utils (0.001) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-09-02 18:16:14,524 utils (0.001) SELECT `myapp_db_instance`.`instance_name`, `myapp_db_instance`.`id` FROM `myapp_db_instance`; args=()
+DEBUG 2019-09-02 18:19:01,513 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
+DEBUG 2019-09-02 18:19:01,515 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-09-02 18:19:01,515 utils (0.000) SELECT VERSION(); args=None
+DEBUG 2019-09-02 18:19:01,551 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-09-02 18:19:01,552 utils (0.000) SHOW FULL TABLES; args=None
+DEBUG 2019-09-02 18:19:01,555 utils (0.000) SELECT `django_migrations`.`app`, `django_migrations`.`name` FROM `django_migrations`; args=()

@@ -140,6 +140,11 @@ def binlog2sql_file(args):
     binlog2sql = Binlog2Sql()
     # instance = args.get('instance')
     timestamp = int(time.time())
+
+    path = os.path.join(settings.BASE_DIR, 'downloads/polling/')
+    filename = os.path.join(path, f"{instance_name}的巡检报告{timestamp}.sql")
+
+
     path = os.path.join(settings.BASE_DIR, 'downloads/binlog2sql/')
     # if args.get('flashback'):
     #     filename = os.path.join(path, f"flashback_{instance.host}_{instance.port}_{timestamp}.sql")
