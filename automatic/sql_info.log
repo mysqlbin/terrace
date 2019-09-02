@@ -1,0 +1,8 @@
+DEBUG 2019-09-02 00:09:21,929 utils (0.000) SELECT @@SQL_AUTO_IS_NULL; args=None
+DEBUG 2019-09-02 00:09:21,933 utils (0.002) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-09-02 00:09:21,933 utils (0.001) SELECT COUNT(*) AS `__count` FROM `myapp_db_instance`; args=()
+DEBUG 2019-09-02 00:09:21,936 utils (0.001) SELECT `myapp_db_instance`.`id`, `myapp_db_instance`.`instance_name`, `myapp_db_instance`.`type`, `myapp_db_instance`.`db_type`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port` FROM `myapp_db_instance` LIMIT 14; args=()
+DEBUG 2019-09-02 00:10:45,733 utils (0.001) SELECT @@SQL_AUTO_IS_NULL; args=None
+DEBUG 2019-09-02 00:10:45,735 utils (0.001) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None
+DEBUG 2019-09-02 00:10:45,736 utils (0.000) SELECT COUNT(*) AS `__count` FROM `myapp_db_instance`; args=()
+DEBUG 2019-09-02 00:10:45,737 utils (0.001) SELECT `myapp_db_instance`.`id`, `myapp_db_instance`.`instance_name`, `myapp_db_instance`.`type`, `myapp_db_instance`.`db_type`, `myapp_db_instance`.`ip`, `myapp_db_instance`.`port` FROM `myapp_db_instance` LIMIT 14; args=()
