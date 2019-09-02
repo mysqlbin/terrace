@@ -120,7 +120,8 @@ def binlog2sql(request):
     # 异步保存到文件，去除conn_options避免展示密码信息
     if save_sql:
         # async_task(binlog2sql_file, args=args, user=request.user, hook=notify_for_binlog2sql)
-        async_task(binlog2sql_file, args=args)
+        # async_task(binlog2sql_file, args=args)
+        binlog2sql_file(args=args)
 
     # 返回查询结果
     return HttpResponse(json.dumps(result), content_type='application/json')
