@@ -168,7 +168,7 @@
         $(function () {
            $.get({
                 type: "POST",
-                url: "/get_all_instances/",
+                url: "/instance/get_instance_name_id/",
                 dataType: "json",
                 complete: function () {
                 },
@@ -204,7 +204,7 @@
             //获取db_name
             $.get({
                 type: "post",
-                url: "/get_instances_resource/",
+                url: "/instance/get_instances_resource/",
                 dataType: "json",
                 data: {
                     instance_name: $("#instance_name").val(),
@@ -233,7 +233,7 @@
              //获取binlog
             $.get({
                 type: "post",
-                url: "/get_instances_binlog/",
+                url: "/instance/get_instances_binlog/",
                 dataType: "json",
                 data: {
                     instance_name: $("#instance_name").val(),
@@ -271,7 +271,7 @@
             //将数据通过ajax提交给获取db_name
             $.ajax({
                 type: "post",
-                url: "/get_instances_resource/",
+                url: "/instance/get_instances_resource/",
                 dataType: "json",
                 data: {
                     instance_name: $("#instance_name").val(),
@@ -306,7 +306,7 @@
                 $(this).prop('disabled', true);
                 $.ajax({
                     type: "post",
-                    url: "/get_binlog_to_sql/",
+                    url: "/binlog/binlog2sql/",
                     dataType: "json",
                     data: {
                         instance_name: $("#instance_name").val(),

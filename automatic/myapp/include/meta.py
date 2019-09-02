@@ -2,55 +2,34 @@
 #-*-coding:utf-8-*-
 import pymysql
 import sys,string,time,datetime
+import logging
+import traceback
+
+logger = logging.getLogger('default')
 
 def mysql_query(sql,user,passwd,host,port,dbname):
     try:
         conn   = pymysql.connect(host=host,user=user,passwd=passwd,port=int(port),connect_timeout=5,charset='utf8mb4')
         conn.select_db(dbname)
         cursor = conn.cursor()
-        count  = cursor.execute(sql)
-        index  = cursor.description
-        col=[]
+        cursor.execute(sql)
+        fileds  = cursor.description
+        column_list =[]
         #获取列名
-        try:
-            for i in index:
-                col.append(i[0])
-        except Exception as e:
-            conn.commit()
-            cursor.close()
-            conn.close()
-            return (['ok'], ''), ['set']
-
-        result=cursor.fetchall()
+        for i in fileds:
+            column_list.append(i[0])
+        result = cursor.fetchall()
+        error = ''
+    except Exception as e:
+        logger.error(f"MySQL语句执行报错，语句：{sql}，错误信息{traceback.format_exc()}")
+        error = str(e)
+        result = ''
+        column_list = ''
+    finally:
         cursor.close()
         conn.close()
-        return (result, col)
-    except Exception as e:
-        return ([str(e)],''), ['error']
 
-
-
-def process(insname,flag=1,sql=''):
-    if flag ==1:
-        sql = 'select * from information_schema.processlist ORDER BY TIME DESC'
-        return get_process_data(insname,sql)
-    elif flag ==2:
-        sql = "select * from information_schema.processlist where COMMAND!='Sleep' ORDER BY TIME DESC"
-        return get_process_data(insname, sql)
-    elif flag == 3:
-        sql = "show engine innodb status"
-        return get_process_data(insname, sql)
-    elif flag == 5:
-        sql = "show engine innodb mutex"
-        return get_process_data(insname, sql)
-    elif flag == 6:
-        sql = "SELECT table_schema as 'DB',table_name as 'TABLE',CONCAT(ROUND(( data_length + index_length ) / ( 1024 * 1024 ), 2), '') 'TOTAL(M)' , table_comment as COMMENT FROM information_schema.TABLES ORDER BY data_length + index_length DESC limit 20;"
-        return get_process_data(insname, sql)
-    elif flag==7 :
-        return get_process_data(insname, sql)
-    elif flag == 8:
-        sql = "select * from sys.schema_auto_increment_columns order by auto_increment_ratio desc limit 100"
-        return get_process_data(insname, sql)
+    return (result, column_list, error)
 
 
 def get_process_data(insname,sql, dbname = 'information_schema'):
@@ -69,14 +48,11 @@ def get_process_data(insname,sql, dbname = 'information_schema'):
             break
         if flag == False:
             break
-    # if 'username' in vars():
-    try:
-        results, col = mysql_query(sql, username, passwd, insname.ip, int(insname.port), dbname)
-    except Exception as e:
-        results, col = ([str(e)], ''), ['error']
-    return results, col
-    # else:
-    #     return (['PLEASE set the admin role account FIRST'], ''), ['error']
+    if 'username' in vars():
+        results, column_list, error = mysql_query(sql, username, passwd, insname.ip, int(insname.port), dbname)
+        return results, column_list, error
+    else:
+        return (['PLEASE set the admin role account FIRST'], ''), ['error']
 
 
 
