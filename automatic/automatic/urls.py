@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from myapp import views as myapp_view
+from myapp import views as myapp_view, instance, slowlog, binlog, polling
 
 app_name = ''
 
@@ -23,35 +23,35 @@ urlpatterns = [
 
     path('index/', myapp_view.index, name='index'),
 
-    path('slow_query/', myapp_view.slow_query, name='slow_query'),
-    path('slowquery_review/', myapp_view.slowquery_review, name='slowquery_review'),
-    path('slowquery_review_history/', myapp_view.slowquery_review_history, name='slowsql_info'),
 
-    path('instance/', myapp_view.instance, name='instance'),
-    path('get_instance_list/', myapp_view.get_instance_list, name='instance'),
-    path('ins_users/<id>/<instance_name>/', myapp_view.ins_users, name='users'),
+    path('slow_query/', myapp_view.slow_query, name='slow_query'),
+    path('slowlog/slowquery_review/', slowlog.slowquery_review),
+    path('slowlog/slowquery_review_history/', slowlog.slowquery_review_history),
+
 
     path('polling_report/', myapp_view.polling_report, name='polling_report'),
-    path('polling_list/', myapp_view.polling_list, name='polling_report'),
-
-    # path('get_polling_report/<id>/<instance_name>/', myapp_view.get_polling_report, name='get_polling_report'),
-    path('get_polling_report/', myapp_view.get_polling_report, name='get_polling_report'),
+    path('polling/polling_list/', polling.polling_list),
+    path('polling/get_polling_report/', polling.get_polling_report),
 
 
     # path('login/', myapp_view.login, name='login'),
 
-    path('mysql_query/', myapp_view.mysql_query, name='mysql_query'),
-    path('mysql_querys/', myapp_view.mysql_querys, name='mysql_querys'),
-
     # path('metas/', myapp_view.metas, name='metas'),
 
     path('binlog2sql/', myapp_view.binlog2sql, name='binlog2sql'),
+    path('binlog/binlog2sql/', binlog.binlog2sql),
 
-    path('get_all_instances/', myapp_view.get_all_instances, name='get_polling'),
-    path('get_instances_resource/', myapp_view.get_instances_resource, name='get_polling'),
+    path('instance/', myapp_view.instance, name='instance'),
+    path('instance/get_lists/', instance.get_lists),
+    path('instance/get_instances_resource/', instance.get_instances_resource),
+    path('instance/get_instance_name_id/', instance.get_instance_name_id),
+    path('instance/get_instance_users/<id>/<instance_name>/', instance.get_instance_users, name='users'),
 
-    path('get_instances_binlog/', myapp_view.get_instances_binlog, name='get_polling'),
-    path('get_binlog_to_sql/', myapp_view.get_binlog_to_sql, name='get_polling'),
+
+    path('instance/get_instances_binlog/', instance.get_instances_binlog, name='get_polling'),
+
+
+
 
     #test
     path('index/', myapp_view.index, name='index'),

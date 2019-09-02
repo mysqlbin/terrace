@@ -3,38 +3,38 @@ import logging
 import os
 import time
 import traceback
-
-import simplejson as json
+import json
 from django.conf import settings
 from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponse
-from django_q.tasks import async_task
-
-from common.utils.extend_json_encoder import ExtendJSONEncoder
-from sql.engines import get_engine
-
-from plugins.binglog2sql import Binlog2Sql
-from sql.notify import notify_for_binlog2sql
-from .models import Instance
+# from django_q.tasks import async_task
+from myapp.common.utils.rewrite_json_encoder import RewriteJsonEncoder
+from myapp.plugins.binglog2sql import Binlog2Sql
+from myapp.models import Db_instance
+# from sql.notify import notify_for_binlog2sql
 
 logger = logging.getLogger('default')
 
 def binlog2sql(request):
+
     """
-    通过解析binlog获取SQL
-    :param request:
-    :return:
-    """
-    instance_name = request.POST.get('instance_name')
+       通过解析binlog获取SQL
+       :param request:
+       :return:
+       """
+
+    instance = Db_instance.objects.get(id=int(1))
+
+    # instance_name = request.POST.get('instance_name')
     save_sql = True if request.POST.get('save_sql') == 'true' else False
-    instance = Instance.objects.get(instance_name=instance_name)
+    # instance = Instance.objects.get(instance_name=instance_name)
+
     no_pk = True if request.POST.get('no_pk') == 'true' else False
     flashback = True if request.POST.get('flashback') == 'true' else False
     back_interval = 0 if request.POST.get('back_interval') == '' else int(request.POST.get('back_interval'))
     num = 30 if request.POST.get('num') == '' else int(request.POST.get('num'))
     start_file = request.POST.get('start_file')
-    start_pos = request.POST.get('start_pos') if request.POST.get('start_pos') == '' else int(
-        request.POST.get('start_pos'))
+    start_pos = request.POST.get('start_pos') if request.POST.get('start_pos') == '' else int(request.POST.get('start_pos'))
     end_file = request.POST.get('end_file')
     end_pos = request.POST.get('end_pos') if request.POST.get('end_pos') == '' else int(request.POST.get('end_pos'))
     stop_time = request.POST.get('stop_time')
@@ -45,15 +45,16 @@ def binlog2sql(request):
     sql_type = ['INSERT', 'UPDATE', 'DELETE'] if request.POST.getlist('sql_type[]') == [] else request.POST.getlist(
         'sql_type[]')
 
+
     # flashback=True获取DML回滚语句
-    result = {'status': 0, 'msg': 'ok', 'data': ''}
+    result = {'status': 1, 'msg': 'ok', 'data': ''}
 
     # 提交给binlog2sql进行解析
 
     binlog2sql = Binlog2Sql()
     # 准备参数
-    args = {"conn_options": fr"-h{instance.host} -u{instance.user} -p'{instance.raw_password}' -P{instance.port} ",
-            "stop_never": False,
+    args = {"conn_options": fr"-h{instance.ip} -uroot -p123456abc -P{instance.port} ",
+           "stop_never": False,
             "no-primary-key": no_pk,
             "flashback": flashback,
             "back-interval": back_interval,
@@ -68,21 +69,27 @@ def binlog2sql(request):
             "only-dml": only_dml,
             "sql-type": ' '.join(sql_type),
             "instance": instance
-            }
+    }
 
     # 参数检查
     args_check_result = binlog2sql.check_args(args)
-    if args_check_result['status'] == 1:
+
+    if args_check_result['status'] == 0:
         return HttpResponse(json.dumps(args_check_result), content_type='application/json')
     # 参数转换
     cmd_args = binlog2sql.generate_args2cmd(args, shell=True)
+
     # 执行命令
     try:
         p = binlog2sql.execute_cmd(cmd_args, shell=True)
+        # return HttpResponse(p)
         # 读取前num行后结束
         rows = []
         n = 1
         for line in iter(p.stdout.readline, ''):
+            """
+            line = INSERT INTO `test`.`test3`(`addtime`, `data`, `id`) VALUES ('2016-12-10 13:03:38', 'english', 4); #start 981 end 1147
+           """
             if n <= num:
                 n = n + 1
                 row_info = {}
@@ -99,7 +106,7 @@ def binlog2sql(request):
             # 判断是否有异常
             stderr = p.stderr.read()
             if stderr:
-                result['status'] = 1
+                result['status'] = 0
                 result['msg'] = stderr
                 return HttpResponse(json.dumps(result), content_type='application/json')
         # 终止子进程
@@ -107,7 +114,7 @@ def binlog2sql(request):
         result['data'] = rows
     except Exception as e:
         logger.error(traceback.format_exc())
-        result['status'] = 1
+        result['status'] = 0
         result['msg'] = str(e)
 
     # 异步保存到文件，去除conn_options避免展示密码信息
@@ -115,31 +122,33 @@ def binlog2sql(request):
         async_task(binlog2sql_file, args=args, user=request.user, hook=notify_for_binlog2sql)
 
     # 返回查询结果
-    return HttpResponse(json.dumps(result, cls=ExtendJSONEncoder, bigint_as_string=True),
-                        content_type='application/json')
-
-
-def binlog2sql_file(args, user):
+    return HttpResponse(json.dumps(result), content_type='application/json')
     """
-    用于异步保存binlog解析的文件
-    :param args: 参数
-    :param user: 操作用户对象，用户消息推送
-    :return:
+    {"status": 0, "msg": "ok", "data": [{"sql": "INSERT INTO `db1`.`accountinfo`(`AccountId`, `Ip`) VALUES (1, '1');", "binlog_info": "start 973 end 1208 time 2019-08-30 03:52:27\n"}]}
     """
-    binlog2sql = Binlog2Sql()
-    instance = args.get('instance')
-    timestamp = int(time.time())
-    path = os.path.join(settings.BASE_DIR, 'downloads/binlog2sql/')
-    if args.get('flashback'):
-        filename = os.path.join(path, f"flashback_{instance.host}_{instance.port}_{timestamp}.sql")
-    else:
-        filename = os.path.join(path, f"{instance.host}_{instance.port}_{timestamp}.sql")
 
-    # 参数转换
-    cmd_args = binlog2sql.generate_args2cmd(args, shell=True)
-    # 执行命令保存到文件
-    with open(filename, 'w') as f:
-        p = binlog2sql.execute_cmd(cmd_args, shell=True)
-        for c in iter(p.stdout.readline, ''):
-            f.write(c)
-    return user, filename
+
+# def binlog2sql_file(args, user):
+#     """
+#     用于异步保存binlog解析的文件
+#     :param args: 参数
+#     :param user: 操作用户对象，用户消息推送
+#     :return:
+#     """
+#     binlog2sql = Binlog2Sql()
+#     instance = args.get('instance')
+#     timestamp = int(time.time())
+#     path = os.path.join(settings.BASE_DIR, 'downloads/binlog2sql/')
+#     if args.get('flashback'):
+#         filename = os.path.join(path, f"flashback_{instance.host}_{instance.port}_{timestamp}.sql")
+#     else:
+#         filename = os.path.join(path, f"{instance.host}_{instance.port}_{timestamp}.sql")
+#
+#     # 参数转换
+#     cmd_args = binlog2sql.generate_args2cmd(args, shell=True)
+#     # 执行命令保存到文件
+#     with open(filename, 'w') as f:
+#         p = binlog2sql.execute_cmd(cmd_args, shell=True)
+#         for c in iter(p.stdout.readline, ''):
+#             f.write(c)
+#     return user, filename

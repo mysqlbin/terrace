@@ -132,7 +132,7 @@
             console.log(dataId)
             $.ajax({
                 type: "post",
-                url: "/get_instances_resource/",
+                url: "/instance/get_instances_resource/",
                 dataType: "json",
                 data: {
                     instance_name: $("#instance_name option:selected").text(),
@@ -189,7 +189,7 @@
            //获取实例列表
            $.get({
                 type: "POST",
-                url: "/get_all_instances/",
+                url: "/instance/get_instance_name_id/",
                 dataType: "json",
                 complete: function () {
 
@@ -275,7 +275,7 @@
                     escape: true,
                     method: 'post',
                     contentType: "application/x-www-form-urlencoded",
-                    url: "/slowquery_review/",
+                    url: "/slowlog/slowquery_review/",
                     striped: true,                      //是否显示行间隔色
                     cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
                     pagination: true,                   //是否显示分页（*）
@@ -399,7 +399,7 @@
                     escape: true,
                     method: 'post',
                     contentType: "application/x-www-form-urlencoded",
-                    url: "/slowquery_review_history/",
+                    url: "/slowlog/slowquery_review_history/",
                     striped: true,                      //是否显示行间隔色
                     cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
                     pagination: true,                   //是否显示分页（*）

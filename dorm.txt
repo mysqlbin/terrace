@@ -166,3 +166,11 @@ python3.6 f-string格式化字符串
 https://www.cnblogs.com/c-x-a/p/9333826.html
 
 
+
+
+1. logging 和 traceback的使用
+2. 巡检脚本的代码避免多次连接数据库
+
+
+
+

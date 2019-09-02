@@ -52,7 +52,7 @@
                 escape: true,
                 method: 'post',
                 contentType: "application/x-www-form-urlencoded",
-                url: "/polling_list/",
+                url: "/polling/polling_list/",
                 striped: true,                      //是否显示行间隔色
                 cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
                 pagination: true,                   //是否显示分页（*）
@@ -154,7 +154,7 @@
             console.log(instance_id)
             console.log(instance_name)
             $.get({
-            url: "/get_polling_report/",
+            url: "/polling/get_polling_report/",
             type: "POST",
             data: {
               instance_id: instance_id,
