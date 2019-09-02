@@ -7,7 +7,7 @@ import json
 from django.conf import settings
 from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponse
-from django_q.tasks import async_task
+# from django_q.tasks import async_task
 from myapp.common.utils.rewrite_json_encoder import RewriteJsonEncoder
 from myapp.plugins.binglog2sql import Binlog2Sql
 from myapp.models import Db_instance

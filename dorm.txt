@@ -171,10 +171,12 @@ https://www.cnblogs.com/c-x-a/p/9333826.html
 1. logging 和 traceback的使用
 2. 巡检脚本的代码避免多次连接数据库
 
-
+django-q :  
 from django_q.tasks import async_task
 
 pip3 install django-q
+
+https://pypi.org/project/django-q/  
 
 
 Internal Server Error: /binlog/binlog2sql/
