@@ -3,7 +3,6 @@
 
 import pymysql
 
-
 def mysql_query(sql, user, passwd, host, port, get_data = 1):
     try:
         conn=pymysql.connect(host=host,user=user,passwd=passwd,port=int(port),connect_timeout=5,charset='utf8mb4')
@@ -22,7 +21,7 @@ def mysql_query(sql, user, passwd, host, port, get_data = 1):
 def get_process_data(insname, sql, get_data = 1):
     flag = True
     # pc = prpcrypt()
-    #多对多的查询
+    #多对多的查询，避免多次连接， 考虑把账号和密码放入Redis缓存中
     for a in insname.db_name_set.all():    #models.py：Db_name
         for i in a.db_account_set.all():   #models.py：Db_account
             # if i.role == 'admin':         '''获取账号和密码，用来连接数据库'''
@@ -37,7 +36,7 @@ def get_process_data(insname, sql, get_data = 1):
             #results = mysql_query('select 1', 'root', '123456abc', '192.168.0.54', 3306)
             results = mysql_query(sql, username, passwd, insname.ip, int(insname.port), get_data)
         except Exception as e:
-            results = e
+            results = str(e)
         return results
     else:
         return 'PLEASE set the admin role account FIRST'
