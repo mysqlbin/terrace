@@ -144,35 +144,61 @@ os.path.join(BASE_DIR, "static"),
 
 parse_sql_number = [10,50,200]
 
-
+# LOG配置
+BASE_LOG_DIR = os.path.join(BASE_DIR, "log")
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    # 日志文件的格式
     'formatters': {
+        # 详细的日志格式
         'verbose': {
             'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
         },
+        # 简单的日志格式
         'simple': {
             'format': '%(levelname)s %(asctime)s %(module)s %(message)s'
         },
     },
+    # 处理器
     'handlers': {
+        #打印SQL语句，方便开发
         'sql': {
             'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, "sql_info.log"),
-            'formatter': 'simple'
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_LOG_DIR, "sql_info.log"),
+             'maxBytes': 1024 * 1024 * 100,  # 5 MB
+            'backupCount': 5,
+            'formatter': 'verbose',
         },
+        #在终端打印
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
         },
+        # 默认的
+        'default': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_LOG_DIR, "automatic.log"),
+            'maxBytes': 1024 * 1024 * 100,  # 5 MB
+            'backupCount': 5,
+            'formatter': 'verbose',
+        },
     },
+
     'loggers': {
+        # default日志
+        'default': {
+            'handlers': ['console', 'default'],
+            'level': 'DEBUG'
+        },
+
         'django.db.backends': {
             'handlers': ['sql', 'console'],
             'propagate': True,
             'level': 'DEBUG',
         },
+
     }
 }
