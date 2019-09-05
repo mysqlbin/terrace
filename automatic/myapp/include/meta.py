@@ -34,7 +34,7 @@ def mysql_query(sql,user,passwd,host,port,dbname):
 
 def get_process_data(insname,sql, dbname = 'information_schema'):
     flag = True
-    # pc = prpcrypt()
+    pc = prpcrypt()
 
     #多对多的查询
     #SELECT `myapp_db_name`.`id`, `myapp_db_name`.`dbtag`, `myapp_db_name`.`dbname` FROM `myapp_db_name` INNER JOIN `myapp_db_name_instance` ON (`myapp_db_name`.`id` = `myapp_db_name_instance`.`db_name_id`) WHERE `myapp_db_name_instance`.`db_instance_id` = 7; args=(7,)
