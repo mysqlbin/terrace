@@ -134,13 +134,13 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
+# 将静态资源存放在文件夹 static
 STATIC_URL = '/static/'
 
 #STATIC_ROOT = '/static/'
 
-STATICFILES_DIRS = (
-os.path.join(BASE_DIR, "static"),
-)
+# 设置根目录的静态资源文件夹 static
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 
 parse_sql_number = [10,50,200]
 
