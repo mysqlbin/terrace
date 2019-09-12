@@ -15,6 +15,7 @@ import os
 CELERY_IMPORTS = ("myapp.tasks","myapp.include.scheduled","myapp.include.mon")
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+# 项目路径
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -22,16 +23,19 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+# 密钥配置, 是一个随机值,在项目创建的时候自动生成
 SECRET_KEY = '^1=x14ssj+#$imr^sv*=a!%s_olv^r@7#dhm-+=4=m2kg$zoo('
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# 调试模式
 DEBUG = True
 
+# 允许所有的域名访问
 ALLOWED_HOSTS = ['*']
 
 
 # Application definition #django 的自带应用
-
+# APP列表
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -43,6 +47,7 @@ INSTALLED_APPS = [
     'blacklist',
 ]
 
+# 中间件
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -84,7 +89,7 @@ WSGI_APPLICATION = 'automatic.wsgi.application'
 #    }
 #}
 
-
+# 数据库配置
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -134,13 +139,13 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
+# 将静态资源存放在文件夹 static下
 STATIC_URL = '/static/'
 
 #STATIC_ROOT = '/static/'
 
-STATICFILES_DIRS = (
-os.path.join(BASE_DIR, "static"),
-)
+# 设置根目录的静态资源文件夹 static
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 
 parse_sql_number = [10,50,200]
 

@@ -6,7 +6,6 @@ from myapp.include import function as func
 from myapp.include import sqlfilter
 from myapp.form import AddForm
 from blacklist import blFunction as bc
-from myapp.models import Db_instance,SlowQuery,SlowQueryHistory
 
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required,permission_required
@@ -49,7 +48,6 @@ def instance(request):
 def slow_query(request):
 
     return render(request, 'show_query.html')
-
 
 
 # @login_required(login_url='/admin/login/')
