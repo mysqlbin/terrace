@@ -25,30 +25,29 @@ import os
 
 @login_required(login_url='/admin/login/')
 def index(request):
+
     return render(request, 'index.html')
 
 
+@login_required(login_url='/admin/login/')
 def binlog2sql(request):
+
     return render(request, 'binlog2sql.html')
 
+
+@login_required(login_url='/admin/login/')
 def polling_report(request):
 
     return render(request, 'polling_report.html')
 
-
+@login_required(login_url='/admin/login/')
 def instance(request):
 
-    type_list = {'all': '全部', 'master': '主库', 'slave': '从库', 'alone': '单机'}
-    db_type_list = {'all': '全部', 'mysql': 'MySQL', 'mongodb': 'MongoDB', 'mssql': 'MsSQL', 'redis': 'Redis', 'pgsql': 'PgSQL', 'oracle': 'Oracle'}
+    return render(request, 'instance.html')
 
-
-    return render(request, 'instance.html', locals())
-
-
+@login_required(login_url='/admin/login/')
 def slow_query(request):
 
     return render(request, 'show_query.html')
 
-
-# @login_required(login_url='/admin/login/')
 

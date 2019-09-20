@@ -5,9 +5,29 @@ from django.contrib.auth.models import User
 
 # Register your models here.
 #通过 admin.site.register 注册模型类, 这样 admin 就可以管理数据库中这种类型的对象
-admin.site.register(Db_instance)
-admin.site.register(Db_name)
-admin.site.register(Db_account)
+
+# 实例列表
+@admin.register(Db_instance)
+class DbinstanceAdmin(admin.ModelAdmin):
+    # 设置显示的字段
+    list_display = ['id', 'instance_name', 'type', 'db_type', 'ip', 'port', 'charset', 'create_time']
+
+    search_fields = ['instance_name']
+
+    list_filter = ['instance_name']
+
+# 数据库列表
+@admin.register(Db_name)
+class DbnameAdmin(admin.ModelAdmin):
+    # 设置显示的字段
+    list_display = ['id', 'dbname', 'dbtag']
+
+# 用户列表
+@admin.register(Db_account)
+class DbaccountAdmin(admin.ModelAdmin):
+    # 设置显示的字段
+    list_display = ['id', 'user', 'tags']
+
 admin.site.register(User_profile)
 
 
