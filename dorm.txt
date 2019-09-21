@@ -196,4 +196,17 @@ Traceback (most recent call last):
 ModuleNotFoundError: No module named 'redis'
 
 
+安装crypto：
+    pip3 install Crypto
+    pip3 install --upgrade pycrypt
+
+    Collecting requests (from Naked->Crypto)
+      ERROR: Could not find a version that satisfies the requirement requests (from
+    Naked->Crypto) (from versions: none)
+    ERROR: No matching distribution found for requests (from Naked->Crypto)
+
+
+    pip3 uninstall crypto pycryptodome
+    pip3 install pycryptodome
+    参考： https://www.cnblogs.com/fawaikuangtu123/p/9761943.html
 
