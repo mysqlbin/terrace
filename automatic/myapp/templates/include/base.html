@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    {% load staticfiles %}
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,6 +10,9 @@
     <title>1</title>
 
     <!-- 引入 Bootstrap -->
+    <!-- load 标签， 导入静态文件标签库 staticfiles/导入静态资源信息, staticfiles来自 settings.py 的INSTALLED_APPS-->
+    {% load staticfiles %}
+    <!-- static 标签，来自静态文件标签库staticfiles；ststic标签用于读取 静态资源的文件内容  -->
     <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'metisMenu/css/metisMenu.min.css' %}" rel="stylesheet">
     <link href="{% static 'sb-admin-2/css/sb-admin-2.css' %}" rel="stylesheet">
@@ -41,9 +44,7 @@
     <div id="page-wrapper">
         <div class="clearfix">
             <br>
-            {% block content %}
-
-            {% endblock content %}
+            {% block content %} {% endblock content %}
             <!--底部部分 -->
             <hr>
         </div>
