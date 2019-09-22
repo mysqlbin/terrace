@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.urls import path
 from myapp import views as myapp_view, instance, slowlog, binlog, polling, test
+from myapp.common import auth
 
 app_name = ''
 
@@ -49,6 +50,8 @@ urlpatterns = [
 
 
     path('instance/get_instances_binlog/', instance.get_instances_binlog),
+
+    path('logout/', auth.sign_out),
 
     path('test/get_query_data/', test.get_query_data),
 

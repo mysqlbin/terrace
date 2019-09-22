@@ -5,18 +5,18 @@ from myapp.common.utils.aes_decryptor import Prpcrypt
 #创建模型来添加数据库服务
 #每个模型被表示为 django.db.models.Model 类的子类
 read_write = (
-    ('read1', 'read2'),
-    ('write1', 'write2'),
-    ('all1','all2'),
-    ('idle1','idle2'),
+    ('read', 'read'),
+    ('write', 'write'),
+    ('all','all'),
+    ('idle','idle'),
     ('admin','admin'),
 )
 
 read_write_account = (
-    ('read1', 'read2'),
-    ('write1', 'write2'),
-    ('all1','all2'),
-    ('admin1','admin2'),
+    ('read', 'read_account'),
+    ('write', 'write_account'),
+    ('all','all_count'),
+    ('admin','admin_count'),
 )
 
 DB_TYPE_CHOICES = (
@@ -69,7 +69,7 @@ class Db_name (models.Model):
 class Db_account(models.Model):
     user = models.CharField('用户名',max_length=30)
     passwd = models.CharField(max_length=255)
-    role =  models.CharField(max_length=30, choices=read_write_account,default='all2')
+    role =  models.CharField(max_length=30, choices=read_write_account,default='all')
     tags = models.CharField('标签', max_length=30, db_index=True)
     dbname = models.ManyToManyField(Db_name)
     account = models.ManyToManyField(User)

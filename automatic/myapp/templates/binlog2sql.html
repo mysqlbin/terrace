@@ -171,7 +171,7 @@
 
          //获取用户实例列表
         $(function () {
-           $.get({
+           $.ajax({
                 type: "POST",
                 url: "/instance/get_instance_name_id/",
                 dataType: "json",
@@ -207,7 +207,7 @@
             dataId = $('#instance_name').find("option:selected").data("id");
             console.log(dataId)
             //获取db_name
-            $.get({
+            $.ajax({
                 type: "post",
                 url: "/instance/get_instances_resource/",
                 dataType: "json",
@@ -236,7 +236,7 @@
             });
 
              //获取binlog
-            $.get({
+            $.ajax({
                 type: "post",
                 url: "/instance/get_instances_binlog/",
                 dataType: "json",

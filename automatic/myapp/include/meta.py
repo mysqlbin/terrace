@@ -42,11 +42,12 @@ def get_process_data(insname,sql, dbname = 'information_schema'):
     for a in insname.db_name_set.all():    #models.py：Db_name
         #SELECT `myapp_db_account`.`id`, `myapp_db_account`.`user`, `myapp_db_account`.`passwd`, `myapp_db_account`.`role`, `myapp_db_account`.`tags` FROM `myapp_db_account` INNER JOIN `myapp_db_account_dbname` ON (`myapp_db_account`.`id` = `myapp_db_account_dbname`.`db_account_id`) WHERE `myapp_db_account_dbname`.`db_name_id` = 2; args=(2,)
         for i in a.db_account_set.all():   #models.py：Db_account
-            # if i.role == 'admin':         '''获取账号和密码，用来连接数据库'''
-            username = i.user
-            passwd = pc.decrypt(i.passwd)
-            flag = False
-            break
+            if i.role == 'admin':
+                #获取账号和密码，用来连接数据库
+                username = i.user
+                passwd = pc.decrypt(i.passwd)
+                flag = False
+                break
         if flag == False:
             break
     if 'username' in vars():

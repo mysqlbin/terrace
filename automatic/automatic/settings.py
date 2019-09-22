@@ -98,7 +98,7 @@ DATABASES = {
         'NAME': 'terrace_db',
         'USER': 'root',
         'PASSWORD': '123456abc',
-        'HOST': '192.168.0.54',
+        'HOST': '192.168.1.27',
         'PORT': '3306',
     }
 }

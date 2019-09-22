@@ -187,7 +187,7 @@
          console.log(sessionStorage.getItem('slow_query_instance_name'))
          $(function () {
            //获取实例列表
-           $.get({
+           $.ajax({
                 type: "POST",
                 url: "/instance/get_instance_name_id/",
                 dataType: "json",

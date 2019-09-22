@@ -55,7 +55,7 @@
 
 </body>
 <script>
-    <!-- 解决CSRF-->
+    <!-- 自己写一个getCookie方法, 用于解决CSRF -->
     $(function () {
         $.ajaxSetup({
             headers: {"X-CSRFToken": getCookie("csrftoken")}
