@@ -21,23 +21,22 @@ import datetime,time
 import json
 import os
 
-
-@login_required(login_url='/admin/login/')
+@login_required(login_url='/admin/login/', redirect_field_name='next')
 def index(request):
 
     return render(request, 'index.html')
 
 
-@login_required(login_url='/admin/login/')
+@login_required(login_url='/admin/login/', redirect_field_name='next')
 @permission_required(perm='myapp.menu_binlog2sql', raise_exception=True)
 def binlog2sql(request):
 
     return render(request, 'binlog2sql.html')
 
 
-@login_required(login_url='/admin/login/')
+@login_required(login_url='/admin/login/', redirect_field_name='next')
 @permission_required(perm='myapp.menu_pollingreport', raise_exception=True)
-def polling_report(request):
+def pollingreport(request):
 
     return render(request, 'polling_report.html')
 
@@ -47,7 +46,7 @@ def instance(request):
 
     return render(request, 'instance.html')
 
-@login_required(login_url='/admin/login/')
+@login_required(login_url='/admin/login/', redirect_field_name='next')
 @permission_required(perm='myapp.menu_slowquery', raise_exception=True)
 def slowquery(request):
 

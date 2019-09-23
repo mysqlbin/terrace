@@ -30,14 +30,9 @@ urlpatterns = [
     path('slowlog/slowquery_review_history/', slowlog.slowquery_review_history),
 
 
-    path('polling_report/', myapp_view.polling_report, name='polling_report'),
+    path('pollingreport/', myapp_view.pollingreport, name='polling_report'),
     path('polling/polling_list/', polling.polling_list),
     path('polling/get_polling_report/', polling.get_polling_report),
-
-
-    # path('login/', myapp_view.login, name='login'),
-
-    # path('metas/', myapp_view.metas, name='metas'),
 
     path('binlog2sql/', myapp_view.binlog2sql, name='binlog2sql'),
     path('binlog/binlog2sql/', binlog.binlog2sql),
@@ -47,7 +42,6 @@ urlpatterns = [
     path('instance/get_instances_resource/', instance.get_instances_resource),
     path('instance/get_instance_name_id/', instance.get_instance_name_id),
     path('instance/get_instance_users/<id>/<instance_name>/', instance.get_instance_users, name='users'),
-
 
     path('instance/get_instances_binlog/', instance.get_instances_binlog),
 
