@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',  #查找静态资源路径
     'myapp',
-    'blacklist',
 ]
 
 # 中间件
@@ -98,7 +97,7 @@ DATABASES = {
         'NAME': 'terrace_db',
         'USER': 'root',
         'PASSWORD': '123456abc',
-        'HOST': '192.168.1.27',
+        'HOST': '192.168.0.54',
         'PORT': '3306',
     }
 }

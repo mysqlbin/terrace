@@ -5,7 +5,6 @@ from myapp.include import meta
 from myapp.include import function as func
 from myapp.include import sqlfilter
 from myapp.form import AddForm
-from blacklist import blFunction as bc
 from myapp.models import Db_instance,SlowQuery,SlowQueryHistory
 
 from django.contrib import auth

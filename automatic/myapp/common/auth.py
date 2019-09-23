@@ -8,6 +8,6 @@ from django.urls import reverse
 
 
 # 退出登录
-def sign_out(request):
+def logoutView(request):
     logout(request)
     return HttpResponseRedirect('/admin/login')

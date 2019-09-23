@@ -25,7 +25,7 @@ urlpatterns = [
 
     path('index/', myapp_view.index, name='index'),
 
-    path('slow_query/', myapp_view.slow_query, name='slow_query'),
+    path('slowquery/', myapp_view.slowquery, name='slowquery'),
     path('slowlog/slowquery_review/', slowlog.slowquery_review),
     path('slowlog/slowquery_review_history/', slowlog.slowquery_review_history),
 
@@ -51,7 +51,7 @@ urlpatterns = [
 
     path('instance/get_instances_binlog/', instance.get_instances_binlog),
 
-    path('logout/', auth.sign_out),
+    path('logoutView/', auth.logoutView),
 
     path('test/get_query_data/', test.get_query_data),
 

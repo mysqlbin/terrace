@@ -1,5 +1,5 @@
 from django.contrib import admin
-from myapp.models import Db_name,Db_account,Db_instance,User_profile
+from myapp.models import Db_name,Db_account,Db_instance
 from django.contrib.auth.models import User
 
 
@@ -28,6 +28,6 @@ class DbaccountAdmin(admin.ModelAdmin):
     # 设置显示的字段
     list_display = ['id', 'user', 'tags']
 
-admin.site.register(User_profile)
+
 
 

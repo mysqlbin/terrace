@@ -29,7 +29,7 @@
                 </a>
                 <ul class="dropdown-menu dropdown-user">
                     <li><a href="/admin/password_change/"><i class="fa fa-user fa-fw"></i> 修改密码</a></li>
-                    <li><a href="/logout/"><i class="fa fa-gear fa-fw"></i> 退出</a></li>
+                    <li><a href="/logoutView/"><i class="fa fa-gear fa-fw"></i> 退出</a></li>
                 </ul>
                 <!-- /.dropdown-user -->
             </li>
@@ -49,11 +49,6 @@
 									<a href="/instance/">实例列表</a>
 								</li>
 
-								<li>
-									<a href="/binlog2sql/">binlog2sql</a>
-								</li>
-
-
 						</ul>
                             <!-- /.nav-second-level -->
 
@@ -64,8 +59,19 @@
 								class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
 							<li>
-								<a href="/slow_query/">慢查询列表</a>
+								<a href="/slowquery/">慢查询日志</a>
 							</li>
+						</ul>
+						<!-- /.nav-second-level -->
+					</li>
+
+                    <li>
+						<a href="#"><i class="fa fa-wrench fa-fw"></i>工具<span
+								class="fa arrow"></span></a>
+						<ul class="nav nav-second-level">
+							<li>
+                                <a href="/binlog2sql/">binlog2sql</a>
+                            </li>
 						</ul>
 						<!-- /.nav-second-level -->
 					</li>

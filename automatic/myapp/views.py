@@ -5,7 +5,6 @@ from myapp.include import meta
 from myapp.include import function as func
 from myapp.include import sqlfilter
 from myapp.form import AddForm
-from blacklist import blFunction as bc
 
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required,permission_required
@@ -30,24 +29,28 @@ def index(request):
 
 
 @login_required(login_url='/admin/login/')
+@permission_required(perm='myapp.menu_binlog2sql', raise_exception=True)
 def binlog2sql(request):
 
     return render(request, 'binlog2sql.html')
 
 
 @login_required(login_url='/admin/login/')
+@permission_required(perm='myapp.menu_pollingreport', raise_exception=True)
 def polling_report(request):
 
     return render(request, 'polling_report.html')
 
 @login_required(login_url='/admin/login/')
+@permission_required(perm='myapp.menu_instance', raise_exception=True)
 def instance(request):
 
     return render(request, 'instance.html')
 
 @login_required(login_url='/admin/login/')
-def slow_query(request):
+@permission_required(perm='myapp.menu_slowquery', raise_exception=True)
+def slowquery(request):
 
-    return render(request, 'show_query.html')
+    return render(request, 'showquery.html')
 
 
