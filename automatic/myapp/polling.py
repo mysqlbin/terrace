@@ -230,7 +230,7 @@ def get_polling_report(request):
         f.write(get_param_value(insname, 'binlog_cache_size') + '\n')
         f.write(get_param_value(insname, 'binlog_group_commit_sync_delay') + '\n')
         f.write(get_param_value(insname, 'binlog_group_commit_sync_no_delay_count') + '\n')
-        # f.write(get_param_value(insname, 'binlog_transaction_dependency_tracking') + '\n')
+        f.write(get_param_value(insname, 'binlog_transaction_dependency_tracking') + '\n')
 
         f.write('3.2.2 Server层线程/会话相关的内存参数:' + '\n')
         f.write(get_param_value(insname, 'key_buffer_size') + '\n')

@@ -1,11 +1,16 @@
 {% extends "include/base.html" %}
+
 {% block title %}
     <title>BINLOG ROLLBACK</title>
 {% endblock %}
+
 {% block name %}
     BINLOG解析/回滚SQL
 {% endblock %}
-{%block content%}
+
+
+
+{% block content %}
 
 <div class="row clearfix">
         <div class="col-md-3">
@@ -166,7 +171,7 @@
 
          //获取用户实例列表
         $(function () {
-           $.get({
+           $.ajax({
                 type: "POST",
                 url: "/instance/get_instance_name_id/",
                 dataType: "json",
@@ -202,7 +207,7 @@
             dataId = $('#instance_name').find("option:selected").data("id");
             console.log(dataId)
             //获取db_name
-            $.get({
+            $.ajax({
                 type: "post",
                 url: "/instance/get_instances_resource/",
                 dataType: "json",
@@ -231,7 +236,7 @@
             });
 
              //获取binlog
-            $.get({
+            $.ajax({
                 type: "post",
                 url: "/instance/get_instances_binlog/",
                 dataType: "json",
@@ -332,6 +337,7 @@
                     },
                     success: function (data) {
                         if (data.status === 1) {
+                            // 这里的代码可以独立出来
                             $('#tb-binlog2sql').bootstrapTable('destroy').bootstrapTable({
                                 escape: true,
                                 striped: true,                      //是否显示行间隔色

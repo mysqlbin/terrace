@@ -1,21 +1,22 @@
 from django.db import models
 from django.contrib.auth.models import User
+from myapp.common.utils.aes_decryptor import Prpcrypt
 # Create your models here.
 #创建模型来添加数据库服务
 #每个模型被表示为 django.db.models.Model 类的子类
 read_write = (
-    ('read1', 'read2'),
-    ('write1', 'write2'),
-    ('all1','all2'),
-    ('idle1','idle2'),
+    ('read', 'read'),
+    ('write', 'write'),
+    ('all','all'),
+    ('idle','idle'),
     ('admin','admin'),
 )
 
 read_write_account = (
-    ('read1', 'read2'),
-    ('write1', 'write2'),
-    ('all1','all2'),
-    ('admin1','admin2'),
+    ('read', 'read_account'),
+    ('write', 'write_account'),
+    ('all','all_count'),
+    ('admin','admin_count'),
 )
 
 DB_TYPE_CHOICES = (
@@ -32,51 +33,74 @@ INSTANCE_TYPE_CHOICES = (
     ('alone', '单机'))
 
 class Db_instance(models.Model):
-    # instance_name = models.CharField('实例名称', max_length=50, unique=True)
-    # type = models.CharField('实例类型', max_length=6, choices=(('master', '主库'), ('slave', '从库')))
-    # db_type = models.CharField('数据库类型', max_length=30, default='mysql', choices=DB_TYPE_CHOICES, )
-    # ip = models.CharField('IP地址', max_length=30)
-    # port = models.CharField('端口号', max_length=10)
-    # role = models.CharField('角色', max_length=30, choices=read_write, )
-    # charset = models.CharField('字符集', max_length=20, default='', blank=True)
-    # create_time = models.DateTimeField('创建时间', auto_now_add=True)
-    # update_time = models.DateTimeField('更新时间', auto_now=True)
 
-    instance_name = models.CharField(max_length=50, default='',)
-    type = models.CharField( max_length=6, default='', choices=INSTANCE_TYPE_CHOICES,)
-    db_type = models.CharField(max_length=30, default='mysql', choices=DB_TYPE_CHOICES, )
-    ip = models.CharField( max_length=30)
-    port = models.CharField(max_length=10)
-    role = models.CharField(max_length=30, choices=read_write, )
-    charset = models.CharField(max_length=20, default='', blank=True)
-    create_time = models.DateTimeField(auto_now_add=True)
-    update_time = models.DateTimeField(auto_now=True)
+    instance_name = models.CharField('实例名称', max_length=50, default='',)
+    type = models.CharField('实例类型', max_length=6, default='', choices=INSTANCE_TYPE_CHOICES,)
+    db_type = models.CharField('数据库类型', max_length=30, default='mysql', choices=DB_TYPE_CHOICES, )
+    ip = models.CharField('IP地址', max_length=30)
+    port = models.CharField('端口号', max_length=10)
+    role = models.CharField('角色', max_length=30, choices=read_write, )
+    charset = models.CharField('字符集', max_length=20, default='', blank=True)
+    create_time = models.DateTimeField('创建时间', auto_now_add=True)
+    update_time = models.DateTimeField('更新时间', auto_now=True)
 
     def __str__(self):
-        return u'%s %s %s %s' % (self.ip, self.port, self.role, self.db_type)     #查询之后的返回值
+        return self.instance_name
+
     class Meta:          #创建唯一的联合索引
         unique_together = ("ip", "port")
-
+        verbose_name = '实例信息'
+        verbose_name_plural = '实例信息'
 
 class Db_name (models.Model):
-    dbtag = models.CharField(max_length=30, unique=True)       #unique=True 表示创建唯一索引
-    dbname = models.CharField(max_length=30)
-    instance = models.ManyToManyField(Db_instance)   #查询时用于联表查询中的 on
-    account = models.ManyToManyField(User)           #查询时用于联表查询中的 on
-    def __str__(self):
-        return u'%s %s' % (self.dbtag, self.dbname)
+    dbtag = models.CharField('标签', max_length=30, unique=True)
+    dbname = models.CharField('数据库名称', max_length=30)
+    instance = models.ManyToManyField(Db_instance)
+    account = models.ManyToManyField(User)    # 跟Django内置模型 User相关联, 即 auth_user表
 
+
+    def __str__(self):
+        return self.dbname
+
+    class Meta:
+        verbose_name = '数据库信息'
+        verbose_name_plural = '数据库信息'
 
 
 class Db_account(models.Model):
-    user = models.CharField(max_length=30)
+    user = models.CharField('用户名',max_length=30)
     passwd = models.CharField(max_length=255)
-    role =  models.CharField(max_length=30, choices=read_write_account,default='all2')
-    tags = models.CharField(max_length=30, db_index=True)
+    role =  models.CharField(max_length=30, choices=read_write_account,default='all')
+    tags = models.CharField('标签', max_length=30, db_index=True)
     dbname = models.ManyToManyField(Db_name)
     account = models.ManyToManyField(User)
+
+
     def __str__(self):
-        return  u'%s %s' % ( self.tags, self.role)
+        return  self.user
+
+    class Meta:
+        verbose_name = '账号信息'
+        verbose_name_plural = '账号信息'
+
+    # 使用Python内置的@property装饰器就是负责把一个方法变成属性调用
+    @property
+    def raw_password(self):
+        """ 返回明文密码 str """
+        pc = Prpcrypt()  # 初始化
+        return pc.decrypt(self.passwd)
+
+    # 对 save函数进行重写
+    def save(self, *args, **kwargs):
+        pc = Prpcrypt()  # 初始化
+        if self.passwd:
+            if self.id:
+                old_password = Db_account.objects.get(id=self.id).passwd
+            else:
+                old_password = ''
+            # 密码有变动才再次加密保存
+            self.passwd = pc.encrypt(self.passwd) if old_password != self.passwd else self.passwd
+        super(Db_account, self).save(*args, **kwargs)
 
 class Oper_log(models.Model):
     user = models.CharField(max_length=35)
@@ -92,38 +116,21 @@ class Oper_log(models.Model):
     class Meta:
         index_together = [["dbtag","sqltype", "create_time"],]        #三个字段的联合索引
 
-class User_profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    select_limit = models.IntegerField(default=200)
-    export_limit = models.IntegerField(default=200)
-    task_email = models.IntegerField(db_index=True)
-    def __str__(self):
-        return  self.user.username
-    class Meta:
-        permissions =(('can_mysql_query','can see mysql_query view'),
-                      ('can_log_query','can see log_query view'),
-                      ('can_see_execview','can see mysql exec view'),
-                      ('can_see_inception', 'can see inception view'),
-                      ('can_see_metadata', 'can see meta_data view'),
-                      ('can_see_mysqladmin', 'can see mysql_admin view'),
-                      ('can_export','can export csv'),
-                      ('can_insert_mysql','can insert mysql'),
-                      ('can_update_mysql','can update mysql'),
-                      ('can_delete_mysql','can delete mysql'),
-                      ('can_create_mysql','can create mysql'),
-                      ('can_drop_mysql','can drop mysql'),
-                      ('can_truncate_mysql','can truncate mysql'),
-                      ('can_alter_mysql','can alter mysql'),
-                      ('can_query_mongo', 'can query mongo'),
-                      ('can_see_taskview', 'can see task view'),
-                      ('can_admin_task','can admin task'),
-                      ('can_delete_task', 'can delete task'),
-                      ('can_update_task', 'can update task'),
-                      ('can_query_pri', 'can query pri'),
-                      ('can_set_pri', 'can set pri'),
-                      ('can_oper_saltapi', 'can oper saltapi'),
-                      )
 
+class Permission(models.Model):
+    """
+    自定义业务权限
+    """
+
+    class Meta:
+        managed = True
+        permissions = (
+            ('menu_instance', '菜单 实例列表'),
+            ('menu_slowquery', '菜单 慢查日志'),
+            ('menu_binlog2sql', '菜单 Binlog2SQL'),
+            ('menu_pollingreport', '菜单 巡检报告'),
+            ('menu_principles', '菜单 设计规范'),
+        )
 
 
 class SlowQuery(models.Model):

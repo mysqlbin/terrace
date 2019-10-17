@@ -7,7 +7,7 @@ import json
 from django.conf import settings
 from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponse
-from django_q.tasks import async_task
+# from django_q.tasks import async_task
 from myapp.common.utils.rewrite_json_encoder import RewriteJsonEncoder
 from myapp.plugins.binglog2sql import Binlog2Sql
 from myapp.models import Db_instance
@@ -21,7 +21,7 @@ def binlog2sql(request):
        通过解析binlog获取SQL
        :param request:
        :return:
-       """
+    """
 
     instance = Db_instance.objects.get(id=int(1))
 
@@ -140,6 +140,11 @@ def binlog2sql_file(args):
     binlog2sql = Binlog2Sql()
     # instance = args.get('instance')
     timestamp = int(time.time())
+
+    path = os.path.join(settings.BASE_DIR, 'downloads/polling/')
+    filename = os.path.join(path, f"{instance_name}的巡检报告{timestamp}.sql")
+
+
     path = os.path.join(settings.BASE_DIR, 'downloads/binlog2sql/')
     # if args.get('flashback'):
     #     filename = os.path.join(path, f"flashback_{instance.host}_{instance.port}_{timestamp}.sql")

@@ -1,0 +1,29 @@
+
+python3 manage.py runserver 192.168.0.71:8006
+python3 manage.py runserver 192.168.1.27:8006
+python3 manage.py runserver 192.168.1.100:8006
+
+cd \20180411\project\python\terrace\automatic
+
+
+did you install mysqlclient?
+https://jingyan.baidu.com/article/ff42efa9d630e5c19e220207.html
+
+pip3 install mysqlclient
+
+
+No module named 'pymysql'
+pip3 install pymysql
+
+
+No module named 'pymysqlreplication'
+
+ImportError: No module named 'pymysqlreplication'
+pip3 install mysql-replication
+
+ImportError: No module named 'sqlparse'
+
+pip3 install sqlparse
+
+
+NameError: name 'CaptchaField' is not defined

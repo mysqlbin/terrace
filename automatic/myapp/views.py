@@ -5,8 +5,6 @@ from myapp.include import meta
 from myapp.include import function as func
 from myapp.include import sqlfilter
 from myapp.form import AddForm
-from blacklist import blFunction as bc
-from myapp.models import Db_instance,SlowQuery,SlowQueryHistory
 
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required,permission_required
@@ -23,34 +21,40 @@ import datetime,time
 import json
 import os
 
-
-@login_required(login_url='/admin/login/')
+@login_required(login_url='/admin/login/', redirect_field_name='next')
 def index(request):
+
     return render(request, 'index.html')
 
 
+@login_required(login_url='/admin/login/', redirect_field_name='next')
+@permission_required(perm='myapp.menu_binlog2sql', raise_exception=True)
 def binlog2sql(request):
+
     return render(request, 'binlog2sql.html')
 
-def polling_report(request):
+
+@login_required(login_url='/admin/login/', redirect_field_name='next')
+@permission_required(perm='myapp.menu_pollingreport', raise_exception=True)
+def pollingreport(request):
 
     return render(request, 'polling_report.html')
 
-
+@login_required(login_url='/admin/login/')
+@permission_required(perm='myapp.menu_instance', raise_exception=True)
 def instance(request):
 
-    type_list = {'all': '全部', 'master': '主库', 'slave': '从库', 'alone': '单机'}
-    db_type_list = {'all': '全部', 'mysql': 'MySQL', 'mongodb': 'MongoDB', 'mssql': 'MsSQL', 'redis': 'Redis', 'pgsql': 'PgSQL', 'oracle': 'Oracle'}
+    return render(request, 'instance.html')
 
-
-    return render(request, 'instance.html', locals())
-
-
-def slow_query(request):
+@login_required(login_url='/admin/login/', redirect_field_name='next')
+@permission_required(perm='myapp.menu_slowquery', raise_exception=True)
+def slowquery(request):
 
     return render(request, 'show_query.html')
 
 
+def sqlquery(request):
 
-# @login_required(login_url='/admin/login/')
+    return render(request, 'sql_query.html')
+
 
