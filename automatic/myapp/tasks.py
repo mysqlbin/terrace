@@ -5,6 +5,8 @@ from django.conf import settings
 from myapp.plugins.binglog2sql import Binlog2Sql
 from celery import shared_task
 
+@shared_task
+# 'function' object has no attribute 'delay'
 def binlog2sql_file(args):
     """
     用于异步保存binlog解析的文件
