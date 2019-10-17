@@ -5,7 +5,7 @@ import os
 from celery import Celery
 
 # 获取 settings.py 的配置信息
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'MyDjango.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'automatic.settings')
 
 
 # 定义 Celery对象，并将项目配置信息加载到对象中
