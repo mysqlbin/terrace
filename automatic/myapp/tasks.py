@@ -14,19 +14,18 @@ def binlog2sql_file(args):
     :return:
     """
 
+    instance_ip   = args.get('instance_ip')
+    instance_name = args.get('instance_name')
+
     timestamp = int(time.time())
-    
+
     binlog2sql = Binlog2Sql()
 
     path = os.path.join(settings.BASE_DIR, 'downloads/binlog2sql/')
-    # if args.get('flashback'):
-    #     filename = os.path.join(path, f"flashback_{instance.host}_{instance.port}_{timestamp}.sql")
-    # else:
-    #     filename = os.path.join(path, f"{instance.host}_{instance.port}_{timestamp}.sql")
     if args.get('flashback'):
-        filename = os.path.join(path, f"flashback__{timestamp}.sql")
+        filename = os.path.join(path, f"flashback_{instance_ip}_{instance_name}_{timestamp}.sql")
     else:
-        filename = os.path.join(path, f"{timestamp}.sql")
+        filename = os.path.join(path, f"{instance_ip}_{instance_name}_{timestamp}.sql")
 
     # 参数转换
     cmd_args = binlog2sql.generate_args2cmd(args, shell=True)

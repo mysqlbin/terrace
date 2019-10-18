@@ -23,7 +23,15 @@ def binlog2sql(request):
        :return:
     """
 
-    instance = Db_instance.objects.get(id=int(1))
+    result = {'status': 1, 'msg': 'ok', 'data': ''}
+
+    try:
+        instance = Db_instance.objects.get(id=int(request.POST.get('instance_id')))
+    except Db_instance.DoesNotExist:
+        result['status'] = 1
+        result['msg'] = '实例不存在'
+        return HttpResponse(json.dumps(result), content_type='application/json')
+
     save_sql = True if request.POST.get('save_sql') == 'true' else False
     no_pk = True if request.POST.get('no_pk') == 'true' else False
     flashback = True if request.POST.get('flashback') == 'true' else False
@@ -62,7 +70,8 @@ def binlog2sql(request):
             "tables": ' '.join(only_tables),
             "only-dml": only_dml,
             "sql-type": ' '.join(sql_type),
-            # "instance": instance
+            "instance_ip": instance.ip,
+            "instance_name": instance.instance_name,
     }
 
     # 参数检查

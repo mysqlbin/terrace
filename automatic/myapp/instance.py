@@ -97,7 +97,7 @@ def get_instances_resource(request):
 def get_instances_binlog(request):
 
     result = {'status': 1, 'msg': 'ok', 'data': []}
-    insname = Db_instance.objects.get(id=int(request.POST.get('data_id')))
+    insname = Db_instance.objects.get(id=int(request.POST.get('instance_id')))
     binlog, col, error = meta.get_process_data(insname, 'show binary logs')
     resource = [row for row in binlog]
     result['data'] = resource
@@ -114,7 +114,6 @@ def get_instance_users(request, id, instance_name):
        return HttpResponse('实例不存在')
 
     sql_get_user = '''select concat("\'", user, "\'", '@', "\'", host,"\'") as query from mysql.user;'''
-    # sql_get_user = '''select concat("\'", user, "\'", '@', "\'", host,"\'") as query from mysql.user;'''
     users_res, col, error = meta.get_process_data(insname, sql_get_user)
 
     # 获取用户权限信息

@@ -18,7 +18,7 @@ class Binlog2Sql(Plugin):
         self.path = '/root/binlog2sql/binlog2sql/binlog2sql.py'
         self.required_args = []
         self.disable_args = []
-        super(Plugin, self).__init__()
+        super(Plugin, self).__init__()    # 类继承
 
     def generate_args2cmd(self, args, shell):
         """
