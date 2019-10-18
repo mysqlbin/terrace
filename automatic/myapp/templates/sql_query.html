@@ -1,0 +1,209 @@
+{% extends "include/base.html" %}
+{% block title %}
+    <title>polling report</title>
+{% endblock %}
+{% block name %}
+    实例列表
+{% endblock %}
+
+{%block content%}
+
+  <div class="row clearfix">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    SQL查询
+                </div>
+                <div class="panel-body">
+                    <form id="form-sqlquery" action="/sqlquery/" method="post" class="form-horizontal" role="form">
+                        {% csrf_token %}
+                        <div class="col-md-9 column">
+                            <textarea class="form-control " rows="3"  id="sql_content" style="min-height:350px">1111</textarea>
+                        </div>
+                        <div class="col-md-3 column">
+                            <div class="form-group">
+                                <select id="instance_name" name="instance_name"
+                                        class="selectpicker show-tick form-control bs-select-hidden"
+                                        data-live-search="true"
+                                        title="请选择实例:"
+                                        data-placeholder="请选择实例:" required>
+                                    <optgroup id="optgroup-mysql" label="MySQL"></optgroup>
+                                    <optgroup id="optgroup-mssql" label="MsSQL"></optgroup>
+                                    <optgroup id="optgroup-redis" label="Redis"></optgroup>
+                                    <optgroup id="optgroup-pgsql" label="PgSQL"></optgroup>
+                                    <optgroup id="optgroup-oracle" label="Oracle"></optgroup>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select id="db_name" name="db_name"
+                                        class="form-control selectpicker show-tick bs-select-hidden"
+                                        data-live-search="true"
+                                        title="请选择数据库:"
+                                        data-placeholder="请选择数据库:" required>
+                                </select>
+                            </div>
+                            <div id="div-schema_name" class="form-group" style="display: none">
+                                <select id="schema_name" name="schema_name"
+                                        class="form-control selectpicker show-tick bs-select-hidden"
+                                        data-live-search="true"
+                                        title="请选择模式:"
+                                        data-placeholder="请选择模式:" required>
+                                </select>
+                            </div>
+                            <div id="div-table_name" class="form-group">
+                                <select id="table_name" name="table_name"
+                                        class="form-control selectpicker show-tick bs-select-hidden"
+                                        data-live-search="true"
+                                        data-name="查看表结构"
+                                        title="查看表结构:"
+                                        data-placeholder="查看表结构:" required>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select id="limit_num" name="limit_num"
+                                        class="form-control selectpicker show-tick bs-select-hidden"
+                                        data-placeholder="返回行数:" required>
+                                    <option value="is-empty" disabled="">返回行数:</option>
+                                    <option value=100 selected="selected">100</option>
+                                    <option value=500>500</option>
+                                    <option value=1000>1000</option>
+                                    <option value=0>max(最大限制行数)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <input id="btn-explain" type="button" class="btn btn-warning" value="执行计划"/>
+                                <input id="btn-sqlquery" type="button" class="btn btn-success" value="SQL查询"/>
+                            </div>
+                        </div>
+                        <div class="text-info">
+                            <li>支持注释行，可选择指定语句执行，默认执行第一条;</li>
+                            <li>查询结果行数限制见权限管理，会选择查询涉及表的最小limit值</li>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+  </div>
+
+
+    <div class="table-responsive">
+        <table id="instance-list" data-toggle="table" class="table table-striped table-hover"
+               style="table-layout:inherit;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+        </table>
+    </div>
+{% endblock %}
+
+{% block js %}
+    {% load staticfiles %}
+    <script src="{% static 'bootstrap-table/js/bootstrap-table-export.min.js' %}"></script>
+    <script src="{% static 'bootstrap-table/js/tableExport.min.js' %}"></script>
+
+
+    <script>
+        $('#btn-explain').click(function(){
+            if (sqlquery_validate()){
+
+            }
+        })
+
+    </script>
+
+    <script>
+
+        //表单验证
+        function sqlquery_validate() {
+            var result = true;
+            var instance_name = $("#instance_name").val();
+            var db_name = $("#db_name").val();
+            var sqlContent = $("#sql_content").val();
+            if (instance_name === null || instance_name === $("#instance_name").attr("data-placeholder")) {
+                alert("请选择实例！");
+                return result = false;
+            } else if (db_name === null || db_name === $("#db_name").attr("data-placeholder")) {
+                alert("请选择数据库！");
+                return result = false;
+            } else if (sqlContent === null || sqlContent.trim() === "") {
+                alert("SQL内容不能为空！");
+                return result = false;
+            }
+            return result;
+        }
+
+
+    </script>
+
+    <!-- common -->
+    <script>
+         //获取实例列表
+        $(document).ready(function () {
+         $(function () {
+           //获取实例列表
+           $.ajax({
+                type: "POST",
+                url: "/instance/get_instance_name_id/",
+                dataType: "json",
+                complete: function () {
+                },
+                success: function (data) {
+                    if (data.status === 1) {
+                        $("#instance_name").empty();
+                        $.each(data['data'],function(index,obj){
+                            let instance = "<option value=\"" + obj.instance_name + "\" data-id=\"" + obj.id + "\" >" + obj.instance_name + "</option>";
+                            $("#instance_name").append(instance);
+
+                        });
+                        $('#instance_name').selectpicker('render');
+                        $('#instance_name').selectpicker('refresh');
+                    } else {
+                        alert(data.msg);
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(errorThrown);
+                }
+            });
+            });
+
+            $("#instance_name").change(function () {
+
+                //将数据通过ajax提交给获取db_name
+                dataId = $('#instance_name').find("option:selected").data("id");
+                console.log(dataId)
+                $.ajax({
+                    type: "post",
+                    url: "/instance/get_instances_resource/",
+                    dataType: "json",
+                    data: {
+                        instance_name: $("#instance_name option:selected").text(),
+                        data_id: $('#instance_name').find("option:selected").data("id"),
+                        resource_type: "database"
+                    },
+                    complete: function () {
+
+                    },
+                    success: function (data) {
+                        if (data.status == 1) {
+                            var result = data.data;
+                            $("#db_name").empty();
+                            for (var i = 0; i < result.length; i++) {
+                                var name = "<option value=\"" + result[i] + "\">" + result[i] + "</option>";
+                                $("#db_name").append(name);
+                            }
+                            $("#db_name").prepend("<option value=\"\" selected=\"selected\">全部数据库</option>");
+                            $('#db_name').selectpicker('render');
+                            $('#db_name').selectpicker('refresh');
+                        } else {
+                            alert(data.msg);
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert(errorThrown);
+                    }
+                });
+
+            });
+        });
+    </script>
+{% endblock %}
+

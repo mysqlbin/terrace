@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from myapp import views as myapp_view, instance, slowlog, binlog, polling, test
+from myapp import views as myapp_view, instance, slowlog, binlog, polling, test, sqlquery
 from myapp.common import auth
 
 app_name = ''
@@ -28,6 +28,9 @@ urlpatterns = [
     path('slowquery/', myapp_view.slowquery, name='slowquery'),
     path('slowlog/slowquery_review/', slowlog.slowquery_review),
     path('slowlog/slowquery_review_history/', slowlog.slowquery_review_history),
+
+    path('sqlquery/', myapp_view.sqlquery, name='sqlquery'),
+
 
 
     path('pollingreport/', myapp_view.pollingreport, name='polling_report'),
@@ -48,6 +51,9 @@ urlpatterns = [
     path('logoutView/', auth.logoutView),
 
     path('test/get_query_data/', test.get_query_data),
+
+
+    path('sqlquery/sql_query', sqlquery.sql_query),
 
 
 

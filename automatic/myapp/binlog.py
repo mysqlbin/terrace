@@ -21,7 +21,7 @@ def binlog2sql(request):
        通过解析binlog获取SQL
        :param request:
        :return:
-       """
+    """
 
     instance = Db_instance.objects.get(id=int(1))
 
