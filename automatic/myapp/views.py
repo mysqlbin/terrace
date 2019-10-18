@@ -50,6 +50,11 @@ def instance(request):
 @permission_required(perm='myapp.menu_slowquery', raise_exception=True)
 def slowquery(request):
 
-    return render(request, 'showquery.html')
+    return render(request, 'show_query.html')
+
+
+def sqlquery(request):
+
+    return render(request, 'sql_query.html')
 
 

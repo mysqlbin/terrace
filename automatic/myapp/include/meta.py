@@ -4,11 +4,15 @@ import pymysql
 import sys,string,time,datetime
 import logging
 import traceback
+import sqlparse
+import re
 from myapp.common.utils.aes_decryptor import Prpcrypt
 
 logger = logging.getLogger('default')
 
 def mysql_query(sql,user,passwd,host,port,dbname):
+    result = ''
+    column_list = ''
     try:
         conn   = pymysql.connect(host=host,user=user,passwd=passwd,port=int(port),connect_timeout=5,charset='utf8mb4')
         conn.select_db(dbname)
@@ -24,8 +28,6 @@ def mysql_query(sql,user,passwd,host,port,dbname):
     except Exception as e:
         logger.error(f"MySQL语句执行报错，语句：{sql}，错误信息{traceback.format_exc()}")
         error = str(e)
-        result = ''
-        column_list = ''
     finally:
         cursor.close()
         conn.close()
@@ -46,6 +48,7 @@ def get_process_data(insname,sql, dbname = 'information_schema'):
                 #获取账号和密码，用来连接数据库
                 username = i.user
                 passwd = pc.decrypt(i.passwd)
+                # passwd = i.passwd
                 flag = False
                 break
         if flag == False:
@@ -57,4 +60,21 @@ def get_process_data(insname,sql, dbname = 'information_schema'):
         return (['PLEASE set the admin role account FIRST'], ''), ['error']
 
 
+def query_check(sql=''):
+    result = {'msg': '', 'bad_query': False, 'filtered_sql': sql, 'has_star': False}
+    try:
+        sql = sqlparse.format(sql, strip_comments=True)
+        sql = sqlparse.split(sql)[0]
+        result['filtered_sql'] = sql.strip()
+    except Exception as err:
+        result['bad_query'] = True
+        result['msg'] = 'SQL语句无效'
+
+    if re.match(r"^select|^show|^explain|^desc", sql, re.I) is None:
+        result['bad_query'] = True
+        result['msg'] = '不支持的语句类型'
+    if re.search('\*', sql) is not None:
+        result['has_star'] = True
+        result['msg'] = 'SQL语句中含有 * '
+    return result
 
