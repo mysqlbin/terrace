@@ -13,6 +13,9 @@ def binlog2sql_file(args):
     :param args: 参数
     :return:
     """
+
+    timestamp = int(time.time())
+    
     binlog2sql = Binlog2Sql()
 
     path = os.path.join(settings.BASE_DIR, 'downloads/binlog2sql/')
