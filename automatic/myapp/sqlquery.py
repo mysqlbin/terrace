@@ -49,7 +49,7 @@ def sql_query(request):
         return HttpResponse(json.dumps(result), content_type='application/json')
 
     instance_name = 1
-    sql_content = 'select id1 from auth_user where id=1;'
+    sql_content = 'select id,username from auth_user;'
     db_name = 'terrace_db'
     limit_num = 1
     # 服务器端参数验证
@@ -83,6 +83,8 @@ def sql_query(request):
             result['msg'] = error
             result['data'] = '{6}'
             return HttpResponse(json.dumps(result), content_type='application/json')
+        result['data'] = data
+        result['col']  = col
 
     except Exception as e:
 
@@ -94,7 +96,7 @@ def sql_query(request):
 
     # 返回查询结果
 
-    return HttpResponse(json.dumps(result, cls=ExtendJSONEncoder, bigint_as_string=True),
+    return HttpResponse(json.dumps(result, cls=RewriteJsonEncoder),
                         content_type='application/json')
 
     return HttpResponse(111)
