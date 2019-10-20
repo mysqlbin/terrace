@@ -52,6 +52,7 @@
     <script src="{% static 'bootstrap-table/js/tableExport.min.js' %}"></script>
 
     <script>
+
         function instancelist() {
             //采取异步请求
             //初始化table
@@ -67,7 +68,7 @@
                 sortOrder: "asc",                   //排序方式
                 sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
                 pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
-                pageSize: 14,                     //每页的记录行数（*）
+                pageSize: 2,                     //每页的记录行数（*）
                 pageList: [20, 30, 50, 100],       //可供选择的每页的行数（*）
                 showExport: true,                   //是否显示导出按钮
                 exportOptions: {
@@ -99,7 +100,7 @@
                     },
                 columns: [
                     {
-                        title: 'ID',
+                        title: '编号',
                         field: 'id'
                     }, {
                         title: '实例名称',
@@ -133,7 +134,9 @@
                                 return btn_user_manger
                         }
                     }],
-                onLoadSuccess: function () {
+
+                onLoadSuccess: function (res) {
+                    console.log(res.rows);
                 },
                 onLoadError: function () {
                     alert("数据加载失败！请检查接口返回信息和错误日志！");

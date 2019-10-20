@@ -337,6 +337,7 @@
                     },
                     success: function (data) {
                         if (data.status === 1) {
+                            // 这里的代码可以独立出来
                             $('#tb-binlog2sql').bootstrapTable('destroy').bootstrapTable({
                                 escape: true,
                                 striped: true,                      //是否显示行间隔色

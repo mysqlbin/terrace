@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 import logging
 import traceback
+import re
 
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -36,55 +37,59 @@ def sql_query(request):
     instance_name = request.POST.get('instance_name')
     sql_content = request.POST.get('sql_content')
     db_name = request.POST.get('db_name')
-    limit_num = int(request.POST.get('limit_num', 0))
+    limit_num = int(request.POST.get('limit_num'))
 
-    result = {'status': 0, 'msg': 'ok', 'data': {}}
+    result = {'status': 0, 'msg': 'ok', 'rows': [], 'column_list': []}
 
     try:
         insname = Db_instance.objects.get(id=int(request.POST.get('instance_id', 1)))
     except Db_instance.DoesNotExist:
         result['status'] = 1
         result['msg'] = '实例不存在'
-        result['data'] = '{1}'
+        result['rows'] = '{1}'
         return HttpResponse(json.dumps(result), content_type='application/json')
 
-    instance_name = 1
-    sql_content = 'select id,username from auth_user;'
-    db_name = 'terrace_db'
-    limit_num = 1
     # 服务器端参数验证
     if not instance_name or not sql_content or not db_name or not limit_num:
+    # if None in [sql_content, db_name, instance_name, limit_num]:
         result['status'] = 1
+        result['instance_name'] = instance_name
+        result['sql_content'] = sql_content
+        result['db_name'] = db_name
         result['msg'] = '提交参数可能为空'
-        result['data'] = '{2}'
+        result['rows'] = '{2}'
         return HttpResponse(json.dumps(result), content_type='application/json')
+
+    # show、explain语句的 limit 要改为0
+    if re.match("show|explain", sql_content) is not None:
+        limit_num = 0
 
     try:
         query_check_info = meta.query_check(sql=sql_content)
 
-        # return HttpResponse(query_check_info)
-
         if query_check_info.get('bad_query'):
             result['status'] = 1
             result['msg'] = query_check_info.get('msg')
-            result['data'] = {3}
+            result['rows'] = '{3}'
+
             return HttpResponse(json.dumps(result), content_type='application/json')
 
         if query_check_info.get('has_star'):
             result['status'] = 1
             result['msg'] = query_check_info.get('msg')
-            result['data'] = '{4}'
+            result['rows'] = '{4}'
             return HttpResponse(json.dumps(result), content_type='application/json')
 
         #　执行查询语句，获取返回结果
-        data, col, error = meta.get_process_data(insname, sql_content, db_name)
-        if error != '':
+        res_set = meta.get_process_data_set(insname, sql_content, db_name, limit_num)
+        if res_set['msg'] != 'ok':
             result['status'] = 1
-            result['msg'] = error
-            result['data'] = '{6}'
+            result['msg'] = res_set['msg']
+            result['rows'] = '{6}'
             return HttpResponse(json.dumps(result), content_type='application/json')
-        result['data'] = data
-        result['col']  = col
+
+        result['rows'] = res_set['rows']
+        result['column_list'] = res_set['column_list']
 
     except Exception as e:
 
@@ -92,11 +97,7 @@ def sql_query(request):
         result['status'] = 1
         result['msg'] = f'查询异常报错，错误信息：{e}'
 
-        return HttpResponse(json.dumps(result), content_type='application/json')
-
     # 返回查询结果
-
     return HttpResponse(json.dumps(result, cls=RewriteJsonEncoder),
-                        content_type='application/json')
-
-    return HttpResponse(111)
+                    content_type='application/json'
+)
