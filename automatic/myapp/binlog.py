@@ -62,7 +62,7 @@ def binlog2sql(request):
             "tables": ' '.join(only_tables),
             "only-dml": only_dml,
             "sql-type": ' '.join(sql_type),
-            "instance": instance
+            # "instance": instance
     }
 
     # 参数检查

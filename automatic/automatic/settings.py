@@ -149,10 +149,10 @@ STATIC_URL = '/static/'
 # 设置存储 Celery 任务队列的Redis数据库
 CELERY_BROKER_URL = 'redis://127.0.0.1:6379/2'
 CELERY_ACCEPT_CONTENT = ['json']
-#CELERY_TASK_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
 # 设置存储 Celery 任务结果的Redis数据库
 CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/3'
-ELERY_TASK_SERIALIZER = 'pickle'
+
 
 # 设置根目录的静态资源文件夹 static
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
