@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import os
 
-CELERY_IMPORTS = ("myapp.tasks","myapp.include.scheduled","myapp.include.mon")
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 # 项目路径
