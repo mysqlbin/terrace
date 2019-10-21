@@ -51,7 +51,6 @@ def sql_query(request):
 
     # 服务器端参数验证
     if not instance_name or not sql_content or not db_name or not limit_num:
-    # if None in [sql_content, db_name, instance_name, limit_num]:
         result['status'] = 1
         result['instance_name'] = instance_name
         result['sql_content'] = sql_content

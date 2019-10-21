@@ -12,7 +12,7 @@ from myapp.common.utils.rewrite_json_encoder import RewriteJsonEncoder
 from myapp.plugins.binglog2sql import Binlog2Sql
 from myapp.models import Db_instance
 # from sql.notify import notify_for_binlog2sql
-
+from .tasks import binlog2sql_file
 logger = logging.getLogger('default')
 
 def binlog2sql(request):
@@ -24,11 +24,7 @@ def binlog2sql(request):
     """
 
     instance = Db_instance.objects.get(id=int(1))
-
-    # instance_name = request.POST.get('instance_name')
     save_sql = True if request.POST.get('save_sql') == 'true' else False
-    # instance = Instance.objects.get(instance_name=instance_name)
-
     no_pk = True if request.POST.get('no_pk') == 'true' else False
     flashback = True if request.POST.get('flashback') == 'true' else False
     back_interval = 0 if request.POST.get('back_interval') == '' else int(request.POST.get('back_interval'))
@@ -45,12 +41,10 @@ def binlog2sql(request):
     sql_type = ['INSERT', 'UPDATE', 'DELETE'] if request.POST.getlist('sql_type[]') == [] else request.POST.getlist(
         'sql_type[]')
 
-
     # flashback=True获取DML回滚语句
     result = {'status': 1, 'msg': 'ok', 'data': ''}
 
-    # 提交给binlog2sql进行解析
-
+    # 提交给binlog2sql进行解
     binlog2sql = Binlog2Sql()
     # 准备参数
     args = {"conn_options": fr"-h{instance.ip} -uroot -p123456abc -P{instance.port} ",
@@ -79,10 +73,9 @@ def binlog2sql(request):
     # 参数转换
     cmd_args = binlog2sql.generate_args2cmd(args, shell=True)
 
-    # 执行命令
+    # 执行命令, 对binlog进行解析并返回
     try:
         p = binlog2sql.execute_cmd(cmd_args, shell=True)
-        # return HttpResponse(p)
         # 读取前num行后结束
         rows = []
         n = 1
@@ -117,11 +110,10 @@ def binlog2sql(request):
         result['status'] = 0
         result['msg'] = str(e)
 
-    # 异步保存到文件，去除conn_options避免展示密码信息
+    # 异步保存到文件
     if save_sql:
-        # async_task(binlog2sql_file, args=args, user=request.user, hook=notify_for_binlog2sql)
-        # async_task(binlog2sql_file, args=args)
-        binlog2sql_file(args=args)
+        # binlog2sql_file(args=args)
+        binlog2sql_file.delay(args=args)
 
     # 返回查询结果
     return HttpResponse(json.dumps(result), content_type='application/json')
@@ -130,36 +122,36 @@ def binlog2sql(request):
     """
 
 
-def binlog2sql_file(args):
-    """
-    用于异步保存binlog解析的文件
-    :param args: 参数
-    :param user: 操作用户对象，用户消息推送
-    :return:
-    """
-    binlog2sql = Binlog2Sql()
-    # instance = args.get('instance')
-    timestamp = int(time.time())
-
-    path = os.path.join(settings.BASE_DIR, 'downloads/polling/')
-    filename = os.path.join(path, f"{instance_name}的巡检报告{timestamp}.sql")
-
-
-    path = os.path.join(settings.BASE_DIR, 'downloads/binlog2sql/')
-    # if args.get('flashback'):
-    #     filename = os.path.join(path, f"flashback_{instance.host}_{instance.port}_{timestamp}.sql")
-    # else:
-    #     filename = os.path.join(path, f"{instance.host}_{instance.port}_{timestamp}.sql")
-    if args.get('flashback'):
-        filename = os.path.join(path, f"flashback__{timestamp}.sql")
-    else:
-        filename = os.path.join(path, f"{timestamp}.sql")
-
-        # 参数转换
-    cmd_args = binlog2sql.generate_args2cmd(args, shell=True)
-    # 执行命令保存到文件
-    with open(filename, 'w') as f:
-        p = binlog2sql.execute_cmd(cmd_args, shell=True)
-        for c in iter(p.stdout.readline, ''):
-            f.write(c)
-    # return user, filename
+# def binlog2sql_file(args):
+#     """
+#     用于异步保存binlog解析的文件
+#     :param args: 参数
+#     :param user: 操作用户对象，用户消息推送
+#     :return:
+#     """
+#     binlog2sql = Binlog2Sql()
+#     # instance = args.get('instance')
+#     timestamp = int(time.time())
+#
+#     path = os.path.join(settings.BASE_DIR, 'downloads/polling/')
+#     filename = os.path.join(path, f"{instance_name}的巡检报告{timestamp}.sql")
+#
+#
+#     path = os.path.join(settings.BASE_DIR, 'downloads/binlog2sql/')
+#     # if args.get('flashback'):
+#     #     filename = os.path.join(path, f"flashback_{instance.host}_{instance.port}_{timestamp}.sql")
+#     # else:
+#     #     filename = os.path.join(path, f"{instance.host}_{instance.port}_{timestamp}.sql")
+#     if args.get('flashback'):
+#         filename = os.path.join(path, f"flashback__{timestamp}.sql")
+#     else:
+#         filename = os.path.join(path, f"{timestamp}.sql")
+#
+#     # 参数转换
+#     cmd_args = binlog2sql.generate_args2cmd(args, shell=True)
+#     # 执行命令保存到文件
+#     with open(filename, 'w') as f:
+#         p = binlog2sql.execute_cmd(cmd_args, shell=True)
+#         for c in iter(p.stdout.readline, ''):
+#             f.write(c)
+#     # return user, filename

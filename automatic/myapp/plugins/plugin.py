@@ -5,7 +5,6 @@
 @file: plugin.py 
 @time: 2019/03/04
 """
-__author__ = 'hhyo'
 
 import logging
 import subprocess

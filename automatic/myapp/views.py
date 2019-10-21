@@ -49,7 +49,6 @@ def instance(request):
 @login_required(login_url='/admin/login/', redirect_field_name='next')
 @permission_required(perm='myapp.menu_slowquery', raise_exception=True)
 def slowquery(request):
-
     return render(request, 'show_query.html')
 
 

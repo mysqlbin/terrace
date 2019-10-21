@@ -21,11 +21,6 @@ import datetime,time
 import json
 
 
-def slow_query(request):
-
-    return render(request, 'show_query.html')
-
-
 def slowquery_review(request):
 
     start_time = request.POST.get('StartTime')
@@ -35,11 +30,12 @@ def slowquery_review(request):
     db_name = request.POST.get('db_name')
     limit = int(request.POST.get('limit'))
     offset = int(request.POST.get('offset'))
+    limit = limit + offset
 
     insname = Db_instance.objects.get(id=int(request.POST.get('instance_id')))
 
     if db_name:
-        # 获取慢查数据, 跨表多对一查询
+        # 获取慢查数据, 跨表一对多查询
         slowsql_obj = SlowQuery.objects.filter(
             slowqueryhistory__hostname_max=('{}:{}'.format(insname.ip, insname.port)),
             slowqueryhistory__db_max=db_name,
@@ -54,7 +50,7 @@ def slowquery_review(request):
             ReturnTotalRowCounts=Sum('slowqueryhistory__rows_sent_sum'),  # 返回总行数
         )
     else:
-        # 获取慢查数据, 跨表多对一查询
+        # 获取慢查数据, 跨表一对多查询
         slowsql_obj = SlowQuery.objects.filter(
             slowqueryhistory__hostname_max=('{}:{}'.format(insname.ip, insname.port)),
             slowqueryhistory__ts_min__range=(start_time, end_time),
@@ -67,6 +63,9 @@ def slowquery_review(request):
             ParseTotalRowCounts=Sum('slowqueryhistory__rows_examined_sum'),  # 扫描总行数
             ReturnTotalRowCounts=Sum('slowqueryhistory__rows_sent_sum'),  # 返回总行数
         )
+
+    # SELECT COUNT(*) FROM (SELECT `mysql_slow_query_review`.`fingerprint` AS `SQLText`, `mysql_slow_query_review`.`checksum` AS `SQLId`, MAX(`mysql_slow_query_review_history`.`ts_max`) AS `CreateTime`, MAX(`mysql_slow_query_review_history`.`db_max`) AS `DBName`, (SUM(`mysql_slow_query_review_history`.`Query_time_sum`) / SUM(`mysql_slow_query_review_history`.`ts_cnt`)) AS `QueryTimeAvg`, SUM(`mysql_slow_query_review_history`.`ts_cnt`) AS `MySQLTotalExecutionCounts`, SUM(`mysql_slow_query_review_history`.`Query_time_sum`) AS `MySQLTotalExecutionTimes`, SUM(`mysql_slow_query_review_history`.`Rows_examined_sum`) AS `ParseTotalRowCounts`, SUM(`mysql_slow_query_review_history`.`Rows_sent_sum`) AS `ReturnTotalRowCounts` FROM `mysql_slow_query_review` INNER JOIN `mysql_slow_query_review_history` ON (`mysql_slow_query_review`.`checksum` = `mysql_slow_query_review_history`.`checksum`) WHERE (`mysql_slow_query_review_history`.`hostname_max` = '192.168.0.54:3306' AND `mysql_slow_query_review_history`.`ts_min` BETWEEN '2019-05-08 00:00:00' AND '2019-12-19 00:00:00') GROUP BY `mysql_slow_query_review`.`checksum` ORDER BY NULL) subquery; args=('192.168.0.54:3306', '2019-05-08 00:00:00', '2019-12-19 00:00:00')
+    # SELECT `mysql_slow_query_review`.`fingerprint` AS `SQLText`, `mysql_slow_query_review`.`checksum` AS `SQLId`, MAX(`mysql_slow_query_review_history`.`ts_max`) AS `CreateTime`, MAX(`mysql_slow_query_review_history`.`db_max`) AS `DBName`, (SUM(`mysql_slow_query_review_history`.`Query_time_sum`) / SUM(`mysql_slow_query_review_history`.`ts_cnt`)) AS `QueryTimeAvg`, SUM(`mysql_slow_query_review_history`.`ts_cnt`) AS `MySQLTotalExecutionCounts`, SUM(`mysql_slow_query_review_history`.`Query_time_sum`) AS `MySQLTotalExecutionTimes`, SUM(`mysql_slow_query_review_history`.`Rows_examined_sum`) AS `ParseTotalRowCounts`, SUM(`mysql_slow_query_review_history`.`Rows_sent_sum`) AS `ReturnTotalRowCounts` FROM `mysql_slow_query_review` INNER JOIN `mysql_slow_query_review_history` ON (`mysql_slow_query_review`.`checksum` = `mysql_slow_query_review_history`.`checksum`) WHERE (`mysql_slow_query_review_history`.`hostname_max` = '192.168.0.54:3306' AND `mysql_slow_query_review_history`.`ts_min` BETWEEN '2019-05-08 00:00:00' AND '2019-12-19 00:00:00') GROUP BY `mysql_slow_query_review`.`checksum` ORDER BY `MySQLTotalExecutionCounts` DESC LIMIT 2; args=('192.168.0.54:3306', '2019-05-08 00:00:00', '2019-12-19 00:00:00')
 
 
     slow_sql_count = slowsql_obj.count()
@@ -96,7 +95,6 @@ def slowquery_review_history(request):
     limit = offset + limit
 
     instance_res = Db_instance.objects.get(id=int(request.POST.get('instance_id')))
-
 
     if sql_id:
         # 获取慢查明细数据
@@ -151,7 +149,7 @@ def slowquery_review_history(request):
                        )
 
     slow_sql_record_count = slow_sql_record_obj.count()
-    slow_sql_record_list  = slow_sql_record_obj.values('ExecutionStartTime',
+    slow_sql_record_list  = slow_sql_record_obj[offset:limit].values('ExecutionStartTime',
                                                            'DBName',
                                                            'HostAddress',
                                                            'SQLText',

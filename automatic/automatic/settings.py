@@ -42,8 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',  #查找静态资源路径
+    'django.contrib.staticfiles',  # 查找静态资源路径
     'myapp',
+    'django_celery_results',        # 添加分布式任务功能
+
 ]
 
 # 中间件
@@ -97,7 +99,7 @@ DATABASES = {
         'NAME': 'terrace_db',
         'USER': 'root',
         'PASSWORD': '123456abc',
-        'HOST': '192.168.1.27',
+        'HOST': '192.168.0.54',
         'PORT': '3306',
     }
 }
@@ -144,6 +146,14 @@ USE_TZ = False
 STATIC_URL = '/static/'
 
 #STATIC_ROOT = '/static/'
+
+# 设置存储 Celery 任务队列的Redis数据库
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/2'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+# 设置存储 Celery 任务结果的Redis数据库
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/3'
+
 
 # 设置根目录的静态资源文件夹 static
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)

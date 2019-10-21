@@ -1,37 +1,33 @@
 # from celery import task
-import datetime
-from django.contrib.auth.models import User
-from myapp.include import binlog2sql
-from django.core.mail import EmailMessage,send_mail,EmailMultiAlternatives
-from django.template import loader
-# from myapp.include.encrypt import prpcrypt
-# from mypro.settings import EMAIL_SENDER
+import time
+import os
+from django.conf import settings
+from myapp.plugins.binglog2sql import Binlog2Sql
+from celery import shared_task
 
+def binlog2sql_file(args):
+    """
+    用于异步保存binlog解析的文件
+    :param args: 参数
+    :return:
+    """
+    binlog2sql = Binlog2Sql()
 
-def parse_to_binlog2sql(insname, binname, start_pos, stop_pos, begin_time, stop_time, dbname, tbname, flashback, countnum):
+    path = os.path.join(settings.BASE_DIR, 'downloads/binlog2sql/')
+    # if args.get('flashback'):
+    #     filename = os.path.join(path, f"flashback_{instance.host}_{instance.port}_{timestamp}.sql")
+    # else:
+    #     filename = os.path.join(path, f"{instance.host}_{instance.port}_{timestamp}.sql")
+    if args.get('flashback'):
+        filename = os.path.join(path, f"flashback__{timestamp}.sql")
+    else:
+        filename = os.path.join(path, f"{timestamp}.sql")
 
-    flag = True
-
-    for a in insname.db_name_set.all():
-        for i in a.db_account_set.all():
-            tar_username = i.user
-            tar_passwd = i.passwd
-            flag = False
-            break
-        if flag == False:
-            break
-
-    connection_settings = {'host': insname.ip, 'port': int(insname.port), 'user': tar_username, 'passwd': tar_passwd}
-
-    sqltype = ['INSERT', 'UPDATE', 'DELETE']
-
-    binlogsql = binlog2sql.Binlog2sql(connection_settings=connection_settings, start_file=binname,
-                                          start_pos=start_pos, end_file='', end_pos=stop_pos,
-                                          start_time=begin_time, stop_time=stop_time, only_schemas=dbname,
-                                          only_tables=tbname, no_pk=False, flashback=flashback, stop_never=False,
-                                          back_interval=1.0, only_dml=False, sql_type=sqltype, countnum=countnum
-                                          )
-    binlogsql.process_binlog()
-    sqllist = binlogsql.sqllist
-    return sqllist
+    # 参数转换
+    cmd_args = binlog2sql.generate_args2cmd(args, shell=True)
+    # 执行命令保存到文件
+    with open(filename, 'w') as f:
+        p = binlog2sql.execute_cmd(cmd_args, shell=True)
+        for c in iter(p.stdout.readline, ''):
+            f.write(c)
 

@@ -21,7 +21,11 @@ import os
 
 def get_lists(request):
 
-    """获取实例列表"""
+    """
+    ：获取实例列表
+    :param request:
+    :return:
+    """
 
     limit = int(request.POST.get('limit', 1))
     offset = int(request.POST.get('offset', 1))
@@ -30,34 +34,23 @@ def get_lists(request):
     limit = offset + limit
     search = request.POST.get('search', '')
 
-    # limit = int(request.POST.get('limit'))
-    # offset = int(request.POST.get('offset'))
-    # type = request.POST.get('type')
-    # db_type = request.POST.get('db_type')
-    # limit = offset + limit
-    # search = request.POST.get('search', '')
-
     instance_obj = Db_instance.objects.all()
     # 过滤搜索
     if search:
         instance_obj = instance_obj.filter(instance_name__icontains=search)
     # # 过滤实例类型
-    # if type:
-    #     instance_obj = instance_obj.filter(type__icontains=type)
-    # # 过滤数据库类型
-    # if db_type:
-    #     instance_obj = instance_obj.filter(db_type=db_type)
+    if type:
+        instance_obj = instance_obj.filter(type__icontains=type)
+    # 过滤数据库类型
+    if db_type:
+        instance_obj = instance_obj.filter(db_type=db_type)
     count = instance_obj.count()
     instance_res = instance_obj[offset:limit].values('id', 'instance_name', 'type', 'db_type', 'ip', 'port', )
-
-    # return HttpResponse(instance_res)
 
     # QuerySet 序列化
     rows = [row for row in instance_res]
 
     result = {"total": count, "rows": rows}
-
-    # return HttpResponse(result)
 
     return HttpResponse(json.dumps(result),
                         content_type='application/json')
@@ -121,8 +114,8 @@ def get_instance_users(request, id, instance_name):
        return HttpResponse('实例不存在')
 
     sql_get_user = '''select concat("\'", user, "\'", '@', "\'", host,"\'") as query from mysql.user;'''
+    # sql_get_user = '''select concat("\'", user, "\'", '@', "\'", host,"\'") as query from mysql.user;'''
     users_res, col, error = meta.get_process_data(insname, sql_get_user)
-
 
     # 获取用户权限信息
     res_user_priv = []
