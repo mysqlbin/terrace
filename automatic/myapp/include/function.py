@@ -3,7 +3,7 @@
 import pymysql,sys,string,time,datetime,uuid,os,subprocess
 # from myapp.include.encrypt import prpcrypt
 from django.contrib.auth.models import User,Permission,ContentType,Group
-from myapp.models import Db_name,Db_account,Db_instance,Oper_log
+from myapp.models import Db_name,Db_instance,Oper_log
 # from myapp.form import LoginForm
 from myapp.etc import config
 from automatic import settings
@@ -673,13 +673,7 @@ def mysql_exec(sql,user=user,passwd=passwd,host=host,port=int(port),dbname=dbnam
             return([str(e)],''),['error']
 
 
-def get_pre(dbtag):
-    db = Db_name.objects.get(dbtag=dbtag)
-    ins = db.instance.all()
-    acc = db.account.all()
-    acc_list = Db_account.objects.filter(dbname=db)
-    gp = db.db_group_set.all()
-    return acc_list,ins,acc,gp
+
 
 def get_user_pre(username,request):
     if len(username)<=30:

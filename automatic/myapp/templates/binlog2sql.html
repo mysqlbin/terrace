@@ -271,6 +271,11 @@
 
 
         $("#binlog2sql").click(function () {
+
+            only_tables = $("#only_tables").val();
+            console.log(only_tables);
+            console.log(1);
+
             if ($("#instance_name").val() && $("#start_file").val()) {
                 $(this).addClass('disabled');
                 $(this).prop('disabled', true);

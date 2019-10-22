@@ -1,15 +1,13 @@
 # -*- coding: UTF-8 -*-
 """ 
-@author: hhyo 
-@license: Apache Licence 
-@file: binglog2sql.py 
-@time: 2019/03/23
+@author:
+@file: binglog2sql.py
+@time:
 """
 # from common.config import SysConfig
 from myapp.plugins.plugin import Plugin
 
-__author__ = 'hhyo'
-
+__author__ = ''
 
 class Binlog2Sql(Plugin):
 

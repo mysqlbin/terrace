@@ -37,8 +37,10 @@ class Db_instance(models.Model):
     instance_name = models.CharField('实例名称', max_length=50, default='',)
     type = models.CharField('实例类型', max_length=6, default='', choices=INSTANCE_TYPE_CHOICES,)
     db_type = models.CharField('数据库类型', max_length=30, default='mysql', choices=DB_TYPE_CHOICES, )
-    ip = models.CharField('IP地址', max_length=30)
+    host = models.CharField('IP地址', max_length=30)
     port = models.CharField('端口号', max_length=10)
+    user = models.CharField('用户名', max_length=100, default='', blank=True)
+    password = models.CharField('密码', max_length=300, default='', blank=True)
     role = models.CharField('角色', max_length=30, choices=read_write, )
     charset = models.CharField('字符集', max_length=20, default='', blank=True)
     create_time = models.DateTimeField('创建时间', auto_now_add=True)
@@ -48,17 +50,21 @@ class Db_instance(models.Model):
         return self.instance_name
 
     class Meta:          #创建唯一的联合索引
-        unique_together = ("ip", "port")
+        unique_together = ("host", "port")
         verbose_name = '实例信息'
         verbose_name_plural = '实例信息'
 
-class Db_name (models.Model):
+    @property
+    def raw_password(self):
+        """ 返回明文密码 str """
+        pc = Prpcrypt()  # 初始化
+        return pc.decrypt(self.password)
+
+
+class Db_name(models.Model):
     dbtag = models.CharField('标签', max_length=30, unique=True)
     dbname = models.CharField('数据库名称', max_length=30)
-    instance = models.ManyToManyField(Db_instance)
-    account = models.ManyToManyField(User)    # 跟Django内置模型 User相关联, 即 auth_user表
-
-
+    instance = models.ForeignKey(Db_instance, on_delete=models.CASCADE)
     def __str__(self):
         return self.dbname
 
@@ -67,40 +73,6 @@ class Db_name (models.Model):
         verbose_name_plural = '数据库信息'
 
 
-class Db_account(models.Model):
-    user = models.CharField('用户名',max_length=30)
-    passwd = models.CharField(max_length=255)
-    role =  models.CharField(max_length=30, choices=read_write_account,default='all')
-    tags = models.CharField('标签', max_length=30, db_index=True)
-    dbname = models.ManyToManyField(Db_name)
-    account = models.ManyToManyField(User)
-
-
-    def __str__(self):
-        return  self.user
-
-    class Meta:
-        verbose_name = '账号信息'
-        verbose_name_plural = '账号信息'
-
-    # 使用Python内置的@property装饰器就是负责把一个方法变成属性调用
-    @property
-    def raw_password(self):
-        """ 返回明文密码 str """
-        pc = Prpcrypt()  # 初始化
-        return pc.decrypt(self.passwd)
-
-    # 对 save函数进行重写
-    def save(self, *args, **kwargs):
-        pc = Prpcrypt()  # 初始化
-        if self.passwd:
-            if self.id:
-                old_password = Db_account.objects.get(id=self.id).passwd
-            else:
-                old_password = ''
-            # 密码有变动才再次加密保存
-            self.passwd = pc.encrypt(self.passwd) if old_password != self.passwd else self.passwd
-        super(Db_account, self).save(*args, **kwargs)
 
 class Oper_log(models.Model):
     user = models.CharField(max_length=35)
@@ -121,7 +93,6 @@ class Permission(models.Model):
     """
     自定义业务权限
     """
-
     class Meta:
         managed = True
         permissions = (
