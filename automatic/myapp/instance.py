@@ -13,6 +13,7 @@ from django.core import serializers
 from myapp.models import Db_instance
 from myapp.common.utils.rewrite_json_encoder import RewriteJsonEncoder
 
+from myapp.engines import get_engine
 
 import datetime,time
 import json
@@ -45,7 +46,7 @@ def get_lists(request):
     if db_type:
         instance_obj = instance_obj.filter(db_type=db_type)
     count = instance_obj.count()
-    instance_res = instance_obj[offset:limit].values('id', 'instance_name', 'type', 'db_type', 'ip', 'port', )
+    instance_res = instance_obj[offset:limit].values('id', 'instance_name', 'type', 'db_type', 'host', 'port', )
 
     # QuerySet 序列化
     rows = [row for row in instance_res]
@@ -109,19 +110,21 @@ def get_instance_users(request, id, instance_name):
 
     instance_name = instance_name
     try:
-        insname = Db_instance.objects.get(id=int(id))
+        instance = Db_instance.objects.get(id=int(id))
     except Db_instance.DoesNotExist:
        return HttpResponse('实例不存在')
 
     sql_get_user = '''select concat("\'", user, "\'", '@', "\'", host,"\'") as query from mysql.user;'''
-    users_res, col, error = meta.get_process_data(insname, sql_get_user)
+
+    query_engine = get_engine(instance=instance)
+    users_res = query_engine.query_set('', sql_get_user).rows
 
     # 获取用户权限信息
     res_user_priv = []
     for db_user in users_res:
         user_info = {}
         sql_get_permission        = 'show grants for {};'.format(db_user[0])
-        user_priv, col, error            = meta.get_process_data(insname, sql_get_permission)
+        user_priv                 =  query_engine.query_set('', sql_get_permission).rows
         user_info['user']        = db_user[0]
         user_info['privileges'] = user_priv
         res_user_priv.append(user_info)

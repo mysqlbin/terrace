@@ -15,7 +15,7 @@ class EngineBase:
     def get_connection(self, db_name=None):
         """返回一个conn实例"""
 
-    def query_set(self, db_name=None, sql='', limit_num=0, close_conn=True):
+    # def query_set(self, db_name=None, sql='', limit_num=0, close_conn=True):
         """实际查询 返回一个ResultSet"""
 
 def get_engine(instance=None):
