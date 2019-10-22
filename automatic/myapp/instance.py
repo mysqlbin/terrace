@@ -76,7 +76,7 @@ def get_instances_resource(request):
     schema_name = request.POST.get('schema_name')
     tb_name = request.POST.get('tb_name')
 
-    insname = Db_instance.objects.get(id=int(request.POST.get('data_id')))
+    insname = Db_instance.objects.get(id=int(request.POST.get('instance_id')))
 
     result = {'status': 1, 'msg': 'ok', 'data': []}
 
