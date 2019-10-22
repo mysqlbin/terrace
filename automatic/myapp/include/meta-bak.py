@@ -10,31 +10,6 @@ from myapp.common.utils.aes_decryptor import Prpcrypt
 
 logger = logging.getLogger('default')
 
-
-def get_user_password(insname):
-    flag = True
-    pc = Prpcrypt()
-    result = {'status': 0, 'msg': '', 'username': '', 'password': ''}
-    # 多对多的查询
-    for a in insname.db_name_set.all():
-        for i in a.db_account_set.all():
-            if i.role == 'admin':
-                # 获取账号和密码，用来连接数据库
-                # username = i.user
-                # passwd = pc.decrypt(i.passwd)
-                result['username'] = i.user
-                result['password'] = pc.decrypt(i.passwd)
-                flag = False
-                break
-        if flag == False:
-            break
-    if 'username' in vars():
-        return result
-    else:
-        result['msg'] = 'PLEASE set the admin role account FIRST'
-        result['status'] = 1
-        return result
-
 def mysql_query(sql,user,passwd,host,port,dbname):
     result = ''
     column_list = ''

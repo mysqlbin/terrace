@@ -29,6 +29,8 @@ import traceback
 logger = logging.getLogger('default')
 
 
+
+
 def mysql_query(sql,user,passwd,host,port,dbname):
     try:
         conn   = pymysql.connect(host=host,user=user,passwd=passwd,port=int(port),connect_timeout=5,charset='utf8mb4')

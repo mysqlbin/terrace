@@ -213,7 +213,7 @@
                 dataType: "json",
                 data: {
                     instance_name: $("#instance_name").val(),
-                    data_id: $('#instance_name').find("option:selected").data("id"),
+                    instance_id: $('#instance_name').find("option:selected").data("id"),
                     resource_type: "database"
                 },
                 complete: function () {
@@ -221,7 +221,6 @@
                 success: function (data) {
                     if (data.status === 1) {
                         var result = data.data;
-                        <!--console.log(result)-->
                         $("#only_schemas").empty();
                         for (var i = 0; i < result.length; i++) {
                             var db_name = "<option value=\"" + result[i] + "\">" + result[i] + "</option>";
@@ -242,7 +241,7 @@
                 dataType: "json",
                 data: {
                     instance_name: $("#instance_name").val(),
-                    data_id: $('#instance_name').find("option:selected").data("id"),
+                    instance_id: $('#instance_name').find("option:selected").data("id"),
 
                 },
                 complete: function () {
@@ -271,41 +270,12 @@
           });
 
 
-        //数据库变更获取表名称
-        $("#only_schemas").change(function () {
-            //将数据通过ajax提交给获取db_name
-            $.ajax({
-                type: "post",
-                url: "/instance/get_instances_resource/",
-                dataType: "json",
-                data: {
-                    instance_name: $("#instance_name").val(),
-                    db_name: $("#only_schemas").val(),
-                    resource_type: "table",
-                    data_id: $('#instance_name').find("option:selected").data("id")
-                },
-                complete: function () {
-                },
-                success: function (data) {
-                    if (data.status === 1) {
-                        var result = data.data;
-                        $("#only_tables").empty();
-                        for (var i = 0; i < result.length; i++) {
-                            var name = "<option>" + result[i] + "</option>";
-                            $("#only_tables").append(name);
-                        }
-                        $("#only_tables").prepend("<option value=\"is-empty\" disabled=\"\">表过滤(可选):</option>");
-                        $('#only_tables').selectpicker('render');
-                        $('#only_tables').selectpicker('refresh');
-                    } else {
-                        alert(data.msg);
-                    }
-                }
-            });
-        });
-
-
         $("#binlog2sql").click(function () {
+
+            only_tables = $("#only_tables").val();
+            console.log(only_tables);
+            console.log(1);
+
             if ($("#instance_name").val() && $("#start_file").val()) {
                 $(this).addClass('disabled');
                 $(this).prop('disabled', true);
@@ -314,7 +284,7 @@
                     url: "/binlog/binlog2sql/",
                     dataType: "json",
                     data: {
-                        instance_name: $("#instance_name").val(),
+                        instance_id : $('#instance_name').find("option:selected").data("id"),
                         save_sql: document.getElementById("save_sql").checked,
                         no_pk: document.getElementById("no_pk").checked,
                         flashback: document.getElementById("flashback").checked,
@@ -366,7 +336,8 @@
                                     var html = [];
                                     $.each(row, function (key, value) {
                                         if (key === 'sql') {
-                                            var sql = window.sqlFormatter.format(value);
+                                            <!--var sql = window.sqlFormatter.format(value);-->
+                                            sql = value;
                                             //替换所有的换行符
                                             sql = sql.replace(/\r\n/g, "<br>");
                                             sql = sql.replace(/\n/g, "<br>");
@@ -416,6 +387,44 @@
 
 
         });
+
+    </script>
+
+    <!-- common -->
+    <script>
+         //数据库变更获取表名称
+        $("#only_schemas").change(function () {
+            //将数据通过ajax提交给获取db_name
+            $.ajax({
+                type: "post",
+                url: "/instance/get_instances_resource/",
+                dataType: "json",
+                data: {
+                    instance_name: $("#instance_name").val(),
+                    db_name: $("#only_schemas").val(),
+                    resource_type: "table",
+                    instance_id: $('#instance_name').find("option:selected").data("id")
+                },
+                complete: function () {
+                },
+                success: function (data) {
+                    if (data.status === 1) {
+                        var result = data.data;
+                        $("#only_tables").empty();
+                        for (var i = 0; i < result.length; i++) {
+                            var name = "<option>" + result[i] + "</option>";
+                            $("#only_tables").append(name);
+                        }
+                        $("#only_tables").prepend("<option value=\"is-empty\" disabled=\"\">表过滤(可选):</option>");
+                        $('#only_tables').selectpicker('render');
+                        $('#only_tables').selectpicker('refresh');
+                    } else {
+                        alert(data.msg);
+                    }
+                }
+            });
+        });
+
 
     </script>
 {% endblock %}

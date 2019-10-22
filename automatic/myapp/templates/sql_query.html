@@ -70,11 +70,15 @@
 
   </div>
 
-
-    <div class="table-responsive">
-        <table id="query-list" data-toggle="table" class="table table-striped table-hover"
-               style="table-layout:inherit;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-        </table>
+    <div class="panel panel-default">
+        <div class="panel-heading">查询结果</div>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table id="query-list" data-toggle="table" class="table table-striped table-hover"
+                       style="table-layout:inherit;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                </table>
+            </div>
+        </div>
     </div>
 {% endblock %}
 
@@ -261,7 +265,7 @@
                     dataType: "json",
                     data: {
                         instance_name: $("#instance_name option:selected").text(),
-                        data_id: $('#instance_name').find("option:selected").data("id"),
+                        instance_id: $('#instance_name').find("option:selected").data("id"),
                         resource_type: "database"
                     },
                     complete: function () {

@@ -1,15 +1,13 @@
 # -*- coding: UTF-8 -*-
 """ 
-@author: hhyo 
-@license: Apache Licence 
-@file: binglog2sql.py 
-@time: 2019/03/23
+@author:
+@file: binglog2sql.py
+@time:
 """
 # from common.config import SysConfig
 from myapp.plugins.plugin import Plugin
 
-__author__ = 'hhyo'
-
+__author__ = ''
 
 class Binlog2Sql(Plugin):
 
@@ -18,7 +16,7 @@ class Binlog2Sql(Plugin):
         self.path = '/root/binlog2sql/binlog2sql/binlog2sql.py'
         self.required_args = []
         self.disable_args = []
-        super(Plugin, self).__init__()
+        super(Plugin, self).__init__()    # 类继承
 
     def generate_args2cmd(self, args, shell):
         """

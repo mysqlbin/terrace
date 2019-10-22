@@ -1,5 +1,5 @@
 from django.contrib import admin
-from myapp.models import Db_name,Db_account,Db_instance
+from myapp.models import Db_name,Db_instance
 from django.contrib.auth.models import User
 
 
@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 @admin.register(Db_instance)
 class DbinstanceAdmin(admin.ModelAdmin):
     # 设置显示的字段
-    list_display = ['id', 'instance_name', 'type', 'db_type', 'ip', 'port', 'charset', 'create_time']
+    list_display = ['id', 'instance_name', 'type', 'db_type', 'host', 'port', 'charset', 'create_time']
 
     search_fields = ['instance_name']
 
@@ -21,12 +21,6 @@ class DbinstanceAdmin(admin.ModelAdmin):
 class DbnameAdmin(admin.ModelAdmin):
     # 设置显示的字段
     list_display = ['id', 'dbname', 'dbtag']
-
-# 用户列表
-@admin.register(Db_account)
-class DbaccountAdmin(admin.ModelAdmin):
-    # 设置显示的字段
-    list_display = ['id', 'user', 'tags']
 
 
 
