@@ -9,7 +9,7 @@ from . import EngineBase
 
 logger = logging.getLogger('default')
 
-class MySQLEngine(EngineBase):
+class MySQLEngine(EngineBase):   # 类继承
 
     def get_connection(self, db_name=None):
         if self.conn:
@@ -25,11 +25,7 @@ class MySQLEngine(EngineBase):
     def query_set(self, db_name=None, sql='', limit_num=0, close_conn=True):
 
         # 实例化ResultSet类
-
         results_set = ResultsSet(full_sql=sql)
-        # return results_set
-        # return 3
-
         try:
             conn = self.get_connection(db_name=db_name)
             cursor = conn.cursor()
