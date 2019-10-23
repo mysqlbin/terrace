@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',  # 查找静态资源路径
     'myapp',
-    'django_celery_results',        # 添加分布式任务功能
+    # 'django_celery_results',        # 添加分布式任务功能
 
 ]
 
@@ -98,7 +98,7 @@ DATABASES = {
         'NAME': 'terrace_db',
         'USER': 'root',
         'PASSWORD': '123456abc',
-        'HOST': '192.168.0.54',
+        'HOST': '192.168.1.27',
         'PORT': '3306',
     }
 }
