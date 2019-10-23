@@ -119,17 +119,17 @@ def get_not_primary_index():
     return sql
 
 
-def get_instance_user_privileges():
-    sql_get_user = '''select concat("\'", user, "\'", '@', "\'", host,"\'") as query from mysql.user;'''
-    res = get_process_data(sql_get_user, 2)
-    res_user_priv = []
-    for db_user in res:
-        user_info = {}
-        sql_get_permission = 'show grants for {};'.format(db_user[0])
-        user_priv = get_process_data(sql_get_permission, 2)
-        user_info['user'] = db_user[0]
-        user_info['privileges'] = user_priv
-        res_user_priv.append(user_info)
-    return res_user_priv
+# def get_instance_user_privileges():
+#     sql_get_user = '''select concat("\'", user, "\'", '@', "\'", host,"\'") as query from mysql.user;'''
+#     res = get_process_data(sql_get_user, 2)
+#     res_user_priv = []
+#     for db_user in res:
+#         user_info = {}
+#         sql_get_permission = 'show grants for {};'.format(db_user[0])
+#         user_priv = get_process_data(sql_get_permission, 2)
+#         user_info['user'] = db_user[0]
+#         user_info['privileges'] = user_priv
+#         res_user_priv.append(user_info)
+#     return res_user_priv
 
 

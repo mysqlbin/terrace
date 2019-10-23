@@ -78,61 +78,8 @@ def download_polling_report(request):
         with open(filename, 'a+') as f:
             f.write('4. 状态巡检项:' + '\n')
             f.write('4.1 InnoDB层缓冲池状态:' + '\n')
-
             for v in innodb_buffer_pool_status:
-
                 f.write('   {} : {}'.format(v[0], v[1]) + '\n')
-
-                if v[0] == 'Innodb_buffer_pool_pages_dirty':
-                    innodb_buffer_pool_pages_dirty = v[1]
-                else:
-                    innodb_buffer_pool_pages_dirty = None
-
-                if v[0] == 'Innodb_buffer_pool_pages_total':
-                    innodb_buffer_pool_pages_total = v[1]
-                else:
-                    innodb_buffer_pool_pages_total = None
-
-                if innodb_buffer_pool_pages_dirty is not None and innodb_buffer_pool_pages_total is not None:
-                    dirty_page = round(int(innodb_buffer_pool_pages_dirty) / int(innodb_buffer_pool_pages_total), 4)
-                    f.write('   脏页在缓冲池数据页中的占比为: {}%'.format(dirty_page * 100) + '\n')
-
-                if v[0] == 'Innodb_buffer_pool_read_requests':
-                    innodb_buffer_pool_read_requests = v[1]
-                else:
-                    innodb_buffer_pool_read_requests = None
-
-                if v[0] == 'Innodb_buffer_pool_read_ahead':
-                    innodb_buffer_pool_read_ahead = v[1]
-                else:
-                    innodb_buffer_pool_read_ahead = None
-
-                if v[0] == 'innodb_buffer_pool_reads':
-                    innodb_buffer_pool_reads = v[1]
-                else:
-                    innodb_buffer_pool_reads = None
-
-                if innodb_buffer_pool_read_requests is not None and innodb_buffer_pool_read_ahead is not None and innodb_buffer_pool_reads is not None:
-                    ibp_hit = round(int(innodb_buffer_pool_read_requests) / (int(innodb_buffer_pool_read_requests) + int(innodb_buffer_pool_read_ahead) + int(innodb_buffer_pool_reads)),4)
-                    f.write('InnoDB buffer pool 命中率: {}%'.format(ibp_hit * 100) + '\n')
-
-
-            """
-            ibp_pages_dirty = get_status_value(insname, 'innodb_buffer_pool_pages_dirty', 0)
-            ibp_pages_total = get_status_value(insname, 'innodb_buffer_pool_pages_total', 0)
-            dirty_page = round(int(ibp_pages_dirty) / int(ibp_pages_total), 4)
-            f.write('脏页在缓冲池数据页中的占比为: {}%'.format(dirty_page * 100) + '\n')
-
-            ibp_read_requests = get_status_value(insname, 'innodb_buffer_pool_read_requests', 0)
-            ibp_read_ahead = get_status_value(insname, 'innodb_buffer_pool_read_ahead', 0)
-            ibp_read_reads = get_status_value(insname, 'innodb_buffer_pool_reads', 0)
-           
-
-            ibp_wait_free = get_status_value(insname, 'Innodb_buffer_pool_wait_free', 0)
-            if int(ibp_wait_free) > 0:
-                f.write('注意：InnoDB Buffer Pool可能不够用了，需要详细检查并处理，目前等待申请空闲列表的次数为: {} 次'.format(ibp_wait_free) + '\n')
-            """
-
 
             f.write('4.2 并发线程连接数:' + '\n')
             for v in innodb_threads_connection_status:

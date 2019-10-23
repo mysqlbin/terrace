@@ -96,25 +96,25 @@ server_other_param = [
 ]
 
 innodb_buffer_pool_status_list = [
-    'innodb_buffer_pool_pages_dirty',
-    'innodb_buffer_pool_pages_total',
+    'Innodb_buffer_pool_pages_dirty',
+    'Innodb_buffer_pool_pages_total',
     'Innodb_buffer_pool_pages_data',
     'Innodb_buffer_pool_pages_flushed',
-    'innodb_buffer_pool_read_requests',
-    'innodb_buffer_pool_read_ahead',
+    'Innodb_buffer_pool_read_requests',
+    'Innodb_buffer_pool_read_ahead',
     'Innodb_buffer_pool_read_ahead_evicted',
-    'innodb_buffer_pool_reads',
+    'Innodb_buffer_pool_reads',
     'Innodb_buffer_pool_pages_free',
     'Innodb_buffer_pool_wait_free',
 ]
 
-innodb_threads_connection_status = [
+innodb_threads_connection_status_list = [
     'Threads_connected',
     'Threads_created',
     'Threads_running'
 ]
 
-innodb_row_lock_status = [
+innodb_row_lock_status_list = [
     'Innodb_row_lock_current_waits',
     'Innodb_row_lock_time',
     'Innodb_row_lock_time_avg',
@@ -122,18 +122,18 @@ innodb_row_lock_status = [
     'Innodb_row_lock_waits',
 ]
 
-innodb_open_status = [
+innodb_open_status_list = [
     'Open_files',
     'Open_tables',
     'Opened_tables',
 ]
 
-innodb_create_tmp_table_status = [
+innodb_create_tmp_table_status_list = [
     'Created_tmp_tables',
     'Created_tmp_disk_tables'
 ]
 
-innodb_double_write_status = [
+innodb_double_write_status_list = [
     'Innodb_dblwr_pages_written',
     'Innodb_dblwr_writes',
 ]
