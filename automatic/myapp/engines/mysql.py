@@ -2,7 +2,8 @@
 
 import  logging
 import traceback
-
+import sqlparse
+import re
 import pymysql
 from myapp.engines.models import ResultsSet
 from . import EngineBase
@@ -21,6 +22,12 @@ class MySQLEngine(EngineBase):   # 类继承
             self.conn = pymysql.connect(host=self.host, user=self.user, password=self.password, port = int(self.port),
                                         charset=self.instance.charset or 'utf8mb4')
         return self.conn
+
+    @property
+    def server_version(self):
+        version = self.query_set(sql="select @@version").rows[0][0][0:3]
+        version = version.replace('.', '')
+        return int(version)
 
     def query_set(self, db_name=None, sql='', limit_num=0, close_conn=True):
 
@@ -49,7 +56,7 @@ class MySQLEngine(EngineBase):   # 类继承
 
         return results_set
 
-    def query_check(sql=''):
+    def query_check(self, sql=''):
         result = {'msg': '', 'bad_query': False, 'filtered_sql': sql, 'has_star': False}
         try:
             sql = sqlparse.format(sql, strip_comments=True)
@@ -66,6 +73,28 @@ class MySQLEngine(EngineBase):   # 类继承
             result['has_star'] = True
             result['msg'] = 'SQL语句中含有 * '
         return result
+
+    def get_variables(self, variables=None):
+        """获取实例参数"""
+        if variables:
+            variables = "','".join(variables) if isinstance(variables, list) else "','".join(list(variables))
+            db = 'performance_schema' if self.server_version >= int(57) else 'information_schema'
+            sql = f"""select * from {db}.global_variables where variable_name in ('{variables}');"""
+        else:
+            sql = "show global variables;"
+
+        return self.query_set(sql=sql)
+
+    def get_status(self, status=None):
+        """获取实例状态信息"""
+        if status:
+            status = "','".join(status) if isinstance(status, list) else "','".join(list(status))
+            db = 'performance_schema' if self.server_version >= int(57) else 'information_schema'
+            sql = f"""select * from {db}.global_status where variable_name in ('{status}');"""
+        else:
+            sql = "show global status;"
+
+        return self.query_set(sql=sql)
 
     def close(self):
         if self.conn:

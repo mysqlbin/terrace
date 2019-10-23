@@ -77,15 +77,15 @@ def get_instances_resource(request):
     schema_name = request.POST.get('schema_name')
     tb_name = request.POST.get('tb_name')
 
-    insname = Db_instance.objects.get(id=int(request.POST.get('instance_id')))
+    instance = Db_instance.objects.get(id=int(request.POST.get('instance_id')))
 
     result = {'status': 1, 'msg': 'ok', 'data': []}
 
     if resource_type == 'database':
-        dbresult, col, error = meta.get_process_data(insname, 'show databases')
+        query_engine = get_engine(instance=instance)
+        dbresult = query_engine.query_set('', 'show databases').rows
         resource = [row[0] for row in dbresult
                     if row[0] not in ('information_schema', 'performance_schema', 'mysql', 'test', 'sys')]
-
     elif resource_type == 'table':
         dbtable, col, error  = meta.get_process_data(insname, 'show tables', db_name)
         resource = [row[0] for row in dbtable if row[0] not in ['test']]

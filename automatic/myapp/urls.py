@@ -34,7 +34,8 @@ urlpatterns = [
 
     path('pollingreport/', myapp_view.pollingreport, name='polling_report'),
     path('polling/polling_list/', polling.polling_list),
-    path('polling/get_polling_report/', polling.get_polling_report),
+    # path('polling/get_polling_report/', polling.get_polling_report),
+    path('polling/download_polling_report/', polling.download_polling_report),
 
     path('binlog2sql/', myapp_view.binlog2sql, name='binlog2sql'),
     path('binlog/binlog2sql/', binlog.binlog2sql),
@@ -52,5 +53,7 @@ urlpatterns = [
     path('test/get_query_data/', test.get_query_data),
 
     path('tests/test01/', tests.test_01),
+    path('tests/test02/', tests.test_02),
+    path('tests/polling_test/', tests.polling_test),
 
 ]
