@@ -2,14 +2,15 @@
 
 import  logging
 import traceback
-
+import sqlparse
+import re
 import pymysql
 from myapp.engines.models import ResultsSet
 from . import EngineBase
 
 logger = logging.getLogger('default')
 
-class MySQLEngine(EngineBase):
+class MySQLEngine(EngineBase):   # 类继承
 
     def get_connection(self, db_name=None):
         if self.conn:
@@ -22,14 +23,16 @@ class MySQLEngine(EngineBase):
                                         charset=self.instance.charset or 'utf8mb4')
         return self.conn
 
+    @property
+    def server_version(self):
+        version = self.query_set(sql="select @@version").rows[0][0][0:3]
+        version = version.replace('.', '')
+        return int(version)
+
     def query_set(self, db_name=None, sql='', limit_num=0, close_conn=True):
 
         # 实例化ResultSet类
-
         results_set = ResultsSet(full_sql=sql)
-        # return results_set
-        # return 3
-
         try:
             conn = self.get_connection(db_name=db_name)
             cursor = conn.cursor()
@@ -53,7 +56,7 @@ class MySQLEngine(EngineBase):
 
         return results_set
 
-    def query_check(sql=''):
+    def query_check(self, sql=''):
         result = {'msg': '', 'bad_query': False, 'filtered_sql': sql, 'has_star': False}
         try:
             sql = sqlparse.format(sql, strip_comments=True)
@@ -70,6 +73,28 @@ class MySQLEngine(EngineBase):
             result['has_star'] = True
             result['msg'] = 'SQL语句中含有 * '
         return result
+
+    def get_variables(self, variables=None):
+        """获取实例参数"""
+        if variables:
+            variables = "','".join(variables) if isinstance(variables, list) else "','".join(list(variables))
+            db = 'performance_schema' if self.server_version >= int(57) else 'information_schema'
+            sql = f"""select * from {db}.global_variables where variable_name in ('{variables}');"""
+        else:
+            sql = "show global variables;"
+
+        return self.query_set(sql=sql)
+
+    def get_status(self, status=None):
+        """获取实例状态信息"""
+        if status:
+            status = "','".join(status) if isinstance(status, list) else "','".join(list(status))
+            db = 'performance_schema' if self.server_version >= int(57) else 'information_schema'
+            sql = f"""select * from {db}.global_status where variable_name in ('{status}');"""
+        else:
+            sql = "show global status;"
+
+        return self.query_set(sql=sql)
 
     def close(self):
         if self.conn:

@@ -1,45 +1,7 @@
 #!/usr/local/bin/python3
 #coding=utf-8
 
-import pymysql
 
-def mysql_query(sql, user, passwd, host, port, get_data = 1):
-    try:
-        conn=pymysql.connect(host=host,user=user,passwd=passwd,port=int(port),connect_timeout=5,charset='utf8mb4')
-        cursor = conn.cursor()
-        cursor.execute(sql)
-        if get_data == 1:
-            result = cursor.fetchone()
-        else:
-            result = cursor.fetchall()
-        cursor.close()
-        conn.close()
-        return result
-    except Exception as err:
-        return err
-
-def get_process_data(insname, sql, get_data = 1):
-    flag = True
-    # pc = prpcrypt()
-    #多对多的查询，避免多次连接， 考虑把账号和密码放入Redis缓存中
-    for a in insname.db_name_set.all():    #models.py：Db_name
-        for i in a.db_account_set.all():   #models.py：Db_account
-            # if i.role == 'admin':         '''获取账号和密码，用来连接数据库'''
-            username = i.user
-            passwd = i.passwd
-            flag = False
-            break
-        if flag == False:
-            break
-    if 'username' in vars():
-        try:
-            #results = mysql_query('select 1', 'root', '123456abc', '192.168.0.54', 3306)
-            results = mysql_query(sql, username, passwd, insname.ip, int(insname.port), get_data)
-        except Exception as e:
-            results = str(e)
-        return results
-    else:
-        return 'PLEASE set the admin role account FIRST'
 
 def get_param_value(insname, param = ''):
     sql = "show global variables like '{:s}'".format(param)

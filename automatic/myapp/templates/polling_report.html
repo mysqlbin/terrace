@@ -108,7 +108,7 @@
                         field: 'db_type'
                     }, {
                         title: 'HOST',
-                        field: 'ip'
+                        field: 'host'
                     }, {
                         title: 'PORT',
                         field: 'port'
@@ -154,7 +154,7 @@
             console.log(instance_id)
             console.log(instance_name)
             $.get({
-            url: "/polling/get_polling_report/",
+            url: "/polling/download_polling_report/",
             type: "POST",
             data: {
               instance_id: instance_id,
@@ -162,7 +162,7 @@
               },
             success: function (data) {
             var data = JSON.parse(data)
-            if (data.status == 1){
+            if (data.status == 0){
                 alert(data.msg);
             }else{
                 alert(data.msg);

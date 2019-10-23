@@ -11,6 +11,7 @@ from myapp.include import function as func
 from myapp.include import sqlfilter
 from myapp.form import AddForm
 from myapp.models import Db_instance
+from myapp.engines import get_engine
 
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required,permission_required
@@ -41,8 +42,13 @@ def sql_query(request):
 
     result = {'status': 0, 'msg': 'ok', 'rows': [], 'column_list': []}
 
+    # instance_name = '1'
+    # sql_content = 'select nPlayerID from niuniu_db.table_award_2019;'
+    # db_name = 'niuniu_db'
+    # limit_num=2
+
     try:
-        insname = Db_instance.objects.get(id=int(request.POST.get('instance_id', 1)))
+        instance = Db_instance.objects.get(id=int(request.POST.get('instance_id')))
     except Db_instance.DoesNotExist:
         result['status'] = 1
         result['msg'] = '实例不存在'
@@ -64,8 +70,8 @@ def sql_query(request):
         limit_num = 0
 
     try:
-        query_check_info = meta.query_check(sql=sql_content)
-
+        query_engine = get_engine(instance=instance)
+        query_check_info = query_engine.query_check(sql=sql_content)
         if query_check_info.get('bad_query'):
             result['status'] = 1
             result['msg'] = query_check_info.get('msg')
@@ -80,15 +86,15 @@ def sql_query(request):
             return HttpResponse(json.dumps(result), content_type='application/json')
 
         #　执行查询语句，获取返回结果
-        res_set = meta.get_process_data_set(insname, sql_content, db_name, limit_num)
-        if res_set['msg'] != 'ok':
+        res_set = query_engine.query_set(sql=sql_content, limit_num=limit_num)
+        if res_set.error:
             result['status'] = 1
-            result['msg'] = res_set['msg']
+            result['msg'] = res_set.error
             result['rows'] = '{6}'
             return HttpResponse(json.dumps(result), content_type='application/json')
 
-        result['rows'] = res_set['rows']
-        result['column_list'] = res_set['column_list']
+        result['rows'] = res_set.to_dict()    # 访问类的成员函数
+        result['column_list'] = res_set.column_list
 
     except Exception as e:
 
@@ -97,6 +103,10 @@ def sql_query(request):
         result['msg'] = f'查询异常报错，错误信息：{e}'
 
     # 返回查询结果
-    return HttpResponse(json.dumps(result, cls=RewriteJsonEncoder),
-                    content_type='application/json'
-)
+    try:
+        return HttpResponse(json.dumps(result, cls=RewriteJsonEncoder),
+                            content_type='application/json')
+    except Exception as err:
+
+        return HttpResponse(err)
+

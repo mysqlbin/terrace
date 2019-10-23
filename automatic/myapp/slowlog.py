@@ -37,7 +37,7 @@ def slowquery_review(request):
     if db_name:
         # 获取慢查数据, 跨表一对多查询
         slowsql_obj = SlowQuery.objects.filter(
-            slowqueryhistory__hostname_max=('{}:{}'.format(insname.ip, insname.port)),
+            slowqueryhistory__hostname_max=('{}:{}'.format(insname.host, insname.port)),
             slowqueryhistory__db_max=db_name,
             slowqueryhistory__ts_min__range=(start_time, end_time)
         ).annotate(SQLText=F('fingerprint'), SQLId=F('checksum')).values('SQLText', 'SQLId').annotate(
@@ -52,7 +52,7 @@ def slowquery_review(request):
     else:
         # 获取慢查数据, 跨表一对多查询
         slowsql_obj = SlowQuery.objects.filter(
-            slowqueryhistory__hostname_max=('{}:{}'.format(insname.ip, insname.port)),
+            slowqueryhistory__hostname_max=('{}:{}'.format(insname.host, insname.port)),
             slowqueryhistory__ts_min__range=(start_time, end_time),
         ).annotate(SQLText=F('fingerprint'), SQLId=F('checksum')).values('SQLText', 'SQLId').annotate(
             CreateTime=Max('slowqueryhistory__ts_max'),
@@ -99,7 +99,7 @@ def slowquery_review_history(request):
     if sql_id:
         # 获取慢查明细数据
         slow_sql_record_obj = SlowQueryHistory.objects.filter(
-            hostname_max=('{}:{}'.format(instance_res.ip, instance_res.port)),
+            hostname_max=('{}:{}'.format(instance_res.host, instance_res.port)),
             checksum=sql_id,
             ts_min__range=(start_time, end_time)
         ).annotate(ExecutionStartTime=F('ts_min'),  # 本次统计(每5分钟一次)该类型sql语句出现的最小时间
@@ -117,7 +117,7 @@ def slowquery_review_history(request):
         if db_name:
             # 获取慢查明细数据
             slow_sql_record_obj = SlowQueryHistory.objects.filter(
-                hostname_max=('{}:{}'.format(instance_res.ip, instance_res.port)),
+                hostname_max=('{}:{}'.format(instance_res.host, instance_res.port)),
                 db_max=db_name,
                 ts_min__range=(start_time, end_time)
             ).annotate(ExecutionStartTime=F('ts_min'),  # 本次统计(每5分钟一次)该类型sql语句出现的最小时间
@@ -134,7 +134,7 @@ def slowquery_review_history(request):
         else:
             # 获取慢查明细数据
             slow_sql_record_obj = SlowQueryHistory.objects.filter(
-                hostname_max=('{}:{}'.format(instance_res.ip, instance_res.port)),
+                hostname_max=('{}:{}'.format(instance_res.host, instance_res.port)),
                 ts_min__range=(start_time, end_time)
             ).annotate(ExecutionStartTime=F('ts_min'),  # 本次统计(每5分钟一次)该类型sql语句出现的最小时间
                        DBName=F('db_max'),  # 数据库名
