@@ -14,7 +14,7 @@ from myapp.models import Db_instance
 from myapp.engines import get_engine
 from myapp.include.polling_settings import innodb_buffer_pool_param,innodb_redo_log_param,innodb_persistent_param,innodb_other_param
 from myapp.include.polling_settings import server_binlog_param,server_thread_session_param,server_other_param
-from myapp.include.polling_settings import innodb_buffer_pool_status,innodb_threads_connection_status,innodb_row_lock_status,innodb_open_status,innodb_create_tmp_table_status,innodb_double_write_status
+from myapp.include.polling_settings import innodb_buffer_pool_status_list,innodb_threads_connection_status,innodb_row_lock_status,innodb_open_status,innodb_create_tmp_table_status,innodb_double_write_status
 
 
 from myapp.include.polling_sql import get_table_schema_engine, get_table_size, get_top_big_tables, get_table_rows, get_auto_increment_ratio,\
@@ -67,7 +67,7 @@ def download_polling_report(request):
         get_too_much_columns_indexs_data  = query_engine.query_set(sql=get_too_much_columns_indexs(index_counts_custom))
         get_not_primary_index_data   = query_engine.query_set(sql=get_not_primary_index())
 
-        innodb_buffer_pool_status = query_engine.get_status(innodb_buffer_pool_status)
+        innodb_buffer_pool_status = query_engine.get_status(innodb_buffer_pool_status_list)
         # innodb_threads_connection_status = query_engine.get_status(innodb_threads_connection_status)
         # innodb_row_lock_status = query_engine.get_status(innodb_row_lock_status)
         # innodb_open_status = query_engine.get_status(innodb_open_status)

@@ -7,7 +7,7 @@ from myapp.include.polling_settings import innodb_buffer_pool_param
 from django.conf import settings
 from myapp.include.polling_sql import get_table_schema_engine
 
-from myapp.include.polling_settings import innodb_buffer_pool_status
+from myapp.include.polling_settings import innodb_buffer_pool_status, innodb_threads_connection_status
 
 import time
 # Create your tests here.
@@ -19,7 +19,7 @@ def test_01(request):
     query_engine = get_engine(instance=instance)
     # return HttpResponse(query_engine)
     # binlog = query_engine.query_set('', 'show binary logs;').to_dict()
-    innodb_buffer_pool_status = query_engine.get_status(innodb_buffer_pool_status)
+    innodb_buffer_pool_status = query_engine.get_status(innodb_threads_connection_status).rows
     # get_table_schema_engine_data = query_engine.query_set(sql=get_table_schema_engine()).rows
 
 

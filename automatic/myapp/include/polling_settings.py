@@ -95,7 +95,7 @@ server_other_param = [
     'max_user_connections',
 ]
 
-innodb_buffer_pool_status = [
+innodb_buffer_pool_status_list = [
     'innodb_buffer_pool_pages_dirty',
     'innodb_buffer_pool_pages_total',
     'Innodb_buffer_pool_pages_data',
