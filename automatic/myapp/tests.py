@@ -20,17 +20,32 @@ def test_03(request):
     instance = Db_instance.objects.get(id=1)
     query_engine = get_engine(instance=instance)
     sql_content = 'select * from test_db.t2 where id=1;'
-    task_id = async_task(query_engine.query_set(sql=sql_content))
+    # result = query_engine.query_set(sql=sql_content).rows
+    # return HttpResponse(result)
+    task_id = async_task(query_engine.query_set(sql=sql_content).rows)
     task_result = result(task_id, cached=True)
     return HttpResponse(task_result)
 
 def test_04(request):
     instance = Db_instance.objects.get(id=1)
     query_engine = get_engine(instance=instance)
-    sql_content = 'select * from test_db.t2 order by a;'
-    task_id = async_task(query_engine.query_set(sql=sql_content))
+    # sql_content = 'select * from test_db.t2 order by a;'
+    sql_content = 'select * from test_db.t2 where id=1;'
+    task_id = async_task(query_engine.query_set(sql=sql_content).rows)
     task_result = fetch(task_id, wait=1 * 1000000, cached=True)
     return HttpResponse(task_result)
+
+
+def test_05(request):
+    instance = Db_instance.objects.get(id=1)
+    query_engine = get_engine(instance=instance)
+    sql_content = 'select * from test_db.t2 order by a;'
+    # sql_content = 'select * from test_db.t2 where id=1;'
+    task_id = async_task(query_engine.query_set(sql=sql_content).rows)
+    task_result = fetch(task_id, wait=1 * 100, cached=True)
+    return HttpResponse(task_result)
+
+
 
 def test_01(request):
     return HttpResponse(1)
