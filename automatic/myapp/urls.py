@@ -54,7 +54,7 @@ urlpatterns = [
 
     path('tests/test01/', tests.test_01),
     path('tests/test02/', tests.test_02),
-    path('tests/test04/', tests.test_03),
+    path('tests/test03/', tests.test_03),
     path('tests/test04/', tests.test_04),
     path('tests/polling_test/', tests.polling_test),
 
