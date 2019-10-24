@@ -56,7 +56,7 @@ def test_05(request):
         # query_result = ResultSet(full_sql=sql_content)
         query_result.error = '查询时间超过 0.1 秒，已被主动终止，请优化语句或者联系管理员。'
 
-    return HttpResponse(query_result)
+    return HttpResponse(query_result.error)
 
 
 
