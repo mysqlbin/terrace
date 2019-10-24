@@ -10,7 +10,7 @@ from myapp.include.polling_sql import get_table_schema_engine
 
 from myapp.include.polling_settings import innodb_buffer_pool_status_list
 
-from django_q.tasks import async_task, result, fetch
+# from django_q.tasks import async_task, result, fetch
 from myapp.common.utils.rewrite_json_encoder import RewriteJsonEncoder
 
 
@@ -29,63 +29,63 @@ def test_06(request):
     return HttpResponse(json.dumps(result, cls=RewriteJsonEncoder),
                         content_type='application/json')
 
-def test_03(request):
-    instance = Db_instance.objects.get(id=1)
-    query_engine = get_engine(instance=instance)
-    sql_content = 'select * from test_db.t2 where id=1;'
-    # result = query_engine.query_set(sql=sql_content).rows
-    # return HttpResponse(result)
-    task_id = async_task(query_engine.query_set(sql=sql_content).rows)
-    task_result = result(task_id, cached=True)
-    return HttpResponse(task_result)
+# def test_03(request):
+#     instance = Db_instance.objects.get(id=1)
+#     query_engine = get_engine(instance=instance)
+#     sql_content = 'select * from test_db.t2 where id=1;'
+#     # result = query_engine.query_set(sql=sql_content).rows
+#     # return HttpResponse(result)
+#     task_id = async_task(query_engine.query_set(sql=sql_content).rows)
+#     task_result = result(task_id, cached=True)
+#     return HttpResponse(task_result)
 
-def test_04(request):
-    instance = Db_instance.objects.get(id=1)
-    query_engine = get_engine(instance=instance)
-    # sql_content = 'select * from test_db.t2 order by a;'
-    sql_content = 'select * from test_db.t2 where id=1;'
-    task_id = async_task(query_engine.query_set(sql=sql_content).rows)
-    task_result = fetch(task_id, wait=1 * 1000000, cached=True)
-    return HttpResponse(task_result)
+# def test_04(request):
+#     instance = Db_instance.objects.get(id=1)
+#     query_engine = get_engine(instance=instance)
+#     # sql_content = 'select * from test_db.t2 order by a;'
+#     sql_content = 'select * from test_db.t2 where id=1;'
+#     task_id = async_task(query_engine.query_set(sql=sql_content).rows)
+#     task_result = fetch(task_id, wait=1 * 1000000, cached=True)
+#     return HttpResponse(task_result)
 
 
-def test_05(request):
-
-    result = {'status': 0, 'msg': 'ok', 'data': {}}
-
-    instance = Db_instance.objects.get(id=1)
-    query_engine = get_engine(instance=instance)
-    sql_content = 'select * from test_db.t2 group by a order by a limit 2;'
-    # sql_content = 'select * from test_db.t2 where id=1;'
-    task_id = async_task(query_engine.query_set(sql=sql_content))
-    query_task = fetch(task_id, wait=1 * 100000, cached=True)
-
-    if query_task:
-        if query_task.success:
-            query_result = query_task.result
-            query_result.query_time = query_task.time_taken()
-        else:
-            query_result = ResultsSet(full_sql=sql_content)
-            query_result.error = query_task.result
-    # 等待超时，async_task主动关闭连接
-    else:
-        query_result = ResultsSet(full_sql=sql_content)
-        query_result.error = '查询时间超过 0.1 秒，已被主动终止，请优化语句或者联系管理员。'
-
-    # 查询异常
-    if query_result.error:
-        result['status'] = 1
-        result['msg'] = query_result.error
-    else:
-        result['data'] = query_result.__dict__
-
-    try:
-        return HttpResponse(json.dumps(result, cls=RewriteJsonEncoder),
-                            content_type='application/json')
-    # 虽然能正常返回，但是依然会乱码
-    except UnicodeDecodeError:
-        return HttpResponse(json.dumps(result, default=str,encoding='latin1'),
-                            content_type='application/json')
+# def test_05(request):
+#
+#     result = {'status': 0, 'msg': 'ok', 'data': {}}
+#
+#     instance = Db_instance.objects.get(id=1)
+#     query_engine = get_engine(instance=instance)
+#     sql_content = 'select * from test_db.t2 group by a order by a limit 2;'
+#     # sql_content = 'select * from test_db.t2 where id=1;'
+#     task_id = async_task(query_engine.query_set(sql=sql_content))
+#     query_task = fetch(task_id, wait=1 * 100000, cached=True)
+#
+#     if query_task:
+#         if query_task.success:
+#             query_result = query_task.result
+#             query_result.query_time = query_task.time_taken()
+#         else:
+#             query_result = ResultsSet(full_sql=sql_content)
+#             query_result.error = query_task.result
+#     # 等待超时，async_task主动关闭连接
+#     else:
+#         query_result = ResultsSet(full_sql=sql_content)
+#         query_result.error = '查询时间超过 0.1 秒，已被主动终止，请优化语句或者联系管理员。'
+#
+#     # 查询异常
+#     if query_result.error:
+#         result['status'] = 1
+#         result['msg'] = query_result.error
+#     else:
+#         result['data'] = query_result.__dict__
+#
+#     try:
+#         return HttpResponse(json.dumps(result, cls=RewriteJsonEncoder),
+#                             content_type='application/json')
+#     # 虽然能正常返回，但是依然会乱码
+#     except UnicodeDecodeError:
+#         return HttpResponse(json.dumps(result, default=str,encoding='latin1'),
+#                             content_type='application/json')
 
 
 
