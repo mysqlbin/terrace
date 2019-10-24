@@ -88,9 +88,12 @@ class MySQLEngine(EngineBase):   # 类继承
     def get_status(self, status=None):
         """获取实例状态信息"""
         if status:
-            status = "','".join(status) if isinstance(status, list) else "','".join(list(status))
             db = 'performance_schema' if self.server_version >= int(57) else 'information_schema'
-            sql = f"""select * from {db}.global_status where variable_name in ('{status}');"""
+            if isinstance(status, list):
+                status = "','".join(status)
+                sql = f"""select * from {db}.global_status where variable_name in ('{status}');"""
+            else:
+                sql = f"""select * from {db}.global_status where variable_name = '{status}';"""
         else:
             sql = "show global status;"
 

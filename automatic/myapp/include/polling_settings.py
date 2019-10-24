@@ -133,7 +133,3 @@ innodb_create_tmp_table_status_list = [
     'Created_tmp_disk_tables'
 ]
 
-innodb_double_write_status_list = [
-    'Innodb_dblwr_pages_written',
-    'Innodb_dblwr_writes',
-]

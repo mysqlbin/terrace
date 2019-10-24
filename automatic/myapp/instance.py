@@ -117,7 +117,7 @@ def get_instance_users(request, id, instance_name):
     sql_get_user = '''select concat("\'", user, "\'", '@', "\'", host,"\'") as query from mysql.user;'''
 
     query_engine = get_engine(instance=instance)
-    users_res = query_engine.query_set('', sql_get_user).rows
+    users_res = query_engine.query_set(sql_get_user).rows
 
     # 获取用户权限信息
     res_user_priv = []

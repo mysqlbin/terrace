@@ -43,8 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',  # 查找静态资源路径
     'myapp',
-    # 'django_celery_results',        # 添加分布式任务功能
-
+    'django_celery_results',        # 添加分布式任务功能
+    'django_q',
 ]
 
 # 中间件
@@ -98,7 +98,7 @@ DATABASES = {
         'NAME': 'terrace_db',
         'USER': 'root',
         'PASSWORD': '123456abc',
-        'HOST': '192.168.1.27',
+        'HOST': '192.168.0.54',
         'PORT': '3306',
     }
 }
@@ -152,6 +152,37 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 # 设置存储 Celery 任务结果的Redis数据库
 CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/3'
+
+Q_CLUSTER = {
+    'name': 'automatic',
+    'workers': 8,
+    'recycle': 500,
+    'timeout': 60,
+    'compress': True,
+    'cpu_affinity': 1,
+    'save_limit': 250,
+    'queue_limit': 500,
+    'label': 'Django Q',
+    'redis': {
+        'host': '127.0.0.1',
+        'port': 6379,
+        'db': 4, }
+}
+
+#
+# Q_CLUSTER = {
+#     'name': 'automatic',
+#     'workers': 4,
+#     'recycle': 500,
+#     'timeout': 60,
+#     'compress': True,
+#     'cpu_affinity': 1,
+#     'save_limit': 0,
+#     'queue_limit': 50,
+#     'label': 'Django Q',
+#     'django_redis': 'default',
+#     'sync': False  # 本地调试可以修改为True，使用同步模式
+# }
 
 
 # 设置根目录的静态资源文件夹 static

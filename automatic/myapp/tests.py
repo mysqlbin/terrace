@@ -21,10 +21,9 @@ def test_01(request):
     # binlog = query_engine.query_set('', 'show binary logs;').to_dict()
     innodb_buffer_pool_status = query_engine.get_status(innodb_buffer_pool_status_list).rows
     # get_table_schema_engine_data = query_engine.query_set(sql=get_table_schema_engine()).rows
-    innodb_buffer_pool_status = query_engine.get_status(innodb_buffer_pool_status_list).rows
-    for v in innodb_buffer_pool_status:
-        if v[0] == 'Innodb_buffer_pool_pages_dirty':
-            return HttpResponse(v[1])
+    innodb_buffer_pool_pages_dirty = query_engine.get_status('Innodb_buffer_pool_pages_dirty').to_dict()
+    # return HttpResponse(innodb_buffer_pool_pages_dirty)
+    return HttpResponse(innodb_buffer_pool_pages_dirty[0].get('VARIABLE_VALUE'))
 
 
 

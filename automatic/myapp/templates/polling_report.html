@@ -146,30 +146,26 @@
             instancelist();
         });
 
-
         function get_polling_report(obj){
-            console.log(obj)
             instance_id = $(obj).attr("instance_id")
             instance_name =  $(obj).attr("instance_name")
-            console.log(instance_id)
-            console.log(instance_name)
-            $.get({
-            url: "/polling/download_polling_report/",
-            type: "POST",
-            data: {
-              instance_id: instance_id,
-              instance_name: instance_name
-              },
-            success: function (data) {
-            var data = JSON.parse(data)
-            if (data.status == 0){
-                alert(data.msg);
-            }else{
-                alert(data.msg);
-            }
-            }
-            })
-
+            $.ajax({
+                url: "/polling/download_polling_report/",
+                type: "POST",
+                dataType: "json",
+                data: {
+                  instance_id: instance_id,
+                  instance_name: instance_name
+                 },
+                success: function (data) {
+                    if (data.status == 0){
+                        alert(data.msg);
+                        console.log(data.msg)
+                    }else{
+                        alert(data.msg);
+                    }
+                 }
+             })
          };
 
 

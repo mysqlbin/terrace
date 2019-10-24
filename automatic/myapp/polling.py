@@ -15,8 +15,7 @@ from myapp.engines import get_engine
 from myapp.include.polling_settings import innodb_buffer_pool_param,innodb_redo_log_param,innodb_persistent_param,innodb_other_param
 from myapp.include.polling_settings import server_binlog_param,server_thread_session_param,server_other_param
 from myapp.include.polling_settings import innodb_buffer_pool_status_list,innodb_threads_connection_status_list,\
-    innodb_row_lock_status_list,innodb_open_status_list,innodb_create_tmp_table_status_list,innodb_double_write_status_list
-
+    innodb_row_lock_status_list,innodb_open_status_list,innodb_create_tmp_table_status_list
 
 from myapp.include.polling_sql import get_table_schema_engine, get_table_size, get_top_big_tables, get_table_rows, get_auto_increment_ratio,\
     get_big_fragment_tables, get_table_big_column, get_table_long_varchar_column, get_too_much_columns_indexs, get_not_primary_index
@@ -26,19 +25,18 @@ logger = logging.getLogger('default')
 
 def download_polling_report(request):
 
-    instance_id = request.POST.get("instance_id")
     try:
-        instance = Db_instance.objects.get(id=int(instance_id))
+        instance = Db_instance.objects.get(id=int(request.POST.get("instance_id")))
     except Db_instance.DoesNotExist:
         res = {'status': 0, 'msg': '实例不存在'}
         return HttpResponse(json.dumps(res))
-    instance_name = instance.instance_name
-    query_engine = get_engine(instance=instance)
+
 
     timestamp = int(time.time())
+    instance_name = instance.instance_name
     path = os.path.join(settings.BASE_DIR, 'downloads/polling/')
-    filename = os.path.join(path, f"{instance_name}的巡检报告{timestamp}.sql")
-    res = {'status': 0, 'msg': '数据库巡检报告已经下载到项目的downloads文件夹下'}
+    filename = os.path.join(path, f"{instance_name}-巡检报告-{timestamp}.sql")
+    result = {'status': 0, 'msg': '数据库巡检报告已经下载到项目的downloads文件夹下'}
 
     get_table_size_custom = 0.0000001
     top_big_tables_custom = 20
@@ -48,21 +46,22 @@ def download_polling_report(request):
     character_maximum_length_custom = 500
     index_counts_custom = 3
     try:
-        buffer_pool_value            = query_engine.get_variables(innodb_buffer_pool_param).rows
-        redo_log_value               = query_engine.get_variables(innodb_redo_log_param).rows
-        persistent_value             = query_engine.get_variables(innodb_persistent_param).rows
-        innodb_other_value           = query_engine.get_variables(innodb_other_param).rows
-        server_binlog_value          = query_engine.get_variables(server_binlog_param).rows
-        server_thread_session_value  = query_engine.get_variables(server_thread_session_param).rows
-        server_other_value           = query_engine.get_variables(server_other_param).rows
+        query_engine = get_engine(instance=instance)
+        buffer_pool_value             = query_engine.get_variables(innodb_buffer_pool_param).rows
+        redo_log_value                = query_engine.get_variables(innodb_redo_log_param).rows
+        persistent_value              = query_engine.get_variables(innodb_persistent_param).rows
+        innodb_other_value            = query_engine.get_variables(innodb_other_param).rows
+        server_binlog_value           = query_engine.get_variables(server_binlog_param).rows
+        server_thread_session_value   = query_engine.get_variables(server_thread_session_param).rows
+        server_other_value            = query_engine.get_variables(server_other_param).rows
 
-        get_table_schema_engine_data = query_engine.query_set(sql=get_table_schema_engine()).rows
-        get_table_size_data          = query_engine.query_set(sql=get_table_size(get_table_size_custom)).rows
-        get_top_big_tables_data      = query_engine.query_set(sql=get_top_big_tables(top_big_tables_custom)).rows
-        get_table_rows_data          = query_engine.query_set(sql=get_table_rows(table_row_custom))
+        get_table_schema_engine_data  = query_engine.query_set(sql=get_table_schema_engine()).rows
+        get_table_size_data           = query_engine.query_set(sql=get_table_size(get_table_size_custom)).rows
+        get_top_big_tables_data       = query_engine.query_set(sql=get_top_big_tables(top_big_tables_custom)).rows
+        get_table_rows_data           = query_engine.query_set(sql=get_table_rows(table_row_custom))
         get_auto_increment_ratio_data = query_engine.query_set(sql=get_auto_increment_ratio(auto_increment_ratio_custom))
-        get_big_fragment_tables_data = query_engine.query_set(sql=get_big_fragment_tables(fragment_size_custom))
-        get_table_big_column_data    = query_engine.query_set(sql=get_table_big_column())
+        get_big_fragment_tables_data  = query_engine.query_set(sql=get_big_fragment_tables(fragment_size_custom))
+        get_table_big_column_data     = query_engine.query_set(sql=get_table_big_column())
 
         get_long_varchar_column_data = query_engine.query_set(sql=get_table_long_varchar_column(character_maximum_length_custom))
         get_too_much_columns_indexs_data  = query_engine.query_set(sql=get_too_much_columns_indexs(index_counts_custom))
@@ -73,86 +72,18 @@ def download_polling_report(request):
         innodb_row_lock_status       = query_engine.get_status(innodb_row_lock_status_list).rows
         innodb_open_status           = query_engine.get_status(innodb_open_status_list).rows
         innodb_create_tmp_table_status = query_engine.get_status(innodb_create_tmp_table_status_list).rows
-        innodb_double_write_status   = query_engine.get_status(innodb_double_write_status_list).rows
+
+        innodb_bp_pages_dirty        = query_engine.get_status('Innodb_buffer_pool_pages_dirty')
+        innodb_bp_pages_total        = query_engine.get_status('Innodb_buffer_pool_pages_total')
+        innodb_bp_read_requests      = query_engine.get_status('Innodb_buffer_pool_read_requests')
+        innodb_bp_read_ahead         = query_engine.get_status('Innodb_buffer_pool_read_ahead')
+        innodb_bp_reads               = query_engine.get_status('Innodb_buffer_pool_reads')
+
+        innodb_dblwr_pages_written   = query_engine.get_status('Innodb_dblwr_pages_written')
+        innodb_dblwr_writes          = query_engine.get_status('Innodb_dblwr_writes')
+
 
         with open(filename, 'a+') as f:
-            f.write('4. 状态巡检项:' + '\n')
-            f.write('4.1 InnoDB层缓冲池状态:' + '\n')
-
-            for v in innodb_buffer_pool_status:
-
-                f.write('   {} : {}'.format(v[0], v[1]) + '\n')
-
-                if v[0] == 'Innodb_buffer_pool_pages_dirty':
-                    innodb_buffer_pool_pages_dirty = v[1]
-                else:
-                    innodb_buffer_pool_pages_dirty = None
-
-                if v[0] == 'Innodb_buffer_pool_pages_total':
-                    innodb_buffer_pool_pages_total = v[1]
-                else:
-                    innodb_buffer_pool_pages_total = None
-
-                if innodb_buffer_pool_pages_dirty is not None and innodb_buffer_pool_pages_total is not None:
-                    dirty_page = round(int(innodb_buffer_pool_pages_dirty) / int(innodb_buffer_pool_pages_total), 4)
-                    f.write('   脏页在缓冲池数据页中的占比为: {}%'.format(dirty_page * 100) + '\n')
-
-                if v[0] == 'Innodb_buffer_pool_read_requests':
-                    innodb_buffer_pool_read_requests = v[1]
-                else:
-                    innodb_buffer_pool_read_requests = None
-
-                if v[0] == 'Innodb_buffer_pool_read_ahead':
-                    innodb_buffer_pool_read_ahead = v[1]
-                else:
-                    innodb_buffer_pool_read_ahead = None
-
-                if v[0] == 'innodb_buffer_pool_reads':
-                    innodb_buffer_pool_reads = v[1]
-                else:
-                    innodb_buffer_pool_reads = None
-
-                if innodb_buffer_pool_read_requests is not None and innodb_buffer_pool_read_ahead is not None and innodb_buffer_pool_reads is not None:
-                    ibp_hit = round(int(innodb_buffer_pool_read_requests) / (int(innodb_buffer_pool_read_requests) + int(innodb_buffer_pool_read_ahead) + int(innodb_buffer_pool_reads)),4)
-                    f.write('InnoDB buffer pool 命中率: {}%'.format(ibp_hit * 100) + '\n')
-
-
-            """
-            ibp_pages_dirty = get_status_value(insname, 'innodb_buffer_pool_pages_dirty', 0)
-            ibp_pages_total = get_status_value(insname, 'innodb_buffer_pool_pages_total', 0)
-            dirty_page = round(int(ibp_pages_dirty) / int(ibp_pages_total), 4)
-            f.write('脏页在缓冲池数据页中的占比为: {}%'.format(dirty_page * 100) + '\n')
-
-            ibp_read_requests = get_status_value(insname, 'innodb_buffer_pool_read_requests', 0)
-            ibp_read_ahead = get_status_value(insname, 'innodb_buffer_pool_read_ahead', 0)
-            ibp_read_reads = get_status_value(insname, 'innodb_buffer_pool_reads', 0)
-           
-
-            ibp_wait_free = get_status_value(insname, 'Innodb_buffer_pool_wait_free', 0)
-            if int(ibp_wait_free) > 0:
-                f.write('注意：InnoDB Buffer Pool可能不够用了，需要详细检查并处理，目前等待申请空闲列表的次数为: {} 次'.format(ibp_wait_free) + '\n')
-            """
-
-
-            f.write('4.2 并发线程连接数:' + '\n')
-            for v in innodb_threads_connection_status:
-                f.write('   {} : {}'.format(v[0], v[1]) + '\n')
-
-            f.write('4.3 InnoDB行锁等待:' + '\n')
-            for v in innodb_row_lock_status:
-                f.write('   {} : {}'.format(v[0], v[1]) + '\n')
-
-            f.write('4.4 打开表的次数:' + '\n')
-            for v in innodb_open_status:
-                f.write('   {} : {}'.format(v[0], v[1]) + '\n')
-
-            f.write('4.5 创建内存临时表和磁盘临时表的次数:' + '\n')
-            for v in innodb_create_tmp_table_status:
-                f.write('   {} : {}'.format(v[0], v[1]) + '\n')
-
-            f.write('4.6 InnoDB关键特性double write的使用情况:' + '\n')
-            for v in innodb_double_write_status:
-                f.write('   {} : {}'.format(v[0], v[1]) + '\n')
 
             f.write('1.数据表巡检项:' + '\n')
             f.write('1.1 统计数据库存储引擎的数量:' + '\n')
@@ -229,7 +160,7 @@ def download_polling_report(request):
             f.write('2.2 获取没有主键索引的表:' + '\n')
             if get_not_primary_index_data.effect_row > 0:
                 for val in get_not_primary_index_data.rows:
-                    row =    'table_schema:{:15s}  table_name:{:40s} '.format(val[0], val[1])
+                    row = '   table_schema:{:15s}  table_name:{:40s} '.format(val[0], val[1])
                     f.write(row + '\n')
             else:
                 f.write('   ###没有主键索引的表###' + '\n')
@@ -268,18 +199,62 @@ def download_polling_report(request):
             for v in server_other_value:
                 f.write('{} {} : {}'.format('   ', v[0], v[1]) + '\n')
 
+
             f.write('4 状态巡检项:' + '\n')
-            f.write('4.1 InnoDB层缓冲池状态值:' + '\n')
+            f.write('4.1 InnoDB层缓冲池状态:' + '\n')
 
+            for v in innodb_buffer_pool_status:
+                f.write('   {} : {}'.format(v[0], v[1]) + '\n')
 
+            if innodb_bp_pages_dirty.effect_row == 1 and innodb_bp_pages_total.effect_row == 1:
+                dirty_page = round(int(innodb_bp_pages_dirty.to_dict()[0].get('VARIABLE_VALUE')) / int(
+                    innodb_bp_pages_total.to_dict()[0].get('VARIABLE_VALUE')), 4)
+                f.write('   脏页在缓冲池数据页中的占比为: {}%'.format(dirty_page * 100) + '\n')
+
+            if innodb_bp_read_requests.effect_row == 1 and innodb_bp_read_ahead.effect_row == 1 and innodb_bp_reads.effect_row == 1:
+                ibp_hit = round(int(innodb_bp_read_requests.to_dict()[0].get('VARIABLE_VALUE'))
+                                / (int(innodb_bp_read_requests.to_dict()[0].get('VARIABLE_VALUE'))
+                                   + int(innodb_bp_read_ahead.to_dict()[0].get('VARIABLE_VALUE'))
+                                   + int(innodb_bp_reads.to_dict()[0].get('VARIABLE_VALUE')
+                                         )), 4)
+
+                f.write('   InnoDB buffer pool 缓冲池命中率: {}%'.format(ibp_hit * 100) + '\n')
+
+            f.write('4.2 并发线程连接数:' + '\n')
+            for v in innodb_threads_connection_status:
+                f.write('   {} : {}'.format(v[0], v[1]) + '\n')
+
+            f.write('4.3 InnoDB行锁等待:' + '\n')
+            for v in innodb_row_lock_status:
+                f.write('   {} : {}'.format(v[0], v[1]) + '\n')
+
+            f.write('4.4 打开表的次数:' + '\n')
+            for v in innodb_open_status:
+                f.write('   {} : {}'.format(v[0], v[1]) + '\n')
+
+            f.write('4.5 创建内存临时表和磁盘临时表的次数:' + '\n')
+            for v in innodb_create_tmp_table_status:
+                f.write('   {} : {}'.format(v[0], v[1]) + '\n')
+
+            if innodb_dblwr_pages_written.effect_row == 1 and innodb_dblwr_writes.effect_row == 1:
+                f.write('4.6 InnoDB关键特性double write的使用情况:' + '\n')
+                innodb_dblwr_pages_written_rows = innodb_dblwr_pages_written.rows
+                innodb_dblwr_writes_rows = innodb_dblwr_writes.rows
+                f.write('   {} : {}'.format(innodb_dblwr_pages_written_rows[0][0],
+                                            innodb_dblwr_pages_written_rows[0][1]) + '\n')
+                f.write('   {} : {}'.format(innodb_dblwr_writes_rows[0][0], innodb_dblwr_writes_rows[0][1]) + '\n')
+
+                merge_pages = int(innodb_dblwr_pages_written_rows[0][1]) / int(innodb_dblwr_writes_rows[0][1])
+                f.write('   每次写操作合并page的个数: {}'.format((round(merge_pages, 0))) + '\n')
 
     except Exception as err:
         logger.error(f'错误信息：{traceback.format_exc()}')
-        res['status'] = 1
-        res['msg'] = str(err)
+        result['status'] = 1
+        result['msg'] = str(err)
 
-    return HttpResponse(json.dumps(res), content_type='application/json')
 
+    return HttpResponse(json.dumps(result, cls=RewriteJsonEncoder),
+                        content_type='application/json')
 
 def polling_list(request):
 
