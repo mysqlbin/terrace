@@ -49,7 +49,7 @@ def test_05(request):
             query_result = query_task.result
             query_result.query_time = query_task.time_taken()
         else:
-            query_result = ResultSet(full_sql=sql_content)
+            # query_result = ResultSet(full_sql=sql_content)
             query_result.error = query_task.result
     # 等待超时，async_task主动关闭连接
     else:
