@@ -38,6 +38,9 @@ def test_04(request):
 
 
 def test_05(request):
+
+    result = {'status': 0, 'msg': 'ok', 'data': {}}
+
     instance = Db_instance.objects.get(id=1)
     query_engine = get_engine(instance=instance)
     sql_content = 'select * from test_db.t2 group by a order by a limit 2;'
@@ -57,8 +60,14 @@ def test_05(request):
         query_result = ResultsSet(full_sql=sql_content)
         query_result.error = '查询时间超过 0.1 秒，已被主动终止，请优化语句或者联系管理员。'
 
-    return HttpResponse(query_result)
+    # 查询异常
+    if query_result.error:
+        result['status'] = 1
+        result['msg'] = query_result.error
+    else:
+        result['data'] = query_result.__dict__
 
+    return HttpResponse(result)
 
 
 def test_01(request):
