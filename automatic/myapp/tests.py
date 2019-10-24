@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from myapp.models import Db_instance
 from myapp.include.meta import get_user_password
 from myapp.engines import get_engine
+from myapp.engines.models import ResultsSet
 from myapp.include.polling_settings import innodb_buffer_pool_param
 from django.conf import settings
 from myapp.include.polling_sql import get_table_schema_engine
@@ -49,14 +50,14 @@ def test_05(request):
             query_result = query_task.result
             query_result.query_time = query_task.time_taken()
         else:
-            # query_result = ResultSet(full_sql=sql_content)
+            query_result = ResultsSet(full_sql=sql_content)
             query_result.error = query_task.result
     # 等待超时，async_task主动关闭连接
     else:
-        # query_result = ResultSet(full_sql=sql_content)
+        query_result = ResultsSet(full_sql=sql_content)
         query_result.error = '查询时间超过 0.1 秒，已被主动终止，请优化语句或者联系管理员。'
 
-    return HttpResponse(query_result.error)
+    return HttpResponse(query_result)
 
 
 
