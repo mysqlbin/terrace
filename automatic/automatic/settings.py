@@ -153,6 +153,7 @@ CELERY_TASK_SERIALIZER = 'json'
 # 设置存储 Celery 任务结果的Redis数据库
 CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/3'
 
+MAX_EXECUTION_TIME = 1
 
 Q_CLUSTER = {
     'name': 'automatic',
