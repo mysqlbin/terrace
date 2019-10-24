@@ -14,9 +14,20 @@ from django_q.tasks import async_task, result, fetch
 from myapp.common.utils.rewrite_json_encoder import RewriteJsonEncoder
 
 
+import json
+
 import time
 # Create your tests here.
 
+
+def test_06(request):
+    result = {'status': 0, 'msg': 'ok', 'data': {}}
+    sql_content = 'select * from test_db.t2 where id=1;'
+    query_result = ResultsSet(full_sql=sql_content)
+    query_result.error = 1111
+    result['data'] = query_result.__dict__
+    return HttpResponse(json.dumps(result, cls=RewriteJsonEncoder),
+                        content_type='application/json')
 
 def test_03(request):
     instance = Db_instance.objects.get(id=1)

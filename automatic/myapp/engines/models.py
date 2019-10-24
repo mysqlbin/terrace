@@ -6,6 +6,7 @@ class ResultsSet:
     def __init__(self, full_sql='', rows=None, status=None,
                  effect_row=0, column_list=None, **kwargs):
         self.full_sql = full_sql
+        self.query_time = ''
         self.error = None
         self.rows = rows or []
         self.column_list = column_list if column_list else []
