@@ -12,6 +12,7 @@ from myapp.include import sqlfilter
 from myapp.form import AddForm
 from myapp.models import Db_instance
 from myapp.engines import get_engine
+from myapp.engines.models import ResultsSet
 
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required,permission_required
@@ -22,7 +23,7 @@ from automatic import settings
 from django.core import serializers
 
 from myapp.common.utils.rewrite_json_encoder import RewriteJsonEncoder
-from django_q.tasks import async_task, result
+from django_q.tasks import async_task, result, fetch
 
 
 import datetime,time
@@ -42,7 +43,7 @@ def sql_query(request):
     db_name = request.POST.get('db_name')
     limit_num = int(request.POST.get('limit_num'))
 
-    res = {'status': 0, 'msg': 'ok', 'rows': [], 'column_list': []}
+    res = {'status': 0, 'msg': 'ok', 'rows': [], 'column_list': [], 'data': {}}
 
     # instance_name = '1'
     # sql_content = 'select nPlayerID from niuniu_db.table_award_2019;'
@@ -89,20 +90,33 @@ def sql_query(request):
 
         #　执行查询语句，获取返回结果
         # 非异步
-        res_set = query_engine.query_set(sql=sql_content, limit_num=limit_num)
+        # res_set = query_engine.query_set(sql=sql_content, limit_num=limit_num)
+
         # 异步
-        # task_id = async_task(query_engine.query_set(sql=sql_content, limit_num=limit_num))
-        # task_result = result(task_id, wait=1 * 100, cached=True)
+        task_id = async_task(query_engine.query_set, sql=sql_content, limit_num=limit_num)
+        query_task = result(task_id, wait=1 * 100, cached=True)
 
+        if query_task:
+            if query_task.success:
+                query_result = query_task.result
+                query_result.query_time = query_task.time_taken()
+            else:
+                query_result = ResultsSet(full_sql=sql_content)
+                query_result.error = query_task.result
+        # 等待超时，async_task主动关闭连接
+        else:
+            query_result = ResultsSet(full_sql=sql_content)
+            query_result.error = '查询时间超过 0.1 秒，已被主动终止，请优化语句或者联系管理员。'
 
-        if res_set.error:
+        if query_result.error:
             res['status'] = 1
             res['msg'] = res_set.error
             res['rows'] = '{6}'
             return HttpResponse(json.dumps(result), content_type='application/json')
-
-        res['rows'] = res_set.to_dict()    # 访问类的成员函数
-        res['column_list'] = res_set.column_list
+        else:
+            result['data'] = query_result.__dict__
+            res['rows'] = res_set.to_dict()    # 访问类的成员函数
+            res['column_list'] = res_set.column_list
 
     except Exception as e:
 

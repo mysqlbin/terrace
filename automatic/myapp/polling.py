@@ -45,6 +45,7 @@ def download_polling_report(request):
     fragment_size_custom = 0.000001
     character_maximum_length_custom = 500
     index_counts_custom = 3
+
     try:
         query_engine = get_engine(instance=instance)
         buffer_pool_value             = query_engine.get_variables(innodb_buffer_pool_param).rows
