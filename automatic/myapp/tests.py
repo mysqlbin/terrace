@@ -11,6 +11,7 @@ from myapp.include.polling_sql import get_table_schema_engine
 from myapp.include.polling_settings import innodb_buffer_pool_status_list
 
 from django_q.tasks import async_task, result, fetch
+from myapp.common.utils.rewrite_json_encoder import RewriteJsonEncoder
 
 
 import time
@@ -46,7 +47,7 @@ def test_05(request):
     sql_content = 'select * from test_db.t2 group by a order by a limit 2;'
     # sql_content = 'select * from test_db.t2 where id=1;'
     task_id = async_task(query_engine.query_set(sql=sql_content))
-    query_task = fetch(task_id, wait=1 * 100, cached=True)
+    query_task = fetch(task_id, wait=1 * 100000, cached=True)
 
     if query_task:
         if query_task.success:
@@ -67,7 +68,14 @@ def test_05(request):
     else:
         result['data'] = query_result.__dict__
 
-    return HttpResponse(result)
+    try:
+        return HttpResponse(json.dumps(result, cls=RewriteJsonEncoder),
+                            content_type='application/json')
+    # 虽然能正常返回，但是依然会乱码
+    except UnicodeDecodeError:
+        return HttpResponse(json.dumps(result, default=str,encoding='latin1'),
+                            content_type='application/json')
+
 
 
 def test_01(request):
