@@ -53,7 +53,7 @@ def test_05(request):
             query_result.error = query_task.result
     # 等待超时，async_task主动关闭连接
     else:
-        query_result = ResultSet(full_sql=sql_content)
+        # query_result = ResultSet(full_sql=sql_content)
         query_result.error = '查询时间超过 0.1 秒，已被主动终止，请优化语句或者联系管理员。'
 
     return HttpResponse(query_result)
