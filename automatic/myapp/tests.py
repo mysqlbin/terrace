@@ -9,21 +9,40 @@ from myapp.include.polling_sql import get_table_schema_engine
 
 from myapp.include.polling_settings import innodb_buffer_pool_status_list
 
+from django_q.tasks import async_task, result, fetch
+
+
 import time
 # Create your tests here.
 
-def test_01(request):
 
-
+def test_03(request):
     instance = Db_instance.objects.get(id=1)
     query_engine = get_engine(instance=instance)
-    # return HttpResponse(query_engine)
-    # binlog = query_engine.query_set('', 'show binary logs;').to_dict()
-    innodb_buffer_pool_status = query_engine.get_status(innodb_buffer_pool_status_list).rows
-    # get_table_schema_engine_data = query_engine.query_set(sql=get_table_schema_engine()).rows
-    innodb_buffer_pool_pages_dirty = query_engine.get_status('Innodb_buffer_pool_pages_dirty').to_dict()
-    # return HttpResponse(innodb_buffer_pool_pages_dirty)
-    return HttpResponse(innodb_buffer_pool_pages_dirty[0].get('VARIABLE_VALUE'))
+    sql_content = 'select * from test_db.t2 order by a;'
+    task_id = async_task(query_engine.query_set(sql=sql_content))
+    task_result = result(task_id, wait=1 * 1000000, cached=True)
+    return HttpResponse(task_result)
+
+def test_04(request):
+    instance = Db_instance.objects.get(id=1)
+    query_engine = get_engine(instance=instance)
+    sql_content = 'select * from test_db.t2 order by a;'
+    task_id = async_task(query_engine.query_set(sql=sql_content))
+    task_result = fetch(task_id, wait=1 * 1000000, cached=True)
+    return HttpResponse(task_result)
+
+def test_01(request):
+    return HttpResponse(1)
+    # instance = Db_instance.objects.get(id=1)
+    # query_engine = get_engine(instance=instance)
+    # # return HttpResponse(query_engine)
+    # # binlog = query_engine.query_set('', 'show binary logs;').to_dict()
+    # innodb_buffer_pool_status = query_engine.get_status(innodb_buffer_pool_status_list).rows
+    # # get_table_schema_engine_data = query_engine.query_set(sql=get_table_schema_engine()).rows
+    # innodb_buffer_pool_pages_dirty = query_engine.get_status('Innodb_buffer_pool_pages_dirty').to_dict()
+    # # return HttpResponse(innodb_buffer_pool_pages_dirty)
+    # return HttpResponse(innodb_buffer_pool_pages_dirty[0].get('VARIABLE_VALUE'))
 
 
 

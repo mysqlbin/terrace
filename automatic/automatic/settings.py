@@ -153,6 +153,7 @@ CELERY_TASK_SERIALIZER = 'json'
 # 设置存储 Celery 任务结果的Redis数据库
 CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/3'
 
+
 Q_CLUSTER = {
     'name': 'automatic',
     'workers': 8,
@@ -168,6 +169,7 @@ Q_CLUSTER = {
         'port': 6379,
         'db': 4, }
 }
+
 
 #
 # Q_CLUSTER = {

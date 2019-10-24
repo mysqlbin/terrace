@@ -6,17 +6,14 @@ from myapp.plugins.binglog2sql import Binlog2Sql
 from celery import shared_task
 
 @shared_task()
-# 'function' object has no attribute 'delay'
 def binlog2sql_file(args):
     """
     用于异步保存binlog解析的文件
     :param args: 参数
     :return:
     """
-
     instance_ip   = args.get('instance_ip')
     instance_name = args.get('instance_name')
-
     timestamp = int(time.time())
 
     binlog2sql = Binlog2Sql()
