@@ -39,11 +39,24 @@ def test_04(request):
 def test_05(request):
     instance = Db_instance.objects.get(id=1)
     query_engine = get_engine(instance=instance)
-    sql_content = 'select * from test_db.t2 order by a;'
+    sql_content = 'select * from test_db.t2 group by a order by a limit 2;'
     # sql_content = 'select * from test_db.t2 where id=1;'
-    task_id = async_task(query_engine.query_set(sql=sql_content).rows)
-    task_result = fetch(task_id, wait=1 * 100, cached=True)
-    return HttpResponse(task_result)
+    task_id = async_task(query_engine.query_set(sql=sql_content))
+    query_task = fetch(task_id, wait=1 * 100, cached=True)
+
+    if query_task:
+        if query_task.success:
+            query_result = query_task.result
+            query_result.query_time = query_task.time_taken()
+        else:
+            query_result = ResultSet(full_sql=sql_content)
+            query_result.error = query_task.result
+    # 等待超时，async_task主动关闭连接
+    else:
+        query_result = ResultSet(full_sql=sql_content)
+        query_result.error = '查询时间超过 0.1 秒，已被主动终止，请优化语句或者联系管理员。'
+
+    return HttpResponse(query_result)
 
 
 
