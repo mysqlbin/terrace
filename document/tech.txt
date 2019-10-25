@@ -190,7 +190,7 @@ sys.path.append('/usr/lib64/python3.4/site-packages')
 
 Fri May 18 05:49:42 2018 - thunder lock: disabled (you can enable it with --thunder-lock)
 
-Nginx + uWSGI + Python + Django部署实例:
+Nginx + uWSGI + Python + Django部署实例:  # 看书更好
 http://www.mykurol.com/detail/48/#
 http://www.runoob.com/django/django-nginx-uwsgi.html
 https://docs.djangoproject.com/en/2.0/howto/deployment/wsgi/

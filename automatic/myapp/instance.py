@@ -117,14 +117,14 @@ def get_instance_users(request, id, instance_name):
     sql_get_user = '''select concat("\'", user, "\'", '@', "\'", host,"\'") as query from mysql.user;'''
 
     query_engine = get_engine(instance=instance)
-    users_res = query_engine.query_set(sql_get_user).rows
+    users_res = query_engine.query_set(sql=sql_get_user).rows
 
     # 获取用户权限信息
     res_user_priv = []
     for db_user in users_res:
         user_info = {}
         sql_get_permission        = 'show grants for {};'.format(db_user[0])
-        user_priv                 =  query_engine.query_set('', sql_get_permission).rows
+        user_priv                 =  query_engine.query_set(sql=sql_get_permission).rows
         user_info['user']        = db_user[0]
         user_info['privileges'] = user_priv
         res_user_priv.append(user_info)
