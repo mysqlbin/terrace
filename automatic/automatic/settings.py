@@ -147,11 +147,11 @@ STATIC_URL = '/static/'
 #STATIC_ROOT = '/static/'
 
 # 设置存储 Celery 任务队列的Redis数据库
-CELERY_BROKER_URL = 'redis://127.0.0.1:6379/2'
+CELERY_BROKER_URL = 'redis://192.168.0.54:6379/6'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 # 设置存储 Celery 任务结果的Redis数据库
-CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/3'
+CELERY_RESULT_BACKEND = 'redis://192.168.0.54:6379/7'
 
 MAX_EXECUTION_TIME = 1
 
@@ -166,7 +166,7 @@ Q_CLUSTER = {
     'queue_limit': 500,
     'label': 'Django Q',
     'redis': {
-        'host': '127.0.0.1',
+        'host': '192.168.0.54',
         'port': 6379,
         'db': 4, }
 }
