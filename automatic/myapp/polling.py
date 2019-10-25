@@ -31,20 +31,19 @@ def download_polling_report(request):
         res = {'status': 0, 'msg': '实例不存在'}
         return HttpResponse(json.dumps(res))
 
-
     timestamp = int(time.time())
     instance_name = instance.instance_name
     path = os.path.join(settings.BASE_DIR, 'downloads/polling/')
-    filename = os.path.join(path, f"{instance_name}-巡检报告-{timestamp}.sql")
+    filename = os.path.join(path, f"{instance_name}-{timestamp}-巡检报告.sql")
     result = {'status': 0, 'msg': '数据库巡检报告已经下载到项目的downloads文件夹下'}
 
-    get_table_size_custom = 0.0000001
-    top_big_tables_custom = 20
-    table_row_custom = 20000000
-    auto_increment_ratio_custom = 0.1001
-    fragment_size_custom = 0.000001
-    character_maximum_length_custom = 500
-    index_counts_custom = 3
+    get_table_size_custom = request.POST.get('table_size')
+    top_big_tables_custom = request.POST.get('top_big_tables')
+    table_row_custom = request.POST.get('table_row_custom')
+    auto_increment_ratio_custom = (int(request.POST.get('auto_increment_ratio_custom')) / 100)
+    fragment_size_custom = request.POST.get('fragment_size_custom')
+    character_maximum_length_custom = request.POST.get('character_maximum_length_custom')
+    index_counts_custom = request.POST.get('index_counts_custom')
 
     try:
         query_engine = get_engine(instance=instance)
@@ -112,7 +111,6 @@ def download_polling_report(request):
             else:
                 f.write('   ###没有单表超过行数 {} 表###'.format(table_row_custom) + '\n')
 
-
             auto_increment_format = '{}{}'.format(auto_increment_ratio_custom * 100, '%')
             f.write('1.5 自增ID占比大于 {} 的表 :'.format(auto_increment_format) + '\n')
             if get_auto_increment_ratio_data.effect_row > 0:
@@ -122,14 +120,13 @@ def download_polling_report(request):
             else:
                 f.write('   ###没有自增ID占比大于 {} 的表###'.format(auto_increment_format) + '\n')
 
-
             f.write('1.6 碎片大于多少 {}G 的表 :'.format(fragment_size_custom) + '\n')
             if get_big_fragment_tables_data.effect_row > 0:
                 for val in get_big_fragment_tables_data.rows:
                     row = '{} table_schema:{:15s}  table_name:{:40s} fragment:{:10s}'. format('    ', val[0], val[1], val[2])
                     f.write(row + '\n')
             else:
-                f.write('{} ###没有碎片大于多少 {}G 的表###'.format('   ', fragment_size_custom) + '\n')
+                f.write('   ###没有碎片大于多少 {}G 的表###'.format(fragment_size_custom) + '\n')
 
             f.write('1.7 统计大字段表:' + '\n')
             if get_table_big_column_data.effect_row > 0:
@@ -156,7 +153,7 @@ def download_polling_report(request):
                     row = '   table_schema: {:15s}  table_name: {:40s} ecolumn_name: {:20s} index_nam: {:2s} '.format(val[0], val[1], val[2], val[3])
                     f.write(row + '\n')
             else:
-                f.write('   ###没有索引数目大于5的表###' .format(index_counts_custom) + '\n')
+                f.write('   ###没有索引数目大于{}个的表###' .format(index_counts_custom) + '\n')
 
             f.write('2.2 获取没有主键索引的表:' + '\n')
             if get_not_primary_index_data.effect_row > 0:
