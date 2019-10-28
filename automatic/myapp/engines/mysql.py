@@ -17,9 +17,9 @@ class MySQLEngine(EngineBase):   # 类继承
             return self.conn
         if db_name:
             self.conn = pymysql.connect(host=self.host, user=self.user, password=self.password, port=int(self.port),
-                                        database=db_name,charset=self.instance.charset or 'utf8mb4')
+                                        database=db_name, charset=self.instance.charset or 'utf8mb4')
         else:
-            self.conn = pymysql.connect(host=self.host, user=self.user, password=self.password, port = int(self.port),
+            self.conn = pymysql.connect(host=self.host, user=self.user, password=self.password, port=int(self.port),
                                         charset=self.instance.charset or 'utf8mb4')
         return self.conn
 

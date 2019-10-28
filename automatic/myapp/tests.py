@@ -23,21 +23,24 @@ import time
 def test_06(request):
     result = {'status': 0, 'msg': 'ok', 'data': {}}
     sql_content = 'select id,k,c from sbtest.sbtest1 where id=3;'
+
     query_result = ResultsSet(full_sql=sql_content)
     # query_result.error = 1111
     result['data'] = query_result.__dict__
     return HttpResponse(json.dumps(result, cls=RewriteJsonEncoder),
                         content_type='application/json')
 
-# def test_03(request):
-#     instance = Db_instance.objects.get(id=1)
-#     query_engine = get_engine(instance=instance)
-#     sql_content = 'select * from test_db.t2 where id=1;'
-#     # result = query_engine.query_set(sql=sql_content).rows
-#     # return HttpResponse(result)
-#     task_id = async_task(query_engine.query_set(sql=sql_content).rows)
-#     task_result = result(task_id, cached=True)
-#     return HttpResponse(task_result)
+def test_03(request):
+    instance = Db_instance.objects.get(id=1)
+    query_engine = get_engine(instance=instance)
+    sql_content = 'select * from t2 where id=1;'
+    # result = query_engine.query_set(sql=sql_content).rows
+    # return HttpResponse(result)
+    db_name = 'test_db'
+    result = query_engine.query_set(sql=sql_content, db_name=db_name).rows
+
+    return HttpResponse(result)
+
 
 # def test_04(request):
 #     instance = Db_instance.objects.get(id=1)
@@ -57,17 +60,24 @@ def test_05(request):
     query_engine = get_engine(instance=instance)
     # return HttpResponse(query_engine)
     # sql_content = 'select * from test_db.t2 group by a order by a limit 2;'
-    sql_content = 'select * from sbtest.sbtest1 where id=5'
-    db_name = 'sbtest'
+    sql_content = 'select * from test_db.t1 where id=1;'
+    task_id = async_task(query_engine.query_set, sql=sql_content)
+    # return HttpResponse(task_id)
+    query_task = fetch(task_id, wait=3 * 1000, cached=True)
+    return HttpResponse(json.dumps(query_task, cls=RewriteJsonEncoder),
+                        content_type='application/json')
+
+    # sql_content = 'select * from sbtest.sbtest1 where id=5'
+    # db_name = 'sbtest'
 
     # query_result = query_engine.query_set(sql=sql_content).rows
 
     # return HttpResponse(query_result)
 
-    task_id = async_task(query_engine.query_set, sql=sql_content)
+    # task_id = async_task(query_engine.query_set, sql=sql_content)
     # return HttpResponse(task_id)
 
-    query_task = fetch(task_id, wait=10*1000)
+    # query_task = fetch(task_id, wait=10*1000)
 
     #
     # if not query_task.success:

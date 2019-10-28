@@ -46,7 +46,7 @@ def get_lists(request):
     if db_type:
         instance_obj = instance_obj.filter(db_type=db_type)
     count = instance_obj.count()
-    instance_res = instance_obj[offset:limit].values('id', 'instance_name', 'type', 'db_type', 'host', 'port', )
+    instance_res = instance_obj[offset:limit].values('id', 'instance_name', 'type', 'db_type', 'host', 'port', 'role')
 
     # QuerySet 序列化
     rows = [row for row in instance_res]
@@ -87,7 +87,7 @@ def get_instances_resource(request):
                     if row[0] not in ('information_schema', 'performance_schema', 'mysql', 'test', 'sys')]
     elif resource_type == 'table':
 
-        dbtable = query_engine.query_set(sql='show databases').rows
+        dbtable = query_engine.query_set(sql='show tables;').rows
         resource = [row[0] for row in dbtable if row[0] not in ['test']]
 
     result['data'] = resource

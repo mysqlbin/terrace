@@ -85,7 +85,7 @@ def sql_query_asynchronous(request):
         #　执行查询语句，获取返回结果
         # 异步
         max_execution_time = settings.MAX_EXECUTION_TIME
-        task_id = async_task(query_engine.query_set, sql=sql_content, limit_num=limit_num)
+        task_id = async_task(query_engine.query_set, sql=sql_content, db_name=db_name, limit_num=limit_num)
         query_task = fetch(task_id, wait=max_execution_time * 1000)
 
         if query_task:
@@ -104,6 +104,7 @@ def sql_query_asynchronous(request):
         if query_result.error:
             res['status'] = 1
             res['msg'] = query_result.error
+            res['abc'] = 'test'
 
         else:
             res['data'] = query_result.__dict__
