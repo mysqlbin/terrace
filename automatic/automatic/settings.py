@@ -98,7 +98,7 @@ DATABASES = {
         'NAME': 'terrace_db',
         'USER': 'root',
         'PASSWORD': '123456abc',
-        'HOST': '192.168.1.27',
+        'HOST': '192.168.0.54',
         'PORT': '3306',
     }
 }
@@ -147,11 +147,11 @@ STATIC_URL = '/static/'
 #STATIC_ROOT = '/static/'
 
 # 设置存储 Celery 任务队列的Redis数据库
-CELERY_BROKER_URL = 'redis://192.168.1.100:6379/6'
+CELERY_BROKER_URL = 'redis://192.168.0.54:6379/6'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 # 设置存储 Celery 任务结果的Redis数据库
-CELERY_RESULT_BACKEND = 'redis://192.168.1.100:6379/7'
+CELERY_RESULT_BACKEND = 'redis://192.168.0.54:6379/7'
 
 MAX_EXECUTION_TIME = 5
 
@@ -168,7 +168,7 @@ Q_CLUSTER = {
     'queue_limit': 500,
     'label': 'Django Q',
     'redis': {
-        'host': '192.168.1.100',
+        'host': '192.168.0.54',
         'port': 6379,
         'db': 4, }
 }

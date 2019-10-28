@@ -196,7 +196,7 @@
                         field: '',
                         formatter: function (value, row, index) {
                             var btn_polling_report = '';
-                            if (row.db_type === 'mysql') {
+                            if (row.db_type === 'MySQL') {
 <!--                                var btn_polling_report = "<button type=\"button\" data-toggle=\"modal\" data-target=\"#myModal\" class=\"btn btn-info btn-xs\" instance_id=\"" + row.id + "\" + instance_name=\"" + row.instance_name + "\" onclick=\"get_polling_report(this)" + "\">获取数据库巡检报告</button>\n";-->
                                 var btn_polling_report = "<button type=\"button\" data-toggle=\"modal\" data-target=\"#myModal\" class=\"btn btn-info btn-xs get_polling_report\" data-id=\"" + row.id + "\" + data-name=\"" + row.instance_name + "\" onclick=\"get_polling_report(this)" + "\" >获取数据库巡检报告</button>\n";
                             }
@@ -255,12 +255,10 @@
                 success: function (data) {
                     if (data.status == 0){
                         $('#myModal').modal('hide');
-
                         alert(data.msg);
 
                     }else{
 
-                    <div class="alert alert-danger fade in"> 警告框的提示信息<a class="close" data-dismiss="alert" href="#">X</a></div>
                         alert(data.msg);
                     }
                  }

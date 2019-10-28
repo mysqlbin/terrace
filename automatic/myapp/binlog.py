@@ -55,7 +55,7 @@ def binlog2sql(request):
     # 提交给binlog2sql进行解
     binlog2sql = Binlog2Sql()
     # 准备参数
-    args = {"conn_options": fr"-h{instance.host} -uroot -p123456abc -P{instance.port} ",
+    args = {"conn_options": fr"-h{instance.host} -u{instance.user} -p{instance.raw_password} -P{instance.port} ",
            "stop_never": False,
             "no-primary-key": no_pk,
             "flashback": flashback,
