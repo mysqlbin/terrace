@@ -55,7 +55,7 @@ def binlog2sql(request):
     # 提交给binlog2sql进行解
     binlog2sql = Binlog2Sql()
     # 准备参数
-    args = {"conn_options": fr"-h{instance.ip} -uroot -p123456abc -P{instance.port} ",
+    args = {"conn_options": fr"-h{instance.host} -uroot -p123456abc -P{instance.port} ",
            "stop_never": False,
             "no-primary-key": no_pk,
             "flashback": flashback,
@@ -70,7 +70,7 @@ def binlog2sql(request):
             "tables": ' '.join(only_tables),
             "only-dml": only_dml,
             "sql-type": ' '.join(sql_type),
-            "instance_ip": instance.ip,
+            "instance_ip": instance.host,
             "instance_name": instance.instance_name,
     }
 
@@ -122,7 +122,7 @@ def binlog2sql(request):
     # 异步保存到文件
     if save_sql:
         # binlog2sql_file(args=args)
-        binlog2sql_file.delay(args=args)
+        binlog2sql_file.delay(args=args)    #这里要加返回结果的判断，比如是否返回数据成功
 
     # 返回查询结果
     return HttpResponse(json.dumps(result), content_type='application/json')

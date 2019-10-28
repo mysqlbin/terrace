@@ -78,16 +78,16 @@ def get_instances_resource(request):
     tb_name = request.POST.get('tb_name')
 
     instance = Db_instance.objects.get(id=int(request.POST.get('instance_id')))
+    query_engine = get_engine(instance=instance)
 
     result = {'status': 1, 'msg': 'ok', 'data': []}
-
     if resource_type == 'database':
-        query_engine = get_engine(instance=instance)
-        dbresult = query_engine.query_set('', 'show databases').rows
+        dbresult = query_engine.query_set(sql='show databases').rows
         resource = [row[0] for row in dbresult
                     if row[0] not in ('information_schema', 'performance_schema', 'mysql', 'test', 'sys')]
     elif resource_type == 'table':
-        dbtable, col, error  = meta.get_process_data(insname, 'show tables', db_name)
+
+        dbtable = query_engine.query_set(sql='show databases').rows
         resource = [row[0] for row in dbtable if row[0] not in ['test']]
 
     result['data'] = resource
@@ -98,11 +98,11 @@ def get_instances_resource(request):
 def get_instances_binlog(request):
 
     result = {'status': 1, 'msg': 'ok', 'data': []}
-    insname = Db_instance.objects.get(id=int(request.POST.get('instance_id')))
-    binlog, col, error = meta.get_process_data(insname, 'show binary logs')
-    resource = [row for row in binlog]
+    instance = Db_instance.objects.get(id=int(request.POST.get('instance_id')))
+    query_engine = get_engine(instance=instance)
+    binlogresult = query_engine.query_set(sql='show binary logs;').rows
+    resource = [row for row in binlogresult]
     result['data'] = resource
-
     return HttpResponse(json.dumps(result), content_type='application/json')
 
 
