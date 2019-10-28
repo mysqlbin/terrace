@@ -57,10 +57,12 @@ def test_05(request):
     query_engine = get_engine(instance=instance)
     # sql_content = 'select * from test_db.t2 group by a order by a limit 2;'
     sql_content = 'select * from test_db.t2 where id=1;'
-    task_id = async_task(query_engine.query_set(sql=sql_content))
-    query_task = fetch(task_id, wait=1 * 100000, cached=True)
+    task_id = async_task(query_engine.query_set, sql=sql_content)
+    # return HttpResponse(task_id)
+    query_task = fetch(task_id, wait=3 * 1000, cached=True)
     return HttpResponse(json.dumps(query_task, cls=RewriteJsonEncoder),
                         content_type='application/json')
+
     if query_task:
         if query_task.success:
             query_result = query_task.result
