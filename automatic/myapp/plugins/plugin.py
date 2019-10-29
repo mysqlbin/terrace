@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 """ 
-@author: hhyo 
+@author:
 @license: Apache Licence 
 @file: plugin.py 
 @time: 2019/03/04
@@ -24,7 +24,7 @@ class Plugin:
         检查请求参数列表
         :return: {'status': 1, 'msg': 'ok', 'data': {}}
         """
-        args_check_result = {'status':1, 'msg': 'ok', 'data': {}}
+        args_check_result = {'status':, 'msg': 'ok', 'data': {}}
         # 检查路径
         if self.path is None:
             return {'status': 0, 'msg': '可执行文件路径不能为空！', 'data': {}}
@@ -58,4 +58,4 @@ class Plugin:
             return p
         except Exception as e:
             logger.error("命令执行失败\n{}".format(traceback.format_exc()))
-            raise RuntimeError('命令执行失败，失败原因:%s' % str(e))
+            raise RuntimeError('命令执行失败，失败原因:%s' % str(e))     #通过raise error中断程序的执行
