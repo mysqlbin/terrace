@@ -77,7 +77,7 @@ def binlog2sql(request):
     # 参数检查
     args_check_result = binlog2sql.check_args(args)
 
-    if args_check_result['status'] == 0:
+    if args_check_result['status'] == 1:
         return HttpResponse(json.dumps(args_check_result), content_type='application/json')
     # 参数转换
     cmd_args = binlog2sql.generate_args2cmd(args, shell=True)

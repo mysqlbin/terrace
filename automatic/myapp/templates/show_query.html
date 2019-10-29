@@ -207,7 +207,7 @@
 
                 },
                 success: function (data) {
-                    if (data.status === 1) {
+                    if (data.status == 0) {
                         $("#instance_name").empty();
                         $.each(data['data'],function(index,obj){
                             let instance = "<option value=\"" + obj.instance_name + "\" data-id=\"" + obj.id + "\" >" + obj.instance_name + "</option>";

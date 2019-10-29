@@ -179,7 +179,7 @@
                 },
                 success: function (data) {
 
-                    if (data.status === 1) {
+                    if (data.status == 0) {
 
                         $("#instance_name").empty();
 
@@ -219,7 +219,7 @@
                 complete: function () {
                 },
                 success: function (data) {
-                    if (data.status === 1) {
+                    if (data.status == 0) {
                         var result = data.data;
                         $("#only_schemas").empty();
                         for (var i = 0; i < result.length; i++) {
@@ -247,7 +247,7 @@
                 complete: function () {
                 },
                 success: function (data) {
-                    if (data.status === 1) {
+                    if (data.status == 0) {
                         var result = data.data;
                         console.log(result)
                         $("#start_file").empty();
@@ -306,7 +306,7 @@
                         $("#binlog2sql").prop('disabled', false);
                     },
                     success: function (data) {
-                        if (data.status === 1) {
+                        if (data.status == 0) {
                             // 这里的代码可以独立出来
                             $('#tb-binlog2sql').bootstrapTable('destroy').bootstrapTable({
                                 escape: true,
@@ -408,7 +408,7 @@
                 complete: function () {
                 },
                 success: function (data) {
-                    if (data.status === 1) {
+                    if (data.status == 0) {
                         var result = data.data;
                         $("#only_tables").empty();
                         for (var i = 0; i < result.length; i++) {
