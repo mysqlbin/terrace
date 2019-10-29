@@ -24,23 +24,23 @@ class Plugin:
         检查请求参数列表
         :return: {'status': 1, 'msg': 'ok', 'data': {}}
         """
-        args_check_result = {'status':, 'msg': 'ok', 'data': {}}
+
+        args_check_result = {'status':0, 'msg': 'ok', 'data': {}}
+
         # 检查路径
         if self.path is None:
-            return {'status': 0, 'msg': '可执行文件路径不能为空！', 'data': {}}
+            args_check_result['msg'] = '可执行文件路径不能为空！'
 
         # 检查禁用参数
         for arg in args.keys():
             if arg in self.disable_args:
-                return {'status': 0, 'msg': '{arg}参数已被禁用'.format(arg=arg), 'data': {}}
-
+                args_check_result['msg'] = '参数已被禁用'.format(arg)
         # 检查必须参数
         for req_arg in self.required_args:
             if req_arg not in args.keys():
-                return {'status': 0, 'msg': '必须指定{arg}参数'.format(arg=req_arg), 'data': {}}
+                args_check_result['msg'] = '必须指定{}参数'.format(req_arg)
             elif args[req_arg] is None or args[req_arg] == '':
-                return {'status': 0, 'msg': '{arg}参数值不能为空'.format(arg=req_arg), 'data': {}}
-
+                args_check_result['msg'] = '{}参数值不能为空'.format(req_arg)
         return args_check_result
 
     @staticmethod
