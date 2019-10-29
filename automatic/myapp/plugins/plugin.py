@@ -29,18 +29,21 @@ class Plugin:
 
         # 检查路径
         if self.path is None:
-            args_check_result['msg'] = '可执行文件路径不能为空！'
-
+            args_check_result['msg']     = '可执行文件路径不能为空！'
+            args_check_result['status'] = 1
         # 检查禁用参数
         for arg in args.keys():
             if arg in self.disable_args:
                 args_check_result['msg'] = '参数已被禁用'.format(arg)
+                args_check_result['status'] = 1
         # 检查必须参数
         for req_arg in self.required_args:
             if req_arg not in args.keys():
                 args_check_result['msg'] = '必须指定{}参数'.format(req_arg)
+                args_check_result['status'] = 1
             elif args[req_arg] is None or args[req_arg] == '':
                 args_check_result['msg'] = '{}参数值不能为空'.format(req_arg)
+                args_check_result['status'] = 1
         return args_check_result
 
     @staticmethod

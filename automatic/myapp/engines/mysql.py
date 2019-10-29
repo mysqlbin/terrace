@@ -86,7 +86,7 @@ class MySQLEngine(EngineBase):   # 类继承
         return self.query_set(sql=sql)
 
     def get_status(self, status=None):
-        """获取实例状态信息"""
+        """获取实例状态值"""
         if status:
             db = 'performance_schema' if self.server_version >= int(57) else 'information_schema'
             if isinstance(status, list):
