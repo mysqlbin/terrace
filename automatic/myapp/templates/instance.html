@@ -109,23 +109,26 @@
                             <!--return "<a target=\"_blank\" href=\"/admin/instance/" + row.id + "/change/\">" + value + "</a>"-->
                         <!--}-->
                     }, {
-                        title: '实例类型',
-                        field: 'type'
-                    }, {
-                        title: '数据库类型',
-                        field: 'db_type'
-                    }, {
                         title: 'HOST',
                         field: 'host'
                     }, {
                         title: 'PORT',
                         field: 'port'
                     }, {
+                        title: '实例类型',
+                        field: 'type'
+                    }, {
+                        title: '数据库类型',
+                        field: 'db_type'
+                    }, {
+                        title: '角色',
+                        field: 'role'
+                    }, {
                         title: '操作',
                         field: '',
                         formatter: function (value, row, index) {
                             var btn_user_manger = '';
-                            if (row.db_type === 'mysql') {
+                            if (row.db_type === 'MySQL') {
 <!--                                btn_user_manger = "<button class=\"btn btn-info btn-xs\" onclick=\"window.open('/instance/get_instance_users/" + row.id  + "/" + row.instance_name + "\')\">实例用户权限列表</button>\n";-->
                                     btn_user_manger = "<a target=\"_blank\" class=\"btn btn-info btn-xs\" data-toggle=\"tooltip\" title=\"点击查看用户权限列表\" data-placement=\"right\" href=\"/instance/get_instance_users/" + row.id  + "/" + row.instance_name + "\" >用户权限</a>\n";
                                 <!--btn_del_binLog = "<button class=\"btn btn-danger btn-xs\" instance_id=\"" + row.id + "\" + instance_name=\"" + row.instance_name + "\"+ onclick=\"del_binLog(this)" + "\">Binlog清理</button>\n"-->

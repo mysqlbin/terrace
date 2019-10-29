@@ -31,6 +31,7 @@ urlpatterns = [
 
     path('sqlquery/', myapp_view.sqlquery, name='sqlquery'),
     path('sqlquery/sql_query/', sqlquery.sql_query),
+    path('sqlquery/sql_query_asynchronous/', sqlquery.sql_query_asynchronous),
 
     path('pollingreport/', myapp_view.pollingreport, name='polling_report'),
     path('polling/polling_list/', polling.polling_list),
@@ -54,9 +55,9 @@ urlpatterns = [
 
     path('tests/test01/', tests.test_01),
     path('tests/test02/', tests.test_02),
-    # path('tests/test03/', tests.test_03),
+    path('tests/test03/', tests.test_03),
     # path('tests/test04/', tests.test_04),
-    # path('tests/test05/', tests.test_05),
+    path('tests/test05/', tests.test_05),
     path('tests/test06/', tests.test_06),
     path('tests/polling_test/', tests.polling_test),
 

@@ -12,16 +12,10 @@ class EngineBase:
             self.user = instance.user
             self.password = instance.raw_password
 
-    def get_connection(self, db_name=None):
-        """返回一个conn实例"""
-
-    # def query_set(self, db_name=None, sql='', limit_num=0, close_conn=True):
-        """实际查询 返回一个ResultSet"""
-
 def get_engine(instance=None):
 
     """获取数据库操作engine"""
-    if instance.db_type == 'mysql':
+    if instance.db_type == 'MySQL':
         # return 1
         from .mysql import MySQLEngine
         return MySQLEngine(instance=instance)

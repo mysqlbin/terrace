@@ -7,13 +7,14 @@
 # from common.config import SysConfig
 from myapp.plugins.plugin import Plugin
 
+from automatic import settings
 __author__ = ''
 
 class Binlog2Sql(Plugin):
 
     def __init__(self):
-        # self.path = SysConfig().get('binlog2sql')
-        self.path = '/root/binlog2sql/binlog2sql/binlog2sql.py'
+        self.path = settings.BINLOG2SQL_PATH
+        # self.path = '/root/binlog2sql/binlog2sql/binlog2sql.py'
         self.required_args = []
         self.disable_args = []
         super(Plugin, self).__init__()    # 类继承

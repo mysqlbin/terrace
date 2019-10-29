@@ -7,30 +7,23 @@ from myapp.common.utils.aes_decryptor import Prpcrypt
 read_write = (
     ('read', 'read'),
     ('write', 'write'),
-    ('all','all'),
+    ('read_write','read_write'),
     ('idle','idle'),
-    ('admin','admin'),
-)
-
-read_write_account = (
-    ('read', 'read_account'),
-    ('write', 'write_account'),
-    ('all','all_count'),
-    ('admin','admin_count'),
+    ('zabbix','zabbix'),
 )
 
 DB_TYPE_CHOICES = (
-    ('mysql', 'MySQL'),
-    ('mongodb', 'MongoDB'),
-    ('mssql', 'MsSQL'),
-    ('redis', 'Redis'),
-    ('pgsql', 'PgSQL'),
-    ('oracle', 'Oracle'))
+    ('MySQL', 'MySQL'),
+    ('MongoDB', 'MongoDB'),
+    ('MsSQL', 'MsSQL'),
+    ('Redis', 'Redis'),
+    ('PgSQL', 'PgSQL'),
+    ('Oracle', 'Oracle'))
 
 INSTANCE_TYPE_CHOICES = (
-    ('master', '主库'),
-    ('slave', '从库'),
-    ('alone', '单机'))
+    ('主库', '主库'),
+    ('从库', '从库'),
+    ('单机实例', '单机实例'))
 
 class Db_instance(models.Model):
 
@@ -59,6 +52,17 @@ class Db_instance(models.Model):
         """ 返回明文密码 str """
         pc = Prpcrypt()  # 初始化
         return pc.decrypt(self.password)
+
+    # def save(self, *args, **kwargs):
+    #     pc = Prpcrypt()  # 初始化
+    #     if self.password:
+    #         if self.id:
+    #             old_password = Db_instance.objects.get(id=self.id).password
+    #         else:
+    #             old_password = ''
+    #         # 密码有变动才再次加密保存
+    #         self.password = pc.encrypt(self.password) if old_password != self.password else self.password
+    #     super(Db_instance, self).save(*args, **kwargs)
 
 
 class Db_name(models.Model):
