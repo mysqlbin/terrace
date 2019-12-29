@@ -33,7 +33,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 
-# Application definition #django 的自带应用
+# Application definition # django 的自带应用
 # APP列表
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -98,7 +98,7 @@ DATABASES = {
         'NAME': 'terrace_db',
         'USER': 'root',
         'PASSWORD': '123456abc',
-        'HOST': '192.168.0.54',
+        'HOST': '192.168.1.27',
         'PORT': '3306',
     }
 }
