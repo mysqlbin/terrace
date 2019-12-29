@@ -32,13 +32,14 @@ def test_06(request):
 
 def test_03(request):
     instance = Db_instance.objects.get(id=1)
+    # return HttpResponse(instance)
     query_engine = get_engine(instance=instance)
-    return  HttpResponse(query_engine)
+    # return  HttpResponse(query_engine)
 
-    sql_content = 'select * from t2 where id=1;'
+    sql_content = 'select * from sbtest1 where id=3;'
     # result = query_engine.query_set(sql=sql_content).rows
     # return HttpResponse(result)
-    db_name = 'test_db'
+    db_name = 'sbtest'
     result = query_engine.query_set(sql=sql_content, db_name=db_name).rows
 
     return HttpResponse(result)
@@ -62,43 +63,10 @@ def test_05(request):
     query_engine = get_engine(instance=instance)
     # return HttpResponse(query_engine)
     # sql_content = 'select * from test_db.t2 group by a order by a limit 2;'
-    sql_content = 'select * from test_db.t1 where id=1;'
-    task_id = async_task(query_engine.query_set, sql=sql_content)
+    sql_content = 'select * from sbtest.sbtest1 where id=3;'
+    task_id = async_task(query_engine.query_set, sql=sql_content, db_name='sbtest')
     # return HttpResponse(task_id)
     query_task = fetch(task_id, wait=3 * 1000)
-    # return HttpResponse(json.dumps(query_task, cls=RewriteJsonEncoder),
-    #                     content_type='application/json')
-
-    # sql_content = 'select * from sbtest.sbtest1 where id=5'
-    # db_name = 'sbtest'
-
-    # query_result = query_engine.query_set(sql=sql_content).rows
-
-    # return HttpResponse(query_result)
-
-    # task_id = async_task(query_engine.query_set, sql=sql_content)
-    # return HttpResponse(task_id)
-
-    # query_task = fetch(task_id, wait=10*1000)
-
-    #
-    # if not query_task.success:
-    #     print('An error occurred: {}'.format(query_task.result))
-    #
-    # if query_task:
-    #     # return HttpResponse(query_task)
-    #     # return HttpResponse(query_task.success)
-    #     if query_task.success:
-    #         return HttpResponse(query_task.time_taken())
-    #         # return HttpResponse(1)
-    #     else:
-    #         return HttpResponse(query_task.result)
-    # else:
-    #
-    #     return HttpResponse(query_task.result)
-    #
-    # return HttpResponse(json.dumps(query_task.result, cls=RewriteJsonEncoder),
-    #                     content_type='application/json')
 
     if query_task:
         if query_task.success:
@@ -112,7 +80,8 @@ def test_05(request):
     # 等待超时，async_task主动关闭连接
     else:
         query_result = ResultsSet(full_sql=sql_content)
-        query_result.error = '查询时间超过 0.1 秒，已被主动终止，请优化语句或者联系管理员。'
+        # query_result.error = '查询时间超过 0.1 秒，已被主动终止，请优化语句或者联系管理员。'
+        query_result.error = '3'
 
     # 查询异常
     if query_result.error:

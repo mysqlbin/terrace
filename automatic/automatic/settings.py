@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',  # 查找静态资源路径
     'myapp',
-    'django_celery_results',        # 添加分布式任务功能
+   # 'django_celery_results',        # 添加分布式任务功能
     'django_q',
 ]
 
@@ -146,12 +146,12 @@ STATIC_URL = '/static/'
 
 #STATIC_ROOT = '/static/'
 
-# 设置存储 Celery 任务队列的Redis数据库
-CELERY_BROKER_URL = 'redis://192.168.0.54:6379/6'
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-# 设置存储 Celery 任务结果的Redis数据库
-CELERY_RESULT_BACKEND = 'redis://192.168.0.54:6379/7'
+# # 设置存储 Celery 任务队列的Redis数据库
+# CELERY_BROKER_URL = 'redis://192.168.1.100:6379/6'
+# CELERY_ACCEPT_CONTENT = ['json']
+# CELERY_TASK_SERIALIZER = 'json'
+# # 设置存储 Celery 任务结果的Redis数据库
+# CELERY_RESULT_BACKEND = 'redis://192.168.1.100:6379/7'
 
 MAX_EXECUTION_TIME = 5
 
@@ -168,7 +168,7 @@ Q_CLUSTER = {
     'queue_limit': 500,
     'label': 'Django Q',
     'redis': {
-        'host': '192.168.0.54',
+        'host': '192.168.1.100',
         'port': 6379,
         'db': 4, }
 }

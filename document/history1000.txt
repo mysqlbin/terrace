@@ -1,0 +1,246 @@
+[root@localhost vagrant]#
+[root@localhost vagrant]# history 1000
+    1  pip3 install -i https://pypi.doubanio.com/simple/ --trusted-host pypi.doubanio.com pytz
+    2  cd /usr/local/python3/bin
+    3  ll
+    4  python3
+    5  find/ -name python3
+    6  find / -name python3
+    7  pwd
+    8  cd usr/local/bin
+    9  cd /usr/local/bin/
+   10  ll
+   11  pwd
+   12  /usr/local/bin/python3
+   13  ll
+   14  pwd
+   15  cd /usr/local/python3/
+   16  ll
+   17  cd bin/
+   18  ll
+   19  cd ../
+   20  ll
+   21  cd /vagrant/
+   22  ll
+   23  source venv/bin/activate
+   24  pip3 install -i https://pypi.doubanio.com/simple/ --trusted-host pypi.doubanio.com pytz
+   25  ip addr show
+   26  ll
+   27  cd terrace/
+   28  ll
+   29  cd automatic/
+   30  ll
+   31  pip3 install -i https://pypi.doubanio.com/simple/ --trusted-host pypi.doubanio.com sqlparse
+   32  python3 manage.py qcluster
+   33  pip3 install -i https://pypi.doubanio.com/simple/ --trusted-host pypi.doubanio.com redis
+   34  python3 manage.py qcluster
+   35  ll
+   36  pwd
+   37  ll
+   38  cd /vagrant/
+   39  ll
+   40  git clone https://github.com/danfengcao/binlog2sql.git && cd binlog2sql
+   41  ll
+   42  vim requirements.txt
+   43  vi requirements.txt
+   44  pip3 install -r requirements.txt
+   45  pwd
+   46  cd binlog2sql/
+   47  ll
+   48  pwd
+   49  ls binlog2sql.py
+   50  cd ../
+   51  ll
+   52  source venv/bin/activate
+   53  cd binlog2sql/binlog2sql/
+   54  ll
+   55  cd ../
+   56  ll
+   57  pip3 install -r requirements.txt
+   58  pip3 install mysql-replication
+   59  pip3 install -r requirements.txt
+   60  pip3 install -i https://pypi.doubanio.com/simple/ --trusted-host pypi.doubanio.com --upgrade pip
+   61  pip3 install -r requirements.txt
+   62  pip3 install pymysql
+   63  pip3 uninstall pymysql
+   64  pip3 install pymysql
+   65  pip3 unintall wheel
+   66  pip3 uninstall wheel
+   67  pip3 install -i https://pypi.doubanio.com/simple/ --trusted-host pypi.doubanio.com wheel
+   68  pip3 uninstall mysql-replication
+   69  pip3 install -i https://pypi.doubanio.com/simple/ --trusted-host pypi.doubanio.com mysql-replication
+   70  pip3 install django-celery-results
+   71  pip3 install django-celery-beat
+   72  pip3 install -i https://pypi.doubanio.com/simple/ --trusted-host pypi.doubanio.com eventlet
+   73  ll
+   74  cd ../../
+   75  ll
+   76  cd /vagrant/
+   77  ll
+   78  cd terrace/
+   79  ll
+   80  cd automatic/
+   81  ll
+   82  celery  -A automatic worker -l info -P eventlet
+   83  ll
+   84  cd /vagrant/
+   85  ll
+   86  source venv/bin/activate
+   87  cd terrace/automatic/
+   88  ll
+   89  python3 manage.py qcluster
+   90  python3 manage.py qcluster &
+   91   ./configure --prefix=/usr/local/python3
+   92  make && make install
+   93  ln -s /usr/local/python3/bin/python3.6  /usr/local/bin/python3
+   94  python3
+   95  ln -s /usr/local/python3/bin/pip3.6 /usr/local/bin/pip3
+   96  pip3
+   97  pip3 install virtualenv
+   98  pip3 install -i https://pypi.doubanio.com/simple/ --trusted-host pypi.doubanio.com virtualenv
+   99  ln -s /usr/local/lib/python3.6/bin/virtualenv /usr/bin/virtualenv
+  100  ll
+  101  cd ../
+  102  lll
+  103  ll
+  104  virtualenv -p python3 --no-site-packages venv
+  105  ln -s /usr/local/lib/python3.6/bin/virtualenv /usr/local/bin/virtualenv
+  106  virtualenv -p python3 --no-site-packages venv
+  107  /usr/local/lib/python3.6/bin/virtualenv
+  108  pip3 install -i https://pypi.doubanio.com/simple/ --trusted-host pypi.doubanio.com virtualenv
+  109  virtualenv
+  110  find / -name virtualenv
+  111  /usr/local/python3/bin/virtualenv
+  112  ln -s /usr/local/python3/bin/virtualenv /usr/local/bin/virtualenv
+  113  rm -rf /usr/local/bin/virtualenv
+  114  ln -s /usr/local/python3/bin/virtualenv /usr/local/bin/virtualenv
+  115  virtualenv -p python3 --no-site-packages venv
+  116  ll
+  117  cd venv/
+  118  ll
+  119  cd ../
+  120  ll
+  121  source venv/bin/activate
+  122  deactivate    ​	退出虚拟环境
+
+
+  123  yum install perl-Digest-SHA
+  124  source venv/bin/activate
+  125  ll
+  126 virtualenv
+  127  ping www.baidu.com
+  128  ping pypi.python.org
+  129  /usr/local/python3/bin/django-admin.py startproject django_20191026
+  130  python3 manage.py startapp myapp
+  131  cd django_20191026/
+  132  ll
+  133  python3 manage.py startapp myapp
+  134  python3
+  135  python3 manage.py startapp myapp
+  136  ll
+  137  cd ../
+  138  ll
+  139  cd Django-2.0.5
+  140  ll
+  141  python3 setup.py install
+  142  ll
+  143  owd
+  144  cd ../
+  145  ll
+  146  cd django_20191026/
+  147  lkl
+  148  ll
+  149  python3 manage.py startapp myapp
+  150  python3 manage.py runserver
+  151  ll
+  152  ifconfig
+  153  if config
+  154  ip addr show
+  155  python3 manage.py runserver
+  156  ll
+  157  pwd
+  158  source /vagrant/venv/bin/activate
+  159  python3 manage.py runserver
+  160  python3 manage.py runserver 192.168.1.100:8000
+  161  ip addr show
+  162  python3 manage.py runserver 10.0.2.15:8000
+  163  ip addr show
+  164  python3 manage.py runserver 10.0.2.15:8000
+  165  ll
+  166  cd ../
+  167  kl
+  168  ll
+  169  cd terrace/
+  170  ll
+  171  cd automatic/
+  172  ll
+  173  python3 manage.py runserver 10.0.2.15:8000
+  174  pip3 install -i https://pypi.doubanio.com/simple/ --trusted-host pypi.doubanio.com celery
+  175  python3 manage.py runserver 10.0.2.15:8000
+  176  pip3 install -i https://pypi.doubanio.com/simple/ --trusted-host pypi.doubanio.com mysqlclient
+  177  pip3 install -i https://pypi.doubanio.com/simple/ --trusted-host pypi.doubanio.com pymysql
+  178  python3 manage.py runserver 10.0.2.15:8000
+  179  pip3 install -i https://pypi.doubanio.com/simple/ --trusted-host pypi.doubanio.com django-q
+  180  python3 manage.py runserver 10.0.2.15:8000
+  181  pip3 uninstall crypto pycryptodome
+  182  pip3 install -i https://pypi.doubanio.com/simple/ pycryptodome
+  183  python3 manage.py runserver 10.0.2.15:8000
+  184  ping 192.168.1.27
+  185  python3 manage.py runserver 10.0.2.15:8000
+  186  python3
+  187  python3 manage.py runserver 10.0.2.15:8000
+  188  ll
+  189  python3 manage.py migrate
+  190  python3 manage.py runserver 10.0.2.15:8000
+  191  ll
+  192  python3 setup.py install
+  193  pip3 unstall django
+  194  pip3 uninstall django
+  195  pip3 install --upgrade pip
+  196   pip3 --default-timeout=500 uninstall django
+  197   pip3 --default-timeout=500 install --upgrade pip
+  198  python3 setup.py install
+  199  pip3 celery
+  200  pip3 install celery
+  201  pip3 install -i https://pypi.doubanio.com/simple/ --trusted-host pypi.doubanio.com celery
+  202  pip3 install -i https://pypi.doubanio.com/simple/ --trusted-host pypi.doubanio.com redis
+  203  pip3 install -i https://pypi.doubanio.com/simple/ --trusted-host pypi.doubanio.com django-celery-results
+  204  pip3 install -i https://pypi.doubanio.com/simple/ --trusted-host pypi.doubanio.com django-celery-beat
+  205  pip3 install -i https://pypi.doubanio.com/simple/ --trusted-host pypi.doubanio.com eventlet
+  206  pip3 install -i https://pypi.doubanio.com/simple/ --trusted-host pypi.doubanio.com django-q
+  207  cd ../
+  208  ll
+  209  git clone https://github.com/mysqlbin/terrace.git
+  210  yum install git
+  211  pip3 install mysqlclient
+  212  yum install mysql-devel
+  213  pip3 install -i https://pypi.doubanio.com/simple/ --trusted-host pypi.doubanio.com mysqlclient
+  214  pip3 install -i https://pypi.doubanio.com/simple/ --trusted-host pypi.doubanio.com pymysql
+  215  git clone https://github.com/mysqlbin/terrace.git
+  216  ll
+  217  source venv/bin/activate
+  218  ll
+  219  cd terrace/
+  220  ll
+  221  cd automatic/
+  222  ll
+  223   python3 manage.py qcluster
+  224  ip addr hsow
+  225  ip addr show
+  226  reboot
+  227  ll
+  228  pwd
+  229  ll
+  230  cd /vagrant/
+  231  ll
+  232  source venv/bin/activate
+  233  cd terrace/
+  234  ll
+  235  cd automatic/
+  236  ll
+  237  python3 manage.py qmonitor
+  238  find / -name activate
+  239  history 1000
+[root@localhost vagrant]#  source venv/bin/activate
+
+
