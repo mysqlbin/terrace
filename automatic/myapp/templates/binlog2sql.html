@@ -178,16 +178,11 @@
                 complete: function () {
                 },
                 success: function (data) {
-
-                    if (data.status === 1) {
-
+                    if (data.status == 0) {
                         $("#instance_name").empty();
-
                         $.each(data['data'],function(index,obj){
-
                             let instance = "<option value=\"" + obj.instance_name + "\" data-id=\"" + obj.id + "\" >" + obj.instance_name + "</option>";
                             $("#instance_name").append(instance);
-
                         });
                         $('#instance_name').selectpicker('render');
                         $('#instance_name').selectpicker('refresh');
@@ -219,7 +214,7 @@
                 complete: function () {
                 },
                 success: function (data) {
-                    if (data.status === 1) {
+                    if (data.status == 0) {
                         var result = data.data;
                         $("#only_schemas").empty();
                         for (var i = 0; i < result.length; i++) {
@@ -247,7 +242,7 @@
                 complete: function () {
                 },
                 success: function (data) {
-                    if (data.status === 1) {
+                    if (data.status == 0) {
                         var result = data.data;
                         console.log(result)
                         $("#start_file").empty();
@@ -262,6 +257,7 @@
                         $('#end_file').selectpicker('render');
                         $('#end_file').selectpicker('refresh');
                     } else {
+                        console.log(3333)
                         alert(data.msg);
                     }
                 }
@@ -306,7 +302,7 @@
                         $("#binlog2sql").prop('disabled', false);
                     },
                     success: function (data) {
-                        if (data.status === 1) {
+                        if (data.status == 0) {
                             // 这里的代码可以独立出来
                             $('#tb-binlog2sql').bootstrapTable('destroy').bootstrapTable({
                                 escape: true,
@@ -408,7 +404,7 @@
                 complete: function () {
                 },
                 success: function (data) {
-                    if (data.status === 1) {
+                    if (data.status == 0) {
                         var result = data.data;
                         $("#only_tables").empty();
                         for (var i = 0; i < result.length; i++) {

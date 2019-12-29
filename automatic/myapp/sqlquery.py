@@ -10,7 +10,7 @@ from myapp.include import meta
 from myapp.include import function as func
 from myapp.include import sqlfilter
 from myapp.form import AddForm
-from myapp.models import Db_instance
+from myapp.models import Db_instance, Query_log
 from myapp.engines import get_engine
 from myapp.engines.models import ResultsSet
 
@@ -36,7 +36,7 @@ def sql_query_asynchronous(request):
     :param request:
     :return:
     """
-
+    instance_id = request.POST.get('instance_id')
     instance_name = request.POST.get('instance_name')
     sql_content = request.POST.get('sql_content')
     db_name = request.POST.get('db_name')
@@ -50,7 +50,7 @@ def sql_query_asynchronous(request):
     # limit_num=2
 
     try:
-        instance = Db_instance.objects.get(id=int(request.POST.get('instance_id')))
+        instance = Db_instance.objects.get(id=int(instance_id))
     except Db_instance.DoesNotExist:
         res['status'] = 1
         res['msg'] = '实例不存在'
@@ -109,6 +109,20 @@ def sql_query_asynchronous(request):
         else:
             res['data'] = query_result.__dict__
 
+        # 仅将成功的查询语句记录存入数据库
+        if not query_result.error:
+            query_log = Query_log(
+                user          = request.user.username,
+                instance_id   = instance_id,
+                instance_name = instance_name,
+                dbname        = db_name,
+                sqlcontent    = sql_content,
+                query_time    = query_result.query_time,
+                effect_row    = query_result.effect_row
+            )
+            query_log.save()
+
+
     except Exception as e:
 
         logger.error(f'查询异常报错，查询语句：{sql_content}\n，错误信息：{traceback.format_exc()}')
@@ -118,90 +132,4 @@ def sql_query_asynchronous(request):
     # 返回查询结果
 
     return HttpResponse(json.dumps(res, cls=RewriteJsonEncoder),content_type='application/json')
-
-
-
-def sql_query(request):
-    """
-    获取SQL的查询结果
-    :param request:
-    :return:
-    """
-
-    instance_name = request.POST.get('instance_name')
-    sql_content = request.POST.get('sql_content')
-    db_name = request.POST.get('db_name')
-    limit_num = int(request.POST.get('limit_num'))
-
-    res = {'status': 0, 'msg': 'ok', 'rows': [], 'column_list': []}
-
-    # instance_name = '1'
-    # sql_content = 'select nPlayerID from niuniu_db.table_award_2019;'
-    # db_name = 'niuniu_db'
-    # limit_num=2
-
-    try:
-        instance = Db_instance.objects.get(id=int(request.POST.get('instance_id')))
-    except Db_instance.DoesNotExist:
-        res['status'] = 1
-        res['msg'] = '实例不存在'
-        res['rows'] = '{1}'
-        return HttpResponse(json.dumps(res), content_type='application/json')
-
-    # 服务器端参数验证
-    if not instance_name or not sql_content or not db_name or not limit_num:
-        res['status'] = 1
-        res['instance_name'] = instance_name
-        res['sql_content'] = sql_content
-        res['db_name'] = db_name
-        res['msg'] = '提交参数可能为空'
-        res['rows'] = '{2}'
-        return HttpResponse(json.dumps(res), content_type='application/json')
-
-    # show、explain语句的 limit 要改为0
-    if re.match("show|explain", sql_content) is not None:
-        limit_num = 0
-
-    try:
-        query_engine = get_engine(instance=instance)
-        query_check_info = query_engine.query_check(sql=sql_content)
-        if query_check_info.get('bad_query'):
-            res['status'] = 1
-            res['msg'] = query_check_info.get('msg')
-            res['rows'] = '{3}'
-
-            return HttpResponse(json.dumps(res), content_type='application/json')
-
-        if query_check_info.get('has_star'):
-            res['status'] = 1
-            res['msg'] = query_check_info.get('msg')
-            res['rows'] = '{4}'
-            return HttpResponse(json.dumps(res), content_type='application/json')
-
-        #　执行查询语句，获取返回结果
-        # 非异步
-        res_set = query_engine.query_set(sql=sql_content, limit_num=limit_num)
-
-        if res_set.error:
-            res['status'] = 1
-            res['msg'] = res_set.error
-            res['rows'] = '{6}'
-            return HttpResponse(json.dumps(res), content_type='application/json')
-
-        res['rows'] = res_set.to_dict()    # 访问类的成员函数
-        res['column_list'] = res_set.column_list
-
-    except Exception as e:
-
-        logger.error(f'查询异常报错，查询语句：{sql_content}\n，错误信息：{traceback.format_exc()}')
-        res['status'] = 1
-        res['msg'] = f'查询异常报错，错误信息：{e}'
-
-    # 返回查询结果
-    try:
-        return HttpResponse(json.dumps(res, cls=RewriteJsonEncoder),
-                            content_type='application/json')
-    except Exception as err:
-
-        return HttpResponse(err)
 

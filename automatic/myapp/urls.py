@@ -30,7 +30,7 @@ urlpatterns = [
     path('slowlog/slowquery_review_history/', slowlog.slowquery_review_history),
 
     path('sqlquery/', myapp_view.sqlquery, name='sqlquery'),
-    path('sqlquery/sql_query/', sqlquery.sql_query),
+
     path('sqlquery/sql_query_asynchronous/', sqlquery.sql_query_asynchronous),
 
     path('pollingreport/', myapp_view.pollingreport, name='polling_report'),

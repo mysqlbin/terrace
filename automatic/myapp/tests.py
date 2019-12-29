@@ -33,6 +33,8 @@ def test_06(request):
 def test_03(request):
     instance = Db_instance.objects.get(id=1)
     query_engine = get_engine(instance=instance)
+    return  HttpResponse(query_engine)
+
     sql_content = 'select * from t2 where id=1;'
     # result = query_engine.query_set(sql=sql_content).rows
     # return HttpResponse(result)
@@ -63,9 +65,9 @@ def test_05(request):
     sql_content = 'select * from test_db.t1 where id=1;'
     task_id = async_task(query_engine.query_set, sql=sql_content)
     # return HttpResponse(task_id)
-    query_task = fetch(task_id, wait=3 * 1000, cached=True)
-    return HttpResponse(json.dumps(query_task, cls=RewriteJsonEncoder),
-                        content_type='application/json')
+    query_task = fetch(task_id, wait=3 * 1000)
+    # return HttpResponse(json.dumps(query_task, cls=RewriteJsonEncoder),
+    #                     content_type='application/json')
 
     # sql_content = 'select * from sbtest.sbtest1 where id=5'
     # db_name = 'sbtest'
