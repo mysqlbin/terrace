@@ -15,7 +15,7 @@ def binlog2sql_file(args):
     instance_ip   = args.get('instance_ip')
     instance_name = args.get('instance_name')
     timestamp = int(time.time())
-
+    
     binlog2sql = Binlog2Sql()
 
     path = os.path.join(settings.BASE_DIR, 'downloads/binlog2sql/')

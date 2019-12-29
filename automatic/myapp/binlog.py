@@ -23,7 +23,7 @@ def binlog2sql(request):
        :return:
     """
 
-    result = {'status': 1, 'msg': 'ok', 'data': ''}
+    result = {'status': 0, 'msg': 'ok', 'data': ''}
 
     try:
         instance = Db_instance.objects.get(id=int(request.POST.get('instance_id')))
@@ -50,12 +50,12 @@ def binlog2sql(request):
         'sql_type[]')
 
     # flashback=True获取DML回滚语句
-    result = {'status': 1, 'msg': 'ok', 'data': ''}
+    result = {'status': 0, 'msg': 'ok', 'data': ''}
 
     # 提交给binlog2sql进行解
     binlog2sql = Binlog2Sql()
     # 准备参数
-    args = {"conn_options": fr"-h{instance.ip} -uroot -p123456abc -P{instance.port} ",
+    args = {"conn_options": fr"-h{instance.host} -u{instance.user} -p{instance.raw_password} -P{instance.port} ",
            "stop_never": False,
             "no-primary-key": no_pk,
             "flashback": flashback,
@@ -70,14 +70,15 @@ def binlog2sql(request):
             "tables": ' '.join(only_tables),
             "only-dml": only_dml,
             "sql-type": ' '.join(sql_type),
-            "instance_ip": instance.ip,
+            "instance_ip": instance.host,
             "instance_name": instance.instance_name,
     }
 
     # 参数检查
     args_check_result = binlog2sql.check_args(args)
 
-    if args_check_result['status'] == 0:
+
+    if args_check_result['status'] == 1:
         return HttpResponse(json.dumps(args_check_result), content_type='application/json')
     # 参数转换
     cmd_args = binlog2sql.generate_args2cmd(args, shell=True)
@@ -108,7 +109,7 @@ def binlog2sql(request):
             # 判断是否有异常
             stderr = p.stderr.read()
             if stderr:
-                result['status'] = 0
+                result['status'] = 1
                 result['msg'] = stderr
                 return HttpResponse(json.dumps(result), content_type='application/json')
         # 终止子进程
@@ -116,24 +117,22 @@ def binlog2sql(request):
         result['data'] = rows
     except Exception as e:
         logger.error(traceback.format_exc())
-        result['status'] = 0
+        result['status'] = 1
         result['msg'] = str(e)
 
     # 异步保存到文件
     if save_sql:
         # binlog2sql_file(args=args)
-        binlog2sql_file.delay(args=args)
+        binlog2sql_file.delay(args=args)    #这里要加返回结果的判断，比如是否返回数据成功
 
     # 返回查询结果
     return HttpResponse(json.dumps(result), content_type='application/json')
-    """
-    {"status": 0, "msg": "ok", "data": [{"sql": "INSERT INTO `db1`.`accountinfo`(`AccountId`, `Ip`) VALUES (1, '1');", "binlog_info": "start 973 end 1208 time 2019-08-30 03:52:27\n"}]}
-    """
+
 
 
 # def binlog2sql_file(args):
 #     """
-#     用于异步保存binlog解析的文件
+#     用于同步保存binlog解析的文件
 #     :param args: 参数
 #     :param user: 操作用户对象，用户消息推送
 #     :return:

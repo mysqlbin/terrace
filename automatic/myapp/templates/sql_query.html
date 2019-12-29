@@ -121,8 +121,8 @@
         // 展示数据
         function display_data(data) {
 
-            column_list = data.column_list;
-            rows = data.rows;
+            column_list = data['column_list'];
+            rows = data['rows'];
             // rows =  [{"id": 3, "username": "admin"}, {"id": 1, "username": "binbin"}, {"id": 2, "username": "public"}, {"id": 4, "username": "test111"}];
             //异步获取要动态生成的列
             var columns = [];
@@ -161,7 +161,7 @@
         function sql_query(){
             $.ajax({
                 type: 'post',
-                url: '/sqlquery/sql_query/',
+                url: '/sqlquery/sql_query_asynchronous/',
                 dataType: 'json',
                 data: {
                     instance_id: $('#instance_name').find("option:selected").data("id"),
@@ -174,8 +174,10 @@
 
                 },
                 success: function(data){
+                    var result = data.data;
+                    console.log(result);
                     if (data.status == 0) {
-                       display_data(data);
+                       display_data(result);
                     }else{
                        console.log(data.msg);
                        alert(data.msg);
@@ -204,7 +206,7 @@
                 complete: function () {
                 },
                 success: function (data) {
-                    if (data.status === 1) {
+                    if (data.status == 0) {
                         $("#instance_name").empty();
                         $.each(data['data'],function(index,obj){
                             let instance = "<option value=\"" + obj.instance_name + "\" data-id=\"" + obj.id + "\" >" + obj.instance_name + "</option>";
@@ -223,38 +225,6 @@
             });
             });
 
-<!--            $("#db_name").change(function(){-->
-<!--                $.ajax({-->
-<!--                    type: "post",-->
-<!--                    url: "/instance/get_instances_resource/",-->
-<!--                    dataType: "json",-->
-<!--                    data: {-->
-<!--                        db_name: $("#db_name option:selected").text(),-->
-<!--                        data_id: $('#instance_name').find("option:selected").data("id"),-->
-<!--                        resource_type: "table"-->
-<!--                    },-->
-<!--                    complete: function(){-->
-<!--                    },-->
-<!--                    success: function(data){-->
-<!--                        if (data.status == 1){-->
-<!--                            var result = data.data;-->
-<!--                            $("#table_name").empty();-->
-<!--                            for (var i=0; i < result.length; i++){-->
-<!--                                console.log(result[i]);-->
-<!--                                var name = "<option value= \"" + result[i] + "\">" + result[i] + "</option>";-->
-<!--                                console.log(name);-->
-<!--                                $("#table_name").append(name);-->
-<!--                            }-->
-<!--                            $('#table_name').selectpicker('render');-->
-<!--                            $('#table_name').selectpicker('refresh');-->
-<!--                        }else{-->
-<!--                            alter(data.msg);-->
-<!--                        }-->
-<!--                    }-->
-
-
-<!--                })-->
-<!--            })-->
 
             $("#instance_name").change(function () {
 
@@ -273,7 +243,7 @@
 
                     },
                     success: function (data) {
-                        if (data.status == 1) {
+                        if (data.status == 0) {
                             var result = data.data;
                             $("#db_name").empty();
                             for (var i = 0; i < result.length; i++) {

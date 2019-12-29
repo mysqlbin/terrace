@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',  # 查找静态资源路径
     'myapp',
-    # 'django_celery_results',        # 添加分布式任务功能
+    'django_celery_results',        # 添加分布式任务功能
     'django_q',
 ]
 
@@ -153,7 +153,9 @@ CELERY_TASK_SERIALIZER = 'json'
 # 设置存储 Celery 任务结果的Redis数据库
 CELERY_RESULT_BACKEND = 'redis://192.168.0.54:6379/7'
 
-MAX_EXECUTION_TIME = 1
+MAX_EXECUTION_TIME = 5
+
+BINLOG2SQL_PATH = '/vagrant/binlog2sql/binlog2sql/binlog2sql.py'
 
 Q_CLUSTER = {
     'name': 'automatic',

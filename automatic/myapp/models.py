@@ -7,30 +7,23 @@ from myapp.common.utils.aes_decryptor import Prpcrypt
 read_write = (
     ('read', 'read'),
     ('write', 'write'),
-    ('all','all'),
+    ('read_write','read_write'),
     ('idle','idle'),
-    ('admin','admin'),
-)
-
-read_write_account = (
-    ('read', 'read_account'),
-    ('write', 'write_account'),
-    ('all','all_count'),
-    ('admin','admin_count'),
+    ('zabbix','zabbix'),
 )
 
 DB_TYPE_CHOICES = (
-    ('mysql', 'MySQL'),
-    ('mongodb', 'MongoDB'),
-    ('mssql', 'MsSQL'),
-    ('redis', 'Redis'),
-    ('pgsql', 'PgSQL'),
-    ('oracle', 'Oracle'))
+    ('MySQL', 'MySQL'),
+    ('MongoDB', 'MongoDB'),
+    ('MsSQL', 'MsSQL'),
+    ('Redis', 'Redis'),
+    ('PgSQL', 'PgSQL'),
+    ('Oracle', 'Oracle'))
 
 INSTANCE_TYPE_CHOICES = (
-    ('master', '主库'),
-    ('slave', '从库'),
-    ('alone', '单机'))
+    ('主库', '主库'),
+    ('从库', '从库'),
+    ('单机实例', '单机实例'))
 
 class Db_instance(models.Model):
 
@@ -60,6 +53,17 @@ class Db_instance(models.Model):
         pc = Prpcrypt()  # 初始化
         return pc.decrypt(self.password)
 
+    def save(self, *args, **kwargs):
+        pc = Prpcrypt()  # 初始化
+        if self.password:
+            if self.id:
+                old_password = Db_instance.objects.get(id=self.id).password
+            else:
+                old_password = ''
+            # 密码有变动才再次加密保存
+            self.password = pc.encrypt(self.password) if old_password != self.password else self.password
+        super(Db_instance, self).save(*args, **kwargs)
+
 
 class Db_name(models.Model):
     dbtag = models.CharField('标签', max_length=30, unique=True)
@@ -72,6 +76,24 @@ class Db_name(models.Model):
         verbose_name = '数据库信息'
         verbose_name_plural = '数据库信息'
 
+
+class Query_log(models.Model):
+
+    user = models.CharField('用户名', max_length=150)
+    instance_id = models.IntegerField('实例ID')
+    instance_name = models.CharField('实例名称', max_length=50)
+    dbname = models.CharField('数据库名称', max_length=30)
+    sqlcontent = models.TextField('SQL语句')
+    query_time = models.CharField('执行耗时', max_length=10, default='')
+    effect_row = models.IntegerField('影响的行数')
+    create_time = models.DateTimeField('创建时间', auto_now_add=True)
+
+    def __str__(self):
+        return self.instance_name
+
+    class Meta:
+        verbose_name = '查询日志'
+        verbose_name_plural = '查询日志'
 
 
 class Oper_log(models.Model):
