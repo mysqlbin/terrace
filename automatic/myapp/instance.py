@@ -80,7 +80,7 @@ def get_instances_resource(request):
     instance = Db_instance.objects.get(id=int(request.POST.get('instance_id')))
     query_engine = get_engine(instance=instance)
 
-    
+
     result = {'status': 0, 'msg': 'ok', 'data': []}
 
     if resource_type == 'database':
