@@ -62,7 +62,7 @@ def get_instance_name_id(request):
 
     instance_obj = Db_instance.objects.values('instance_name', 'id')
     rows = [row for row in instance_obj]
-    res = {'status': 0, 'msg': 'ok', 'data': rows}
+    res = {'status': 0, 'msg': 'ok1', 'data': rows}
     return HttpResponse(json.dumps(res))
 
 
@@ -99,7 +99,7 @@ def get_instances_resource(request):
 
 def get_instances_binlog(request):
 
-    result = {'status': 1, 'msg': 'ok', 'data': []}
+    result = {'status': 0, 'msg': 'ok', 'data': []}
     instance = Db_instance.objects.get(id=int(request.POST.get('instance_id')))
     query_engine = get_engine(instance=instance)
     binlogresult = query_engine.query_set(sql='show binary logs;').rows

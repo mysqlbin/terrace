@@ -16,12 +16,8 @@ def get_engine(instance=None):
 
     """获取数据库操作engine"""
     if instance.db_type == 'MySQL':
-        # return 1
         from .mysql import MySQLEngine
         return MySQLEngine(instance=instance)
-
-        # return  instance.raw_password
-
     elif instance.db_type == 'mssql':
         from .mssql import MssqlEngine
         return MssqlEngine(instance=instance)

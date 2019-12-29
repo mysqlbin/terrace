@@ -77,7 +77,7 @@ def download_polling_report(request):
         innodb_bp_pages_total        = query_engine.get_status('Innodb_buffer_pool_pages_total')
         innodb_bp_read_requests      = query_engine.get_status('Innodb_buffer_pool_read_requests')
         innodb_bp_read_ahead         = query_engine.get_status('Innodb_buffer_pool_read_ahead')
-        innodb_bp_reads               = query_engine.get_status('Innodb_buffer_pool_reads')
+        innodb_bp_reads              = query_engine.get_status('Innodb_buffer_pool_reads')
 
         innodb_dblwr_pages_written   = query_engine.get_status('Innodb_dblwr_pages_written')
         innodb_dblwr_writes          = query_engine.get_status('Innodb_dblwr_writes')
@@ -96,7 +96,7 @@ def download_polling_report(request):
                 row = '   table_schema:{:15s}  table_name:{:40s} size:{:2s}'.format(val[0], val[1], val[2])
                 f.write(row + '\n')
 
-            f.write('1.3 数据量排名前靠前的大表:' + '\n')
+            f.write('1.3 数据量排名靠前的大表:' + '\n')
             for val in get_top_big_tables_data:
                   row = '   table_schema:{:15s}  table_name:{:40s} all_size:{:15s} data_size:{:15s} index_size:{:15s} table_rows:{:5}'.format(
                       val[0], val[1], val[2], val[3], val[4], val[5])

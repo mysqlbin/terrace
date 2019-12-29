@@ -18,6 +18,7 @@ class Binlog2Sql(Plugin):
         self.required_args = []
         self.disable_args = []
         super(Plugin, self).__init__()    # 类继承
+        # Plugin.__init__(self)
 
     def generate_args2cmd(self, args, shell):
         """
