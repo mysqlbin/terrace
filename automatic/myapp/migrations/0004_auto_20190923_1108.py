@@ -85,7 +85,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='db_instance',
             name='type',
-            field=models.CharField(choices=[('master', '主库'), ('slave', '从库'), ('alone', '单机')], default='', max_length=6, verbose_name='实例类型'),
+            field=models.CharField(choices=[('main', '主库'), ('subordinate', '从库'), ('alone', '单机')], default='', max_length=6, verbose_name='实例类型'),
         ),
         migrations.AlterField(
             model_name='db_instance',
