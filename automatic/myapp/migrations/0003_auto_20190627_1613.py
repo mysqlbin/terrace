@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='db_instance',
             name='type',
-            field=models.CharField(choices=[('master', '主库'), ('slave', '从库')], default='', max_length=6),
+            field=models.CharField(choices=[('main', '主库'), ('subordinate', '从库')], default='', max_length=6),
             preserve_default=False,
         ),
         migrations.AddField(
